@@ -20,9 +20,4 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
-/.editorconfig
-/.eslintignore
-/.eslintrc.js
 /README.md
-/.stylintrc
-/.postcssrc.js
