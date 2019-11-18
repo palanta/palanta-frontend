@@ -1,0 +1,144 @@
+.grid-background {
+  background-color: #404040;
+  background-size: 50px 50px;
+  background-image: linear-gradient(to right, transparent 49px, #505050 1px),
+  linear-gradient(to bottom, transparent 49px, #505050 1px);
+  width: 5000px;
+  height: 5000px;
+  transform-origin: top left;
+}
+
+.material-card {
+  border-radius: 5px;
+  background-color: #303030;
+  width: 250px;
+  box-shadow: #303030 0 0 10px;
+  position: absolute;
+}
+
+.material-card-header {
+  background-color: #202020;
+  height: 50px;
+  padding: 11px;
+  width: 100%;
+  display: block;
+  text-align: center;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  font-size: 18px;
+  color: white;
+  cursor: move;
+}
+
+.material-card-icon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  left: 10px;
+  top: 10px;
+}
+
+.material-card-section-wrapper {
+  height: 50px;
+  position: relative;
+}
+
+.material-card-connection-section {
+  padding: 11px 22px;
+  color: white;
+  font-size: 17px;
+}
+
+.material-card-input-section {
+  text-align: left;
+}
+
+.material-card-output-section {
+  text-align: right;
+}
+
+.material-button {
+  padding: 5px;
+  margin: 5px 10px;
+  color: white;
+  background-color: #606060;
+  border: solid #808080 1px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 18px;
+  box-sizing: border-box;
+}
+
+.material-card-input-field {
+  padding: 4px 14px;
+  margin: 7px;
+  color: white;
+  background-color: #404040;
+  border: none;
+  border-radius: 5px;
+  font-size: 17px;
+  box-sizing: border-box;
+}
+
+.connection-point {
+  width: 26px;
+  height: 26px;
+  border-radius: 15px;
+  border: solid #303030 4px;
+  background-color: #606060;
+  top: 12px;
+  position: absolute;
+}
+
+.connection-point-input {
+  left: -12px;
+}
+
+.connection-point-output {
+  right: -12px;
+}
+
+.connection-point-text {
+  background-color: #e60114;
+}
+
+.connection-point-number {
+  background-color: #2061d0;
+}
+
+.toolbox-container {
+  width: 200px;
+  height: 400px;
+  padding: 10px;
+  position: fixed;
+  left: 0;
+  top: 50px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-bottom-right-radius: 8px;
+  border-right: solid #a0a0a0 1px;
+  border-bottom: solid #a0a0a0 1px;
+  z-index: 1;
+}
+
+.toolbox-node {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: white;
+  background-color: #505050;
+  border-radius: 5px;
+  padding: 5px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: 100ms;
+}
+
+.toolbox-node:hover {
+  background-color: #707070;
+}
+
+.disable-highlight {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
