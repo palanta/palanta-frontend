@@ -1,6 +1,6 @@
 <template>
-  <div class="material-card disable-highlight" @click="onCardClicked($props.listKey)" :style="style">
-    <div class="material-card-header" @mousedown="onCardDragStart($event, $props.listKey)">
+  <div class="material-card disable-highlight" :style="style">
+    <div class="material-card-header">
       <img class="material-card-icon" src="../assets/node_icons/node_average.png" alt="">
       Average
     </div>
@@ -32,20 +32,10 @@
 </template>
 
 <script>
-import core from '../pages/Index.vue'
 
 export default {
   name: 'NodeNormalize',
-  methods: {
-    onCardClicked: function (key) {
-      core.methods.onCardClicked(key)
-    }
-  },
-  created () {
-    this.onCardDragStart = core.methods.onCardDragStart
-  },
   props: [
-    'listKey',
     'offsetLeft',
     'offsetTop'
   ],

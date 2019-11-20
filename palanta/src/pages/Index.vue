@@ -21,7 +21,8 @@
         <component v-bind:is="node['nodeType']"
                    v-bind:offsetLeft="node['offsetLeft']"
                    v-bind:offsetTop="node['offsetTop']"
-                   v-bind:listKey="index">
+                   @mousedown.native="onCardDragStart($event, index)"
+                   @click="onCardClicked(index)">
         </component>
       </div>
 
@@ -78,6 +79,8 @@ export default {
       statedata.dragging.clickY = event.clientY
 
       statedata.dragging.isDragging = true
+
+      console.log(statedata.dragging.activeKey)
     },
     onCardDrag: function (event) {
       if (statedata.dragging.isDragging) {
