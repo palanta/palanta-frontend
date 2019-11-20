@@ -22,7 +22,7 @@
                    v-bind:offsetLeft="node['offsetLeft']"
                    v-bind:offsetTop="node['offsetTop']"
                    @mousedown.native="onCardDragStart($event, index)"
-                   @click="onCardClicked(index)">
+                   @click.native="onCardClicked(index)">
         </component>
       </div>
 
@@ -48,8 +48,6 @@ import NodeNormalize from '../components/NodeNormalize'
 import NodeAverage from '../components/NodeAverage'
 import NodeNumber from '../components/NodeNumber'
 
-import statedata from '../communication/data'
-
 export default {
   name: 'PageIndex',
   components: {
@@ -59,56 +57,62 @@ export default {
   },
   data () {
     return {
-      nodelist: statedata.nodelist
+      nodelist: [],
+      dragging: {
+        originX: 0,
+        originY: 0,
+        clickX: 0,
+        clickY: 0,
+        isDragging: false,
+        activeCard: null,
+        activeKey: null
+      }
     }
   },
   methods: {
     onCardClicked: function (key) {
-      if (statedata.deleting) {
+      if (this.deleting) {
         this.removeActiveCard(key)
       }
     },
     onCardDragStart: function (event, key) {
-      let card = event.target.parentElement
+      let card = event.target.closest('.material-card')
 
-      statedata.dragging.activeCard = card
-      statedata.dragging.activeKey = key
-      statedata.dragging.originX = card.offsetLeft
-      statedata.dragging.originY = card.offsetTop
-      statedata.dragging.clickX = event.clientX
-      statedata.dragging.clickY = event.clientY
+      this.dragging.activeCard = card
+      this.dragging.activeKey = key
+      this.dragging.originX = card.offsetLeft
+      this.dragging.originY = card.offsetTop
+      this.dragging.clickX = event.clientX
+      this.dragging.clickY = event.clientY
 
-      statedata.dragging.isDragging = true
-
-      console.log(statedata.dragging.activeKey)
+      this.dragging.isDragging = true
     },
     onCardDrag: function (event) {
-      if (statedata.dragging.isDragging) {
-        let card = statedata.dragging.activeCard
-        let newX = statedata.dragging.originX + (event.clientX - statedata.dragging.clickX) + 25
-        let newY = statedata.dragging.originY + (event.clientY - statedata.dragging.clickY) + 25
+      if (this.dragging.isDragging) {
+        let card = this.dragging.activeCard
+        let newX = this.dragging.originX + (event.clientX - this.dragging.clickX)
+        let newY = this.dragging.originY + (event.clientY - this.dragging.clickY)
 
-        let gridX = (newX - (newX % 50) + 'px')
-        let gridY = (newY - (newY % 50) + 'px')
+        if (event.shiftKey) {
+          newX = newX - (newX % 50)
+          newY = newY - (newY % 50)
+        }
 
-        card.style.left = gridX
-        card.style.top = gridY
+        card.style.left = newX + 'px'
+        card.style.top = newY + 'px'
 
-        this.nodelist[statedata.dragging.activeKey]['offsetLeft'] = gridX
-        this.nodelist[statedata.dragging.activeKey]['offsetTop'] = gridY
+        this.nodelist[this.dragging.activeKey]['offsetLeft'] = newX + 'px'
+        this.nodelist[this.dragging.activeKey]['offsetTop'] = newY + 'px'
       }
     },
     onCardDragEnd: function () {
-      statedata.dragging.isDragging = false
+      this.dragging.isDragging = false
     },
     addActiveCard: function (type) {
-      statedata.nodelist.push({ nodeType: type, offsetLeft: '200px', offsetTop: '50px' })
+      this.nodelist.push({ nodeType: type, offsetLeft: '200px', offsetTop: '50px' })
     },
     removeActiveCard: function (index) {
-      statedata.nodelist.splice(index, 1)
-    },
-    toggleDeleteMode: function () {
-      statedata.deleting = !statedata.deleting
+      this.nodelist.splice(index, 1)
     }
   }
 }
