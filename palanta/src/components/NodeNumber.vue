@@ -1,7 +1,7 @@
 <template>
   <div class="material-card disable-highlight" :style="style">
     <div class="material-card-header">
-      <img class="material-card-icon" src="../assets/node_icons/node_normalize.png" alt="">
+      <img class="material-card-icon" src="../assets/node_icons/node_number.png" alt="">
       Number
     </div>
     <div class="material-card-section-wrapper">

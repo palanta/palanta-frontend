@@ -25,15 +25,6 @@
                    @click.native="onCardClicked(index)">
         </component>
       </div>
-
-      <svg width="250" height="150" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 25 h100 Q 125 25 125 50 v50 Q 125 125 150 125 h100"
-              stroke="#2061d0" stroke-width="4" fill="transparent"/>
-      </svg>
-      <svg width="200" height="300" xmlns="http://www.w3.org/2000/svg">
-        <path d="M100 25 h50 Q 175 25 175 50 v50 Q 175 125 150 125 h-100 Q 25 125 25 150 v50 Q 25 225 50 225 h50"
-              stroke="#2061d0" stroke-width="4" fill="transparent"></path>
-      </svg>
     </div>
   </div>
 </template>
@@ -94,8 +85,8 @@ export default {
         let newY = this.dragging.originY + (event.clientY - this.dragging.clickY)
 
         if (event.shiftKey) {
-          newX = newX - (newX % 50)
-          newY = newY - (newY % 50)
+          newX = newX + 25 - ((newX + 25) % 50)
+          newY = newY + 25 - ((newY + 25) % 50)
         }
 
         card.style.left = newX + 'px'
