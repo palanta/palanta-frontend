@@ -40,9 +40,14 @@ module.exports = function (ctx) {
       // * true   - Import everything from Quasar
       //            (not treeshaking Quasar; biggest bundle size; convenient)
       all: 'auto',
+      config: {
+        dark: true
+      },
 
       components: [],
-      directives: [],
+      directives: [
+        'TouchPan'
+      ],
 
       // Quasar plugins
       plugins: []
