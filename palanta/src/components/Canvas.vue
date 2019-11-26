@@ -1,42 +1,26 @@
-
 <template>
-  <div>
+  <div style="position: relative">
     <div class="toolbox-container">
-      <div class="toolbox-node" v-for="(nodeType, component) in nodeTypes" :key="nodeType.spec.id" @click="addNode(component, nodeType.spec)">
-        {{ nodeType.spec.title }}
-      </div>
+      <div
+        class="toolbox-node"
+        v-for="(nodeType, component) in nodeTypes"
+        :key="nodeType.spec.id"
+        @click="addNode(component, nodeType.spec)"
+      >{{ nodeType.spec.title }}</div>
     </div>
 
     <div class="grid-background">
-
-      <svg id="line" width="5000" height="5000" :style="`position: absolute; left: 0; top: 0;`">
-        <line
-          :x1="connectStart.x" :y1="connectStart.y"
-          :x2="connectStart.x + connectOffset.x" :y2="connectStart.y + connectOffset.y"
-        />
-      </svg>
-
-      <component
-        v-for="(node, index) in nodes"
-        :key="index"
-        :is="node.component"
-      />
+      <p-edge v-for="(edge, index) in edges" :key="index" :start="edge.start" :end="edge.end" />
+      <component v-for="(node, index) in nodes" :key="index" :is="node.component" />
     </div>
   </div>
 </template>
-
-<style>
-  @import "../css/palanta.css";
-  line {
-    stroke: #ff00ff;
-    stroke-width: 4;
-  }
-</style>
 
 <script>
 import Number from '../components/nodes/Number'
 import Average from '../components/nodes/Average'
 import Binarize from '../components/nodes/Binarize'
+import Edge from '../components/Edge'
 
 const nodeTypes = {
   Number,
@@ -45,23 +29,28 @@ const nodeTypes = {
 }
 
 export default {
-  components: Object.assign({}, nodeTypes),
+  components: Object.assign({Edge}, nodeTypes),
   data () {
     return {
       nodeTypes,
       nodes: [],
-      connectStart: { x: 0, y: 0 },
-      connectOffset: { x: 0, y: 0 }
+      edges: []
     }
   },
   methods: {
     onConnect (event) {
-      this.connectStart = {
-        x: event.connector.$el.offsetLeft,
-        y: event.connector.$el.offsetTop
-      }
-      this.connectOffset = event.offset
-      console.log(event)
+      let rect = event.getBoundingClientRect()
+      let parentRect = this.$el.parent.getBoundingClientRect()
+      this.edges.push({
+        start: {
+          x: rect.x - parentRect.x,
+          y: rect.y - parentRect.y
+        },
+        end: {
+          x: 100,
+          y: 100
+        }
+      })
     },
     addNode: function (component, spec) {
       this.nodes.push({ component, spec })

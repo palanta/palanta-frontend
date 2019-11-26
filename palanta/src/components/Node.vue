@@ -1,16 +1,23 @@
 <template>
   <q-card id="node" class="shadow-1" :style="style">
-    <q-card-section class="header text-center" v-touch-pan.mouse="onPan">
-      {{ spec.title }}
-    </q-card-section>
+    <q-card-section class="header text-center" v-touch-pan.mouse="onPan">{{ spec.title }}</q-card-section>
     <slot />
     <div class="doc-container column reverse">
       <div v-for="i in slotRows" :key="i" class="row">
         <div class="col-6 no-wrap">
-          <p-connector input v-if="i <= spec.inputs.length" :spec="spec.inputs[spec.inputs.length - i]" />
+          <p-connector
+            input
+            v-if="i <= spec.inputs.length"
+            :spec="spec.inputs[spec.inputs.length - i]"
+          />
         </div>
         <div class="col-6">
-          <p-connector output v-if="i <= spec.outputs.length" :spec="spec.outputs[spec.outputs.length - i]" @connect="onConnect" />
+          <p-connector
+            output
+            v-if="i <= spec.outputs.length"
+            :spec="spec.outputs[spec.outputs.length - i]"
+            @connect="onConnect"
+          />
         </div>
       </div>
     </div>
@@ -18,15 +25,15 @@
 </template>
 
 <style lang="scss" scoped>
-  #node {
-    width: 250px;
-    position: absolute;
-  }
+#node {
+  width: 250px;
+  position: absolute;
+}
 
-  .header {
-    height: 50px;
-    background-color: #282828;
-  }
+.header {
+  height: 50px;
+  background-color: #282828;
+}
 </style>
 
 <script>

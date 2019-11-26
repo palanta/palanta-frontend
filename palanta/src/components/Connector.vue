@@ -2,37 +2,37 @@
   <div :class="this.output ? 'float-right' : 'float-left'" id="container">
     <div id="name" v-if="output">{{ spec.name }}</div>
     <div id="stump" v-touch-pan.mouse="onPan">
-      <div id="connector" :style="style" />
+      <div id="connector" :style="style" ref="connector" />
     </div>
     <div id="name" v-if="input">{{ spec.name }}</div>
   </div>
 </template>
 
 <style scoped>
-  #container {
-    height: 50px;
-    display: flex;
-    align-items: center;
-  }
-  #name {
-    margin-left: 1.5em;
-    margin-right: 1.5em;
-  }
-  #stump {
-    width: 2em;
-    height: 2em;
-    margin-left: -1em;
-    margin-right: -1em;
-    border-radius: 1em;
-    border: solid #38383b 0.25em;
-    vertical-align: middle;
-  }
-  #connector {
-    width: 1.5em;
-    height: 1.5em;
-    border-radius: 0.75em;
-    border: solid #00000000 0.25em;
-  }
+#container {
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+#name {
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+}
+#stump {
+  width: 2em;
+  height: 2em;
+  margin-left: -1em;
+  margin-right: -1em;
+  border-radius: 1em;
+  border: solid #38383b 0.25em;
+  vertical-align: middle;
+}
+#connector {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 0.75em;
+  border: solid #00000000 0.25em;
+}
 </style>
 
 <script>
@@ -56,7 +56,7 @@ export default {
   methods: {
     onPan (event) {
       this.$emit('connect', {
-        connector: this,
+        connector: this.$refs.connector,
         isFirst: event.isFirst,
         isFinal: event.isFinal,
         offset: event.offset
