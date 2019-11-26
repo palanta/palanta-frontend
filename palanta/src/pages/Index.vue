@@ -39,7 +39,7 @@
         lel
       </p-node>
 
-      <p-node :spec="{title: 'kek'}" ref="testNode">
+      <p-node :spec="{title: 'kek', inputs: [], outputs: []}" ref="testNode">
         <q-input filled />
       </p-node>
 
@@ -136,7 +136,7 @@ export default {
       this.dragging.isDragging = false
     },
     addActiveCard: function (type) {
-      this.nodelist.push({ type, title: type, offsetLeft: '200px', offsetTop: '50px' })
+      this.nodelist.push({ type, title: type, inputs: [{ name: 'Image' }, { name: 'Threshold' }], outputs: [{ name: 'Image' }], offsetLeft: '200px', offsetTop: '50px' })
     },
     removeActiveCard: function (index) {
       this.nodelist.splice(index, 1)

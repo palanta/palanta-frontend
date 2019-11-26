@@ -7,12 +7,12 @@
       <slot />
     </div>
     <div class="doc-container column reverse">
-      <div v-for="i in 4" :key="i" class="row">
+      <div v-for="i in slotRows" :key="i" class="row">
         <div class="col-6 no-wrap">
-          <p-connector input :name="`Input ${i}`" color="red" />
+          <p-connector input v-if="i <= spec.inputs.length" :name="spec.inputs[spec.inputs.length - i].name" color="red" />
         </div>
         <div class="col-6">
-          <p-connector output v-if="i < 4" :name="`Output ${i}`" color="blue" @connect="onConnect" />
+          <p-connector output v-if="i <= spec.outputs.length" :name="spec.outputs[spec.outputs.length - i].name" color="blue" @connect="onConnect" />
         </div>
       </div>
     </div>
@@ -53,6 +53,9 @@ export default {
   computed: {
     style () {
       return `left: ${this.left}px; top: ${this.top}px;`
+    },
+    slotRows () {
+      return Math.max(this.spec.inputs.length, this.spec.outputs.length)
     }
   },
   methods: {
