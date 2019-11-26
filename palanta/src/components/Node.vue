@@ -3,9 +3,7 @@
     <q-card-section class="header text-center" v-touch-pan.mouse="onPan">
       {{ spec.title }}
     </q-card-section>
-    <div class="q-pa-md">
-      <slot />
-    </div>
+    <slot />
     <div class="doc-container column reverse">
       <div v-for="i in slotRows" :key="i" class="row">
         <div class="col-6 no-wrap">
