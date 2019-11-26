@@ -17,8 +17,8 @@
       </svg>
 
       <component
-        v-for="node in nodes"
-        :key="node.id"
+        v-for="(node, index) in nodes"
+        :key="index"
         :is="node.component"
       />
     </div>
