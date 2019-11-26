@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="toolbox-container">
+      <div class="toolbox-node" @click="addActiveCard('PNode')">
+        Node
+      </div>
       <div class="toolbox-node" @click="addActiveCard('NodeAverage')">
         Average
       </div>
@@ -13,38 +16,61 @@
     </div>
 
     <div id="grid-base"
-         class="grid-background"
-         @mousemove="onCardDrag($event)"
-         @mouseup="onCardDragEnd()"
-         @mouseleave="onCardDragEnd()">
-      <div v-for="(node, index) in nodelist" :key="index">
-        <component v-bind:is="node['nodeType']"
-                   v-bind:offsetLeft="node['offsetLeft']"
-                   v-bind:offsetTop="node['offsetTop']"
-                   @mousedown.native="onCardDragStart($event, index)"
-                   @click.native="onCardClicked(index)">
-        </component>
-      </div>
+      class="grid-background"
+      @mousemove="onCardDrag($event)"
+      @mouseup="onCardDragEnd()"
+      @mouseleave="onCardDragEnd()"
+    >
+
+      <svg id="line" width="5000" height="5000" :style="`position: absolute; left: 0; top: 0;`">
+        <line
+          :x1="connectStart.x" :y1="connectStart.y"
+          :x2="connectStart.x + connectOffset.x" :y2="connectStart.y + connectOffset.y"
+        />
+      </svg>
+
+      <p-node
+        v-for="(node, index) in nodelist" :key="index"
+        :spec="node"
+        :x=400
+        :y=300
+        @connect="onConnect"
+      >
+        lel
+      </p-node>
+
+      <p-node :spec="{title: 'kek'}" ref="testNode">
+        <q-input filled />
+      </p-node>
+
+      <svg width="250" height="150" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 25 h100 Q 125 25 125 50 v50 Q 125 125 150 125 h100"
+              stroke="#2061d0" stroke-width="4" fill="transparent"/>
+      </svg>
+      <svg width="200" height="300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 25 h50 Q 175 25 175 50 v50 Q 175 125 150 125 h-100 Q 25 125 25 150 v50 Q 25 225 50 225 h50"
+              stroke="#2061d0" stroke-width="4" fill="transparent"></path>
+      </svg>
     </div>
   </div>
 </template>
 
 <style>
   @import "../css/palanta.css";
+  line {
+    stroke: #ff00ff;
+    stroke-width: 4;
+  }
 </style>
 
 <script>
 
-import NodeNormalize from '../components/NodeNormalize'
-import NodeAverage from '../components/NodeAverage'
-import NodeNumber from '../components/NodeNumber'
+import PNode from '../components/Node'
 
 export default {
   name: 'PageIndex',
   components: {
-    NodeNormalize,
-    NodeAverage,
-    NodeNumber
+    PNode
   },
   data () {
     return {
@@ -57,10 +83,20 @@ export default {
         isDragging: false,
         activeCard: null,
         activeKey: null
-      }
+      },
+      connectStart: { x: 0, y: 0 },
+      connectOffset: { x: 0, y: 0 }
     }
   },
   methods: {
+    onConnect (event) {
+      this.connectStart = {
+        x: event.connector.$el.offsetLeft,
+        y: event.connector.$el.offsetTop
+      }
+      this.connectOffset = event.offset
+      console.log(event)
+    },
     onCardClicked: function (key) {
       if (this.deleting) {
         this.removeActiveCard(key)
@@ -100,7 +136,7 @@ export default {
       this.dragging.isDragging = false
     },
     addActiveCard: function (type) {
-      this.nodelist.push({ nodeType: type, offsetLeft: '200px', offsetTop: '50px' })
+      this.nodelist.push({ type, title: type, offsetLeft: '200px', offsetTop: '50px' })
     },
     removeActiveCard: function (index) {
       this.nodelist.splice(index, 1)

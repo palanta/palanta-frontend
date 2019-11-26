@@ -8,6 +8,12 @@
   transform-origin: top left;
 }
 
+.q-card {
+  border-radius: 1em;
+  background-color: #202020;
+  box-shadow: #101010 0 0 10px;
+}
+
 .material-card {
   border-radius: 5px;
   background-color: #303030;
