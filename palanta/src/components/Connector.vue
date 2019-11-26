@@ -24,7 +24,7 @@
     margin-left: -1em;
     margin-right: -1em;
     border-radius: 1em;
-    border: solid #202020 0.25em;
+    border: solid #38383b 0.25em;
     vertical-align: middle;
   }
   #connector {
@@ -50,7 +50,7 @@ export default {
       return types.colors[this.spec.type]
     },
     style () {
-      return `border-color: ${this.color}; background-color: ${this.connected ? this.color : '#202020'};`
+      return `border-color: ${this.color}; background-color: ${this.connected ? this.color : '#38383b'};`
     }
   },
   methods: {

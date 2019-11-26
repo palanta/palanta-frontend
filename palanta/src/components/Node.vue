@@ -25,7 +25,7 @@
 
   .header {
     height: 50px;
-    background-color: #303030;
+    background-color: #282828;
   }
 </style>
 

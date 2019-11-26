@@ -1,8 +1,8 @@
 .grid-background {
-  background-color: #404040;
+  background-color: #262626;
   background-size: 50px 50px;
-  background-image: linear-gradient(to right, transparent 49px, #505050 1px),
-  linear-gradient(to bottom, transparent 49px, #505050 1px);
+  background-image: linear-gradient(to right, transparent 49px, #2d2d2d 1px),
+  linear-gradient(to bottom, transparent 49px, #2d2d2d 1px);
   width: 5000px;
   height: 5000px;
   transform-origin: top left;
@@ -10,7 +10,7 @@
 
 .q-card {
   border-radius: 1em;
-  background-color: #202020;
+  background-color: #38383b;
   box-shadow: #101010 0 0 10px;
 }
 

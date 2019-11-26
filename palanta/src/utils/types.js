@@ -1,6 +1,6 @@
 export default {
   colors: {
-    image: 'orange',
-    number: 'blue'
+    image: '#92d050',
+    number: '#00b0f0'
   }
 }
