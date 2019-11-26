@@ -48,7 +48,8 @@ export default {
   data () {
     return {
       specs: [
-        require('../nodes/binarize')
+        require('../nodes/binarize'),
+        require('../nodes/average')
       ],
       nodes: [],
       connectStart: { x: 0, y: 0 },

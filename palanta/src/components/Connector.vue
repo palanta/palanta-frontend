@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     style () {
-      return `background-color: ${types.colors[this.spec.type]};`
+      return `background-color: ${!this.spec.variadic && types.colors[this.spec.type]};`
     }
   },
   methods: {
