@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="toolbox-container">
-      <div class="toolbox-node" @click="addActiveCard('PNode')">
-        Node
+      <div class="toolbox-node" @click="addCard({ title: 'Binarize', inputs: [{ name: 'Image' }, { name: 'Threshold' }], outputs: [{ name: 'Image' }] })">
+        Binarize
       </div>
       <div class="toolbox-node" @click="addActiveCard('NodeAverage')">
         Average
@@ -137,6 +137,9 @@ export default {
     },
     addActiveCard: function (type) {
       this.nodelist.push({ type, title: type, inputs: [{ name: 'Image' }, { name: 'Threshold' }], outputs: [{ name: 'Image' }], offsetLeft: '200px', offsetTop: '50px' })
+    },
+    addCard: function (spec) {
+      this.nodelist.push(spec)
     },
     removeActiveCard: function (index) {
       this.nodelist.splice(index, 1)
