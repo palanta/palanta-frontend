@@ -2,8 +2,8 @@
 <template>
   <div>
     <div class="toolbox-container">
-      <div class="toolbox-node" v-for="spec in specs" :key="spec.id" @click="addNode(spec)">
-        {{ spec.title }}
+      <div class="toolbox-node" v-for="(nodeType, component) in nodeTypes" :key="nodeType.spec.id" @click="addNode(component, nodeType.spec)">
+        {{ nodeType.spec.title }}
       </div>
     </div>
 
@@ -16,12 +16,10 @@
         />
       </svg>
 
-      <p-node
-        v-for="(node, index) in nodes" :key="index"
-        :spec="node"
-        :x=400
-        :y=300
-        @connect="onConnect"
+      <component
+        v-for="node in nodes"
+        :key="node.id"
+        :is="node.component"
       />
     </div>
   </div>
@@ -36,19 +34,17 @@
 </style>
 
 <script>
-
-import PNode from '../components/Node'
+import Binarize from '../components/nodes/Binarize'
 
 export default {
   components: {
-    PNode
+    Binarize
   },
   data () {
     return {
-      specs: [
-        require('../nodes/binarize'),
-        require('../nodes/average')
-      ],
+      nodeTypes: {
+        Binarize
+      },
       nodes: [],
       connectStart: { x: 0, y: 0 },
       connectOffset: { x: 0, y: 0 }
@@ -63,8 +59,8 @@ export default {
       this.connectOffset = event.offset
       console.log(event)
     },
-    addNode: function (spec) {
-      this.nodes.push(spec)
+    addNode: function (component, spec) {
+      this.nodes.push({ component, spec })
     }
   }
 }
