@@ -34,17 +34,21 @@
 </style>
 
 <script>
+import Number from '../components/nodes/Number'
+import Average from '../components/nodes/Average'
 import Binarize from '../components/nodes/Binarize'
 
+const nodeTypes = {
+  Number,
+  Average,
+  Binarize
+}
+
 export default {
-  components: {
-    Binarize
-  },
+  components: Object.assign({}, nodeTypes),
   data () {
     return {
-      nodeTypes: {
-        Binarize
-      },
+      nodeTypes,
       nodes: [],
       connectStart: { x: 0, y: 0 },
       connectOffset: { x: 0, y: 0 }
