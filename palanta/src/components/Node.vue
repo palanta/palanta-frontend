@@ -9,10 +9,10 @@
     <div class="doc-container column reverse">
       <div v-for="i in slotRows" :key="i" class="row">
         <div class="col-6 no-wrap">
-          <p-connector input v-if="i <= spec.inputs.length" :name="spec.inputs[spec.inputs.length - i].name" color="red" />
+          <p-connector input v-if="i <= spec.inputs.length" :spec="spec.inputs[spec.inputs.length - i]" />
         </div>
         <div class="col-6">
-          <p-connector output v-if="i <= spec.outputs.length" :name="spec.outputs[spec.outputs.length - i].name" color="blue" @connect="onConnect" />
+          <p-connector output v-if="i <= spec.outputs.length" :spec="spec.outputs[spec.outputs.length - i]" @connect="onConnect" />
         </div>
       </div>
     </div>

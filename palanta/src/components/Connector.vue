@@ -1,8 +1,8 @@
 <template>
   <div :class="this.output ? 'float-right' : 'float-left'" id="container">
-    <div id="name" v-if="output">{{ name }}</div>
-    <div id="connector" :style="`background-color: ${this.color};`" v-touch-pan.mouse="onPan" />
-    <div id="name" v-if="input">{{ name }}</div>
+    <div id="name" v-if="output">{{ spec.name }}</div>
+    <div id="connector" :style="style" v-touch-pan.mouse="onPan" />
+    <div id="name" v-if="input">{{ spec.name }}</div>
   </div>
 </template>
 
@@ -27,17 +27,21 @@
 </style>
 
 <script>
+import types from '../utils/types'
+
 export default {
   props: {
-    name: String,
-    color: String,
+    spec: Object,
     input: Boolean,
     output: Boolean
   },
+  computed: {
+    style () {
+      return `background-color: ${types.colors[this.spec.type]};`
+    }
+  },
   methods: {
     onPan (event) {
-      // console.log(`start: ${event.position.top - event.offset.x}, ${event.position.top - event.offset.x}`)
-      // console.log(`offset: ${event.offset.x}, ${event.offset.y}`)
       this.$emit('connect', {
         connector: this,
         isFirst: event.isFirst,
