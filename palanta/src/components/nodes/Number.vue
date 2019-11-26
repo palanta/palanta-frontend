@@ -1,7 +1,7 @@
 <template>
   <p-node :spec="spec">
     <div class="q-px-md q-pt-md">
-      <q-input filled/>
+      <q-input filled v-model="value" />
     </div>
   </p-node>
 </template>
@@ -27,7 +27,8 @@ export default {
     PNode
   },
   data: () => ({
-    spec
+    spec,
+    value: 0
   })
 }
 </script>
