@@ -47,10 +47,10 @@ export default {
   },
   computed: {
     color () {
-      return !this.spec.variadic && types.colors[this.spec.type]
+      return types.colors[this.spec.type]
     },
     style () {
-      return `border-color: ${!this.spec.variadic && this.color}; background-color: ${this.connected && this.color};`
+      return `border-color: ${this.color}; background-color: ${this.connected ? this.color : '#202020'};`
     }
   },
   methods: {
