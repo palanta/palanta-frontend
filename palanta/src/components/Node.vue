@@ -21,7 +21,7 @@
 
 <style lang="scss" scoped>
   #node {
-    width: 350px;
+    width: 250px;
     position: absolute;
   }
 

@@ -22,9 +22,7 @@
         :x=400
         :y=300
         @connect="onConnect"
-      >
-        lel
-      </p-node>
+      />
     </div>
   </div>
 </template>
