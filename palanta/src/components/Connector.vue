@@ -1,7 +1,9 @@
 <template>
   <div :class="this.output ? 'float-right' : 'float-left'" id="container">
     <div id="name" v-if="output">{{ spec.name }}</div>
-    <div id="connector" :style="style" v-touch-pan.mouse="onPan" />
+    <div id="stump" v-touch-pan.mouse="onPan">
+      <div id="connector" :style="style" />
+    </div>
     <div id="name" v-if="input">{{ spec.name }}</div>
   </div>
 </template>
@@ -16,13 +18,20 @@
     margin-left: 1.5em;
     margin-right: 1.5em;
   }
-  #connector {
+  #stump {
     width: 2em;
     height: 2em;
     margin-left: -1em;
     margin-right: -1em;
     border-radius: 1em;
-    border: solid #202020 4px;
+    border: solid #202020 0.25em;
+    vertical-align: middle;
+  }
+  #connector {
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 0.75em;
+    border: solid #00000000 0.25em;
   }
 </style>
 
@@ -33,11 +42,15 @@ export default {
   props: {
     spec: Object,
     input: Boolean,
-    output: Boolean
+    output: Boolean,
+    connected: Boolean
   },
   computed: {
+    color () {
+      return !this.spec.variadic && types.colors[this.spec.type]
+    },
     style () {
-      return `background-color: ${!this.spec.variadic && types.colors[this.spec.type]};`
+      return `border-color: ${!this.spec.variadic && this.color}; background-color: ${this.connected && this.color};`
     }
   },
   methods: {
