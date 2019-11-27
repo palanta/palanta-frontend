@@ -18,7 +18,7 @@
         :end="edge.end"
         color="0x6090b0"
       />
-      <p-node v-for="node in nodes" :key="node.id" :instance="node" @connect="onConnect">
+      <p-node v-for="node in nodes" :key="node.id" :instance="node" :x=300 :y=100 @connect="onConnect">
         <component :is="node.component" />
       </p-node>
     </p-background>
