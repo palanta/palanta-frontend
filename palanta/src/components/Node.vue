@@ -30,8 +30,11 @@
 
 <style scoped>
   #node {
-    width: 250px;
     position: absolute;
+    width: 250px;
+    border-radius: 0.85em;
+    background-color: #38383b;
+    box-shadow: #101010 0 0 10px;
   }
   .header {
     height: 50px;
