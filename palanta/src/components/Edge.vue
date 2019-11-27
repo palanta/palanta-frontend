@@ -51,7 +51,7 @@ export default {
         x = rect.x + rect.width / 2 - parentRect.x
         y = rect.y + rect.height / 2 - parentRect.y
       }
-      return { x: x, y: y }
+      return { x, y }
     },
     centerEnd () {
       if (!this.isMounted) {
@@ -65,7 +65,7 @@ export default {
         x = rect.x + rect.width / 2 - parentRect.x
         y = rect.y + rect.height / 2 - parentRect.y
       }
-      return { x: x, y: y }
+      return { x, y }
     },
     svgRect () {
       let x = Math.min(this.centerStart.x, this.centerEnd.x) - this.padding
