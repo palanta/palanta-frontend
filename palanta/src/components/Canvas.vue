@@ -18,6 +18,10 @@
   </div>
 </template>
 
+<style>
+@import "../css/palanta.css";
+</style>
+
 <script>
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
