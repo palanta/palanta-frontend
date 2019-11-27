@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="position: relative">
     <div class="toolbox-container">
       <div
         class="toolbox-node"
