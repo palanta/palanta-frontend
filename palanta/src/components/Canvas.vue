@@ -15,6 +15,7 @@
         v-for="(node, index) in nodes"
         :key="index"
         :spec="node.spec"
+        @connect="onConnect"
       >
         <component :is="node.component" />
       </p-node>
