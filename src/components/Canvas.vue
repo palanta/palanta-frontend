@@ -10,6 +10,7 @@
     </div>
 
     <p-background>
+      <p-edge v-if="newEdge" :start="newEdge.start" :end="newEdge.end" />
       <p-edge
         v-for="(edge, index) in edges"
         :key="index"
@@ -55,18 +56,19 @@ export default {
     return {
       nodeTypes,
       nodes: [],
+      newEdge: null,
       edges: []
     }
   },
   methods: {
     onConnect (event) {
-      this.edges.push({
+      this.newEdge = {
         start: event.connector,
         end: {
-          x: 300,
-          y: 300
+          x: event.position.left - this.$el.offsetLeft,
+          y: event.position.top - this.$el.offsetTop
         }
-      })
+      }
     },
     addNode: function (component, spec) {
       this.nodes.push(new NodeInstance(component, spec))

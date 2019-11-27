@@ -59,7 +59,8 @@ export default {
         connector: this.$refs.connector,
         isFirst: event.isFirst,
         isFinal: event.isFinal,
-        offset: event.offset
+        offset: event.offset,
+        position: event.position
       })
     }
   }
