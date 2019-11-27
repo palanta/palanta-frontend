@@ -9,6 +9,7 @@ export default {
   spec: {
     id: 'std::number',
     title: 'Number',
+    icon: require('../../assets/node_icons/node_number.png'),
     inputs: [],
     outputs: [
       {

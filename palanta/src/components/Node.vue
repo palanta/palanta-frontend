@@ -1,6 +1,9 @@
 <template>
   <q-card id="node" class="shadow-1" :style="style">
-    <q-card-section class="header text-center" v-touch-pan.mouse="onPan">{{ instance.title }}</q-card-section>
+    <q-card-section class="header text-center" v-touch-pan.mouse="onPan">
+      <img id="icon" v-if="instance.spec.icon" :src="instance.spec.icon" alt="">
+      {{ instance.title }}
+    </q-card-section>
     <slot />
     <div class="doc-container column reverse">
       <div v-for="i in slotRows" :key="i" class="row">
@@ -25,15 +28,21 @@
   </q-card>
 </template>
 
-<style lang="scss" scoped>
-#node {
-  width: 250px;
-  position: absolute;
-}
-
-.header {
-  height: 50px;
-  background-color: #282828;
+<style scoped>
+  #node {
+    width: 250px;
+    position: absolute;
+  }
+  .header {
+    height: 50px;
+    background-color: #282828;
+  }
+  #icon {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    left: 10px;
+    top: 10px;
 }
 </style>
 

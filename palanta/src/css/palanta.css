@@ -4,14 +4,6 @@
   box-shadow: #101010 0 0 10px;
 }
 
-.material-card-icon {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  left: 10px;
-  top: 10px;
-}
-
 .toolbox-container {
   width: 200px;
   height: 400px;
