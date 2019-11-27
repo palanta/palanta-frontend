@@ -72,7 +72,10 @@ export default {
         color: types.colors[event.instance.spec.type]
       }
       if (!event.isOutput) this.newEdge.start = [this.newEdge.end, this.newEdge.end = this.newEdge.start][0]
-      if (event.isFinal) this.newEdge = null
+      if (event.isFinal) {
+        this.newEdge = null
+        event.instance.connecting = false
+      } else event.instance.connecting = true
     },
     addNode: function (component, spec) {
       this.nodes.push(new NodeInstance(component, spec))

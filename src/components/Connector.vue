@@ -45,12 +45,15 @@ export default {
     output: Boolean,
     connected: Boolean
   },
+  data: () => ({
+    connecting: false
+  }),
   computed: {
     color () {
       return types.colors[this.spec.type]
     },
     style () {
-      return `border-color: ${this.color}; background-color: ${this.connected ? this.color : '#38383b'};`
+      return `border-color: ${this.color}; background-color: ${this.connected || this.connecting ? this.color : '#38383b'};`
     }
   },
   methods: {
