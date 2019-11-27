@@ -71,6 +71,7 @@ export default {
         },
         color: types.colors[event.spec.type]
       }
+      if (!event.isOutput) this.newEdge.start = [this.newEdge.end, this.newEdge.end = this.newEdge.start][0]
       if (event.isFinal) this.newEdge = null
     },
     addNode: function (component, spec) {

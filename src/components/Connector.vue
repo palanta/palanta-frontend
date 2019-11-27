@@ -58,6 +58,7 @@ export default {
       this.$emit('connect', {
         spec: this.spec,
         connector: this.$refs.connector,
+        isOutput: this.output,
         isFirst: event.isFirst,
         isFinal: event.isFinal,
         offset: event.offset,
