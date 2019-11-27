@@ -10,7 +10,7 @@
     </div>
 
     <p-background>
-      <p-edge v-if="newEdge" :start="newEdge.start" :end="newEdge.end" />
+      <p-edge v-if="newEdge" :start="newEdge.start" :end="newEdge.end" :color="newEdge.color" />
       <p-edge
         v-for="(edge, index) in edges"
         :key="index"
@@ -39,6 +39,7 @@ import Average from '../components/nodes/Average'
 import Binarize from '../components/nodes/Binarize'
 
 import { NodeInstance } from '../utils/instances'
+import types from '../utils/types'
 
 const nodeTypes = {
   Number,
@@ -67,7 +68,8 @@ export default {
         end: {
           x: event.position.left - this.$el.offsetLeft,
           y: event.position.top - this.$el.offsetTop
-        }
+        },
+        color: types.colors[event.spec.type]
       }
       if (event.isFinal) this.newEdge = null
     },

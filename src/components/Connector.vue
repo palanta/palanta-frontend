@@ -56,6 +56,7 @@ export default {
   methods: {
     onPan (event) {
       this.$emit('connect', {
+        spec: this.spec,
         connector: this.$refs.connector,
         isFirst: event.isFirst,
         isFinal: event.isFinal,
