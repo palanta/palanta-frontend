@@ -21,10 +21,6 @@ export default {
     start: [Object, HTMLElement],
     end: [Object, HTMLElement],
     color: String,
-    bezierOffset: {
-      type: Number,
-      default: 250
-    },
     padding: {
       type: Number,
       default: 256
@@ -88,6 +84,9 @@ export default {
         x: this.centerEnd.x - this.svgRect.x,
         y: this.centerEnd.y - this.svgRect.y
       }
+    },
+    bezierOffset () {
+      return 0.5 * (this.centerEnd.x - this.centerStart.x)
     }
   }
 }
