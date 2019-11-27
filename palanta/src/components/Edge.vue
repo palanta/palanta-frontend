@@ -4,13 +4,13 @@
     :height="svgRect.height"
     :style="`position: absolute; left: ${svgRect.x}; top: ${svgRect.y};`"
   >
-    <line
-      stroke="#6090b0"
+    <path
+      fill="none"
+      stroke="red"
       stroke-width="4"
-      :x1="relativeStart.x"
-      :y1="relativeStart.y"
-      :x2="relativeEnd.x"
-      :y2="relativeEnd.y"
+      :d="`M${relativeStart.x},${relativeStart.y}
+           C${relativeStart.x + bezierOffset},${relativeStart.y} ${relativeEnd.x - bezierOffset},${relativeEnd.y}
+           ${relativeEnd.x},${relativeEnd.y}`"
     />
   </svg>
 </template>
@@ -23,7 +23,7 @@ export default {
     color: String,
     bezierOffset: {
       type: Number,
-      default: 128
+      default: 250
     },
     padding: {
       type: Number,

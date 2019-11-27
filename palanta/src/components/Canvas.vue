@@ -10,7 +10,13 @@
     </div>
 
     <p-background>
-      <p-edge v-for="(edge, index) in edges" :key="index" :start="edge.start" :end="edge.end" />
+      <p-edge
+        v-for="(edge, index) in edges"
+        :key="index"
+        :start="edge.start"
+        :end="edge.end"
+        color="0x6090b0"
+      />
       <p-node v-for="node in nodes" :key="node.id" :instance="node" @connect="onConnect">
         <component :is="node.component" />
       </p-node>
@@ -58,8 +64,8 @@ export default {
       let parentRect = this.$el.parentElement.getBoundingClientRect()
       this.edges.push({
         start: {
-          x: rect.x - parentRect.x,
-          y: rect.y - parentRect.y
+          x: rect.x + rect.width / 2 - parentRect.x,
+          y: rect.y + rect.height / 2 - parentRect.y
         },
         end: {
           x: 100,
