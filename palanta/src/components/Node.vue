@@ -9,6 +9,7 @@
             input
             v-if="i <= spec.inputs.length"
             :spec="spec.inputs[spec.inputs.length - i]"
+            @connect="onConnect"
           />
         </div>
         <div class="col-6">
