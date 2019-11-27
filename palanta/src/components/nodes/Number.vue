@@ -1,33 +1,23 @@
 <template>
-  <p-node :spec="spec">
-    <div class="q-px-md q-pt-md">
-      <q-input filled v-model="value" />
-    </div>
-  </p-node>
+  <div class="q-px-md q-pt-md">
+    <q-input filled v-model="value" />
+  </div>
 </template>
 
 <script>
-import PNode from '../Node'
-
-const spec = {
-  id: 'std::number',
-  title: 'Number',
-  inputs: [],
-  outputs: [
-    {
-      name: 'Number',
-      type: 'number'
-    }
-  ]
-}
-
 export default {
-  spec,
-  components: {
-    PNode
+  spec: {
+    id: 'std::number',
+    title: 'Number',
+    inputs: [],
+    outputs: [
+      {
+        name: 'Number',
+        type: 'number'
+      }
+    ]
   },
   data: () => ({
-    spec,
     value: 0
   })
 }

@@ -11,16 +11,23 @@
 
     <div class="grid-background">
       <p-edge v-for="(edge, index) in edges" :key="index" :start="edge.start" :end="edge.end" />
-      <component v-for="(node, index) in nodes" :key="index" :is="node.component" />
+      <p-node
+        v-for="(node, index) in nodes"
+        :key="index"
+        :spec="node.spec"
+      >
+        <component :is="node.component" />
+      </p-node>
     </div>
   </div>
 </template>
 
 <script>
+import PNode from '../components/Node'
+import PEdge from '../components/Edge'
 import Number from '../components/nodes/Number'
 import Average from '../components/nodes/Average'
 import Binarize from '../components/nodes/Binarize'
-import Edge from '../components/Edge'
 
 const nodeTypes = {
   Number,
@@ -29,7 +36,10 @@ const nodeTypes = {
 }
 
 export default {
-  components: Object.assign({Edge}, nodeTypes),
+  components: Object.assign({
+    PNode,
+    PEdge
+  }, nodeTypes),
   data () {
     return {
       nodeTypes,
