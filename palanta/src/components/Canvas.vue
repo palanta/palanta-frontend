@@ -11,12 +11,7 @@
 
     <div class="grid-background">
       <p-edge v-for="(edge, index) in edges" :key="index" :start="edge.start" :end="edge.end" />
-      <p-node
-        v-for="(node, index) in nodes"
-        :key="index"
-        :spec="node.spec"
-        @connect="onConnect"
-      >
+      <p-node v-for="(node, index) in nodes" :key="index" :spec="node.spec" @connect="onConnect">
         <component :is="node.component" />
       </p-node>
     </div>
@@ -50,8 +45,8 @@ export default {
   },
   methods: {
     onConnect (event) {
-      let rect = event.getBoundingClientRect()
-      let parentRect = this.$el.parent.getBoundingClientRect()
+      let rect = event.connector.getBoundingClientRect()
+      let parentRect = this.$el.parentElement.getBoundingClientRect()
       this.edges.push({
         start: {
           x: rect.x - parentRect.x,

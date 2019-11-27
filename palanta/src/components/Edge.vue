@@ -57,14 +57,14 @@ export default {
     },
     relativeStart () {
       return {
-        x: this.startCenter - this.svgRect.x,
-        y: this.startCenter - this.svgRect.y
+        x: this.start.x - this.svgRect.x,
+        y: this.start.y - this.svgRect.y
       }
     },
     relativeEnd () {
       return {
-        x: this.endCenter - this.svgRect.x,
-        y: this.endCenter - this.svgRect.y
+        x: this.end.x - this.svgRect.x,
+        y: this.end.y - this.svgRect.y
       }
     }
   }
