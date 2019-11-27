@@ -1,22 +1,22 @@
 <template>
   <q-card id="node" class="shadow-1" :style="style">
-    <q-card-section class="header text-center" v-touch-pan.mouse="onPan">{{ spec.title }}</q-card-section>
+    <q-card-section class="header text-center" v-touch-pan.mouse="onPan">{{ instance.title }}</q-card-section>
     <slot />
     <div class="doc-container column reverse">
       <div v-for="i in slotRows" :key="i" class="row">
         <div class="col-6 no-wrap">
           <p-connector
             input
-            v-if="i <= spec.inputs.length"
-            :spec="spec.inputs[spec.inputs.length - i]"
+            v-if="i <= instance.inputs.length"
+            :spec="instance.inputs[instance.inputs.length - i]"
             @connect="onConnect"
           />
         </div>
         <div class="col-6">
           <p-connector
             output
-            v-if="i <= spec.outputs.length"
-            :spec="spec.outputs[spec.outputs.length - i]"
+            v-if="i <= instance.outputs.length"
+            :spec="instance.outputs[instance.outputs.length - i]"
             @connect="onConnect"
           />
         </div>
@@ -45,7 +45,7 @@ export default {
     PConnector
   },
   props: {
-    spec: Object,
+    instance: Object,
     x: Number,
     y: Number
   },
@@ -61,7 +61,7 @@ export default {
       return `left: ${this.left}px; top: ${this.top}px;`
     },
     slotRows () {
-      return Math.max(this.spec.inputs.length, this.spec.outputs.length)
+      return Math.max(this.instance.inputs.length, this.instance.outputs.length)
     }
   },
   methods: {

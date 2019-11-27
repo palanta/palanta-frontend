@@ -11,7 +11,7 @@
 
     <div class="grid-background">
       <p-edge v-for="(edge, index) in edges" :key="index" :start="edge.start" :end="edge.end" />
-      <p-node v-for="(node, index) in nodes" :key="index" :spec="node.spec" @connect="onConnect">
+      <p-node v-for="node in nodes" :key="node.id" :instance="node" @connect="onConnect">
         <component :is="node.component" />
       </p-node>
     </div>
@@ -24,6 +24,8 @@ import PEdge from '../components/Edge'
 import Number from '../components/nodes/Number'
 import Average from '../components/nodes/Average'
 import Binarize from '../components/nodes/Binarize'
+
+import { NodeInstance } from '../utils/instances'
 
 const nodeTypes = {
   Number,
@@ -59,7 +61,7 @@ export default {
       })
     },
     addNode: function (component, spec) {
-      this.nodes.push({ component, spec })
+      this.nodes.push(new NodeInstance(component, spec))
     }
   }
 }
