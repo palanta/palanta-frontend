@@ -1,39 +1,7 @@
-.grid-background {
-  background-color: #262626;
-  background-size: 50px 50px;
-  background-image: linear-gradient(to right, transparent 49px, #2d2d2d 1px),
-  linear-gradient(to bottom, transparent 49px, #2d2d2d 1px);
-  width: 5000px;
-  height: 5000px;
-  transform-origin: top left;
-}
-
 .q-card {
   border-radius: 1em;
   background-color: #38383b;
   box-shadow: #101010 0 0 10px;
-}
-
-.material-card {
-  border-radius: 5px;
-  background-color: #303030;
-  width: 250px;
-  box-shadow: #303030 0 0 10px;
-  position: absolute;
-}
-
-.material-card-header {
-  background-color: #202020;
-  height: 50px;
-  padding: 11px;
-  width: 100%;
-  display: block;
-  text-align: center;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  font-size: 18px;
-  color: white;
-  cursor: move;
 }
 
 .material-card-icon {
@@ -42,74 +10,6 @@
   height: 30px;
   left: 10px;
   top: 10px;
-}
-
-.material-card-section-wrapper {
-  height: 50px;
-  position: relative;
-}
-
-.material-card-connection-section {
-  padding: 11px 22px;
-  color: white;
-  font-size: 17px;
-}
-
-.material-card-input-section {
-  text-align: left;
-}
-
-.material-card-output-section {
-  text-align: right;
-}
-
-.material-button {
-  padding: 5px;
-  margin: 5px 10px;
-  color: white;
-  background-color: #606060;
-  border: solid #808080 1px;
-  border-radius: 5px;
-  text-align: center;
-  font-size: 18px;
-  box-sizing: border-box;
-}
-
-.material-card-input-field {
-  padding: 4px 14px;
-  margin: 7px;
-  color: white;
-  background-color: #404040;
-  border: none;
-  border-radius: 5px;
-  font-size: 17px;
-  box-sizing: border-box;
-}
-
-.connection-point {
-  width: 26px;
-  height: 26px;
-  border-radius: 15px;
-  border: solid #303030 4px;
-  background-color: #606060;
-  top: 12px;
-  position: absolute;
-}
-
-.connection-point-input {
-  left: -12px;
-}
-
-.connection-point-output {
-  right: -12px;
-}
-
-.connection-point-text {
-  background-color: #e60114;
-}
-
-.connection-point-number {
-  background-color: #2061d0;
 }
 
 .toolbox-container {

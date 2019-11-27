@@ -9,12 +9,12 @@
       >{{ nodeType.spec.title }}</div>
     </div>
 
-    <div class="grid-background">
+    <p-background>
       <p-edge v-for="(edge, index) in edges" :key="index" :start="edge.start" :end="edge.end" />
       <p-node v-for="node in nodes" :key="node.id" :instance="node" @connect="onConnect">
         <component :is="node.component" />
       </p-node>
-    </div>
+    </p-background>
   </div>
 </template>
 
@@ -23,8 +23,10 @@
 </style>
 
 <script>
+import PBackground from '../components/Background'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
+
 import Number from '../components/nodes/Number'
 import Average from '../components/nodes/Average'
 import Binarize from '../components/nodes/Binarize'
@@ -39,6 +41,7 @@ const nodeTypes = {
 
 export default {
   components: Object.assign({
+    PBackground,
     PNode,
     PEdge
   }, nodeTypes),
