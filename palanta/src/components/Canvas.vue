@@ -60,16 +60,11 @@ export default {
   },
   methods: {
     onConnect (event) {
-      let rect = event.connector.getBoundingClientRect()
-      let parentRect = this.$el.parentElement.getBoundingClientRect()
       this.edges.push({
-        start: {
-          x: rect.x + rect.width / 2 - parentRect.x,
-          y: rect.y + rect.height / 2 - parentRect.y
-        },
+        start: event.connector,
         end: {
-          x: 100,
-          y: 100
+          x: 300,
+          y: 300
         }
       })
     },

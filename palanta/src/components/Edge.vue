@@ -18,8 +18,8 @@
 <script lang="ts">
 export default {
   props: {
-    start: Object,
-    end: Object,
+    start: [Object, HTMLElement],
+    end: [Object, HTMLElement],
     color: String,
     bezierOffset: {
       type: Number,
@@ -30,27 +30,63 @@ export default {
       default: 256
     }
   },
+  data () {
+    return {
+      isMounted: false
+    }
+  },
+  mounted () {
+    this.isMounted = true
+  },
   computed: {
+    centerStart () {
+      if (!this.isMounted) {
+        return { x: 0, y: 0 }
+      }
+      let x = this.start.x
+      let y = this.start.y
+      if (this.start instanceof HTMLElement) {
+        let rect = this.start.getBoundingClientRect()
+        let parentRect = this.$el.parentElement.getBoundingClientRect()
+        x = rect.x + rect.width / 2 - parentRect.x
+        y = rect.y + rect.height / 2 - parentRect.y
+      }
+      return { x: x, y: y }
+    },
+    centerEnd () {
+      if (!this.isMounted) {
+        return { x: 0, y: 0 }
+      }
+      let x = this.end.x
+      let y = this.end.y
+      if (this.end instanceof HTMLElement) {
+        let rect = this.end.getBoundingClientRect()
+        let parentRect = this.$el.parentElement.getBoundingClientRect()
+        x = rect.x + rect.width / 2 - parentRect.x
+        y = rect.y + rect.height / 2 - parentRect.y
+      }
+      return { x: x, y: y }
+    },
     svgRect () {
-      let x = Math.min(this.start.x, this.end.x) - this.padding
-      let y = Math.min(this.start.y, this.end.y) - this.padding
+      let x = Math.min(this.centerStart.x, this.centerEnd.x) - this.padding
+      let y = Math.min(this.centerStart.y, this.centerEnd.y) - this.padding
       return {
         x: x,
         y: y,
-        width: Math.max(this.start.x, this.end.x) - x + this.padding * 2,
-        height: Math.max(this.start.y, this.end.y) - y + this.padding * 2
+        width: Math.max(this.centerStart.x, this.centerEnd.x) - x + this.padding * 2,
+        height: Math.max(this.centerStart.y, this.centerEnd.y) - y + this.padding * 2
       }
     },
     relativeStart () {
       return {
-        x: this.start.x - this.svgRect.x,
-        y: this.start.y - this.svgRect.y
+        x: this.centerStart.x - this.svgRect.x,
+        y: this.centerStart.y - this.svgRect.y
       }
     },
     relativeEnd () {
       return {
-        x: this.end.x - this.svgRect.x,
-        y: this.end.y - this.svgRect.y
+        x: this.centerEnd.x - this.svgRect.x,
+        y: this.centerEnd.y - this.svgRect.y
       }
     }
   }
