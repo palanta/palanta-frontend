@@ -69,6 +69,7 @@ export default {
           y: event.position.top - this.$el.offsetTop
         }
       }
+      if (event.isFinal) this.newEdge = null
     },
     addNode: function (component, spec) {
       this.nodes.push(new NodeInstance(component, spec))
