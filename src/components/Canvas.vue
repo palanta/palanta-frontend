@@ -69,7 +69,7 @@ export default {
           x: event.position.left - this.$el.offsetLeft,
           y: event.position.top - this.$el.offsetTop
         },
-        color: types.colors[event.spec.type]
+        color: types.colors[event.instance.spec.type]
       }
       if (!event.isOutput) this.newEdge.start = [this.newEdge.end, this.newEdge.end = this.newEdge.start][0]
       if (event.isFinal) this.newEdge = null
