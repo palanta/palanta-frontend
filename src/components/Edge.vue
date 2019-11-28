@@ -20,11 +20,7 @@ export default {
   props: {
     start: [Object, HTMLElement],
     end: [Object, HTMLElement],
-    color: String,
-    padding: {
-      type: Number,
-      default: 256
-    }
+    color: String
   },
   data () {
     return {
@@ -87,6 +83,9 @@ export default {
     },
     bezierOffset () {
       return 0.5 * Math.sqrt(Math.pow(this.centerEnd.x - this.centerStart.x, 2) + Math.pow(this.centerEnd.y - this.centerStart.y, 2))
+    },
+    padding () {
+      return this.bezierOffset
     }
   }
 }
