@@ -86,7 +86,8 @@ export default {
       }
     },
     bezierOffset () {
-      return Math.tanh(Math.abs(0.5 * (this.centerEnd.x - this.centerStart.x)) / this.padding) * this.padding
+      const clinch = 0.75
+      return (clinch * Math.tanh(Math.abs(this.centerEnd.x - this.centerStart.x) / this.padding) + (1 - clinch)) * (0.5 * this.padding)
     }
   }
 }
