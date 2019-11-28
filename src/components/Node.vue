@@ -1,7 +1,7 @@
 <template>
   <q-card id="node" class="shadow-1" :style="style">
     <q-card-section class="header non-selectable text-center" v-touch-pan.mouse="onPan">
-      <img id="icon" v-if="instance.spec.icon" :src="instance.spec.icon" alt="">
+      <img id="icon" class="non-selectable" v-if="instance.spec.icon" :src="instance.spec.icon" alt="">
       {{ instance.title }}
     </q-card-section>
     <slot />
