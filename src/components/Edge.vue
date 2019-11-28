@@ -2,7 +2,7 @@
   <svg
     :width="svgRect.width"
     :height="svgRect.height"
-    :style="`position: absolute; left: ${svgRect.x}; top: ${svgRect.y};`"
+    :style="`position: absolute; left: ${svgRect.x}px; top: ${svgRect.y}px;`"
   >
     <path
       fill="none"
