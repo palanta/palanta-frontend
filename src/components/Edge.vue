@@ -20,15 +20,7 @@ export default {
   props: {
     start: [Object, HTMLElement],
     end: [Object, HTMLElement],
-    color: String,
-    bezierOffset: {
-      type: Number,
-      default: 250
-    },
-    padding: {
-      type: Number,
-      default: 256
-    }
+    color: String
   },
   data () {
     return {
@@ -88,6 +80,12 @@ export default {
         x: this.centerEnd.x - this.svgRect.x,
         y: this.centerEnd.y - this.svgRect.y
       }
+    },
+    bezierOffset () {
+      return 0.5 * Math.sqrt(Math.pow(this.centerEnd.x - this.centerStart.x, 2) + Math.pow(this.centerEnd.y - this.centerStart.y, 2))
+    },
+    padding () {
+      return this.bezierOffset
     }
   }
 }
