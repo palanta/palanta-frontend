@@ -86,9 +86,7 @@ export default {
       }
     },
     bezierOffset () {
-      const clinch = 0.75
-      const factor = clinch * Math.tanh(Math.abs(this.centerEnd.x - this.centerStart.x) / this.padding) + (1 - clinch)
-      return factor * (0.5 * this.padding)
+      return 0.5 * Math.sqrt(Math.pow(this.centerEnd.x - this.centerStart.x, 2) + Math.pow(this.centerEnd.y - this.centerStart.y, 2))
     }
   }
 }
