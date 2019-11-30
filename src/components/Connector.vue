@@ -1,8 +1,21 @@
 <template>
   <div :class="this.output ? 'float-right' : 'float-left'" id="container">
     <div id="name" v-if="output">{{ spec.name }}</div>
-    <div id="stump" v-touch-pan.mouse="onPan">
-      <div id="connector" :style="style" ref="connector" />
+    <div id="stump">
+      <div
+        id="connector"
+        ref="connector"
+        class="cursor-pointer"
+        :style="style"
+        draggable="true"
+        @dragstart="onDragStart"
+        @dragend="onDragEnd"
+        @drag="onDrag"
+        @dragenter="connecting = true"
+        @dragleave="connecting = false"
+        @dragover.prevent
+        @drop="onDrop"
+      />
     </div>
     <div id="name" v-if="input">{{ spec.name }}</div>
   </div>
@@ -33,6 +46,13 @@
   border-radius: 0.75em;
   border: solid #00000000 0.25em;
 }
+.dot {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 0.75em;
+  border: solid #00000000 0.25em;
+  background-color: red;
+}
 </style>
 
 <script>
@@ -41,6 +61,7 @@ import types from '../utils/types'
 export default {
   props: {
     spec: Object,
+    nodeId: String,
     input: Boolean,
     output: Boolean,
     connected: Boolean
@@ -57,16 +78,31 @@ export default {
     }
   },
   methods: {
-    onPan (event) {
+    emitDrag (event, isFirst, isFinal) {
       this.$emit('connect', {
         instance: this,
         connector: this.$refs.connector,
         isOutput: this.output,
-        isFirst: event.isFirst,
-        isFinal: event.isFinal,
-        offset: event.offset,
-        position: event.position
+        isFirst,
+        isFinal,
+        offset: { x: event.offsetX, y: event.offsetY },
+        position: { x: event.x, y: event.y }
       })
+    },
+    onDragStart (event) {
+      event.dataTransfer.dropEffect = 'link'
+      event.dataTransfer.setDragImage(document.createElement('div'), 0, 0)
+      this.emitDrag(event, true, false)
+    },
+    onDragEnd (event) {
+      this.emitDrag(event, false, true)
+    },
+    onDrag (event) {
+      this.emitDrag(event, false, false)
+    },
+    onDrop (event) {
+      this.emitDrag(event, false, true)
+      this.connecting = false
     }
   }
 }

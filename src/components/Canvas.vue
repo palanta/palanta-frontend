@@ -10,15 +10,28 @@
     </div>
 
     <p-background>
-      <p-edge v-if="newEdge" :start="newEdge.start" :end="newEdge.end" :color="newEdge.color" />
+      <p-edge
+        v-if="newEdge"
+        ref="newEdge"
+        :start="newEdge.start.$refs ? newEdge.start.$refs.connector : newEdge.start"
+        :end="newEdge.end.$refs ? newEdge.end.$refs.connector : newEdge.end"
+        :color="newEdge.color"
+      />
       <p-edge
         v-for="(edge, index) in edges"
         :key="index"
-        :start="edge.start"
-        :end="edge.end"
-        color="0x6090b0"
+        :start="edge.start.$refs.connector"
+        :end="edge.end.$refs.connector"
+        :ref="`${edge.start.nodeId}.${edge.end.nodeId}`"
+        :color="edge.color"
       />
-      <p-node v-for="node in nodes" :key="node.id" :instance="node" :x=300 :y=100 @connect="onConnect">
+      <p-node
+        v-for="node in nodes" :key="node.id"
+        :instance="node"
+        :x=300 :y=100
+        @connect="onConnect"
+        @move="onNodeMove"
+      >
         <component :is="node.component" />
       </p-node>
     </p-background>
@@ -63,22 +76,46 @@ export default {
   },
   methods: {
     onConnect (event) {
-      this.newEdge = {
-        start: event.connector,
-        end: {
-          x: event.position.left - this.$el.offsetLeft,
-          y: event.position.top - this.$el.offsetTop
-        },
-        color: types.colors[event.instance.spec.type]
-      }
-      if (!event.isOutput) this.newEdge.start = [this.newEdge.end, this.newEdge.end = this.newEdge.start][0]
       if (event.isFinal) {
+        if (this.newEdge && event.connector !== this.newEdge.start) {
+          const edge = {
+            start: this.newEdge.start,
+            end: event.instance,
+            color: this.newEdge.color
+          }
+          if (event.isOutput) edge.start = [edge.end, edge.end = edge.start][0]
+          this.addEdge(edge)
+        }
         this.newEdge = null
         event.instance.connecting = false
-      } else event.instance.connecting = true
+      } else {
+        this.newEdge = {
+          start: event.instance,
+          end: {
+            x: event.position.x - this.$el.offsetLeft,
+            y: event.position.y - this.$el.offsetTop
+          },
+          color: types.colors[event.instance.spec.type]
+        }
+        if (!event.isOutput) this.newEdge.start = [this.newEdge.end, this.newEdge.end = this.newEdge.start][0]
+        event.instance.connecting = true
+        if (this.$refs.newEdge) this.$refs.newEdge.refresh()
+      }
     },
-    addNode: function (component, spec) {
+    onNodeMove (nodeId) {
+      for (let edgeId in this.$refs) {
+        if (edgeId.split('.').includes(nodeId)) {
+          for (let edge of this.$refs[edgeId]) {
+            edge.refresh()
+          }
+        }
+      }
+    },
+    addNode (component, spec) {
       this.nodes.push(new NodeInstance(component, spec))
+    },
+    addEdge (edge) {
+      this.edges.push(edge)
     }
   }
 }

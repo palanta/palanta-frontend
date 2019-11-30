@@ -12,6 +12,7 @@
             input
             v-if="i <= instance.inputs.length"
             :spec="instance.inputs[instance.inputs.length - i]"
+            :nodeId="instance.id"
             @connect="onConnect"
           />
         </div>
@@ -20,6 +21,7 @@
             output
             v-if="i <= instance.outputs.length"
             :spec="instance.outputs[instance.outputs.length - i]"
+            :nodeId="instance.id"
             @connect="onConnect"
           />
         </div>
@@ -80,6 +82,7 @@ export default {
     onPan (event) {
       this.left += event.delta.x
       this.top += event.delta.y
+      this.$emit('move', this.instance.id)
     },
     onConnect (event) {
       this.$emit('connect', event)
