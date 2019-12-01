@@ -114,10 +114,29 @@ export default {
     addNode (component, spec) {
       this.nodes.push(new NodeInstance(component, spec))
     },
+    isValidEdge (edge) {
+      // Connect output to input
+      if (!edge.start.output) return false
+      if (!edge.end.input) return false
+
+      // Type checking
+      // TODO: more elaborate typechecking (bundles, casting)
+      if (edge.start.spec.type !== edge.end.spec.type) return false
+
+      // Each input may be connected once only
+      if (edge.end.connected) return false
+
+      // Prevent connecting a node to itself
+      if (edge.start.nodeId === edge.end.nodeId) return false
+
+      return true
+    },
     addEdge (edge) {
-      this.edges.push(edge)
-      edge.start.connected = true
-      edge.end.connected = true
+      if (this.isValidEdge(edge)) {
+        this.edges.push(edge)
+        edge.start.connected = true
+        edge.end.connected = true
+      }
     }
   }
 }
