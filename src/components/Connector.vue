@@ -63,11 +63,11 @@ export default {
     spec: Object,
     nodeId: String,
     input: Boolean,
-    output: Boolean,
-    connected: Boolean
+    output: Boolean
   },
   data: () => ({
-    connecting: false
+    connecting: false,
+    connected: false
   }),
   computed: {
     color () {

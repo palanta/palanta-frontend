@@ -116,6 +116,8 @@ export default {
     },
     addEdge (edge) {
       this.edges.push(edge)
+      edge.start.connected = true
+      edge.end.connected = true
     }
   }
 }
