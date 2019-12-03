@@ -60,7 +60,7 @@ export default {
   },
   data: () => ({
     connecting: false,
-    connected: false
+    connected: 0
   }),
   computed: {
     color () {

@@ -134,8 +134,8 @@ export default {
     addEdge (edge) {
       if (this.isValidEdge(edge)) {
         this.edges.push(edge)
-        edge.start.connected = true
-        edge.end.connected = true
+        edge.start.connected += 1
+        edge.end.connected += 1
       }
     }
   }
