@@ -46,13 +46,6 @@
   border-radius: 0.75em;
   border: solid #00000000 0.25em;
 }
-.dot {
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 0.75em;
-  border: solid #00000000 0.25em;
-  background-color: red;
-}
 </style>
 
 <script>
