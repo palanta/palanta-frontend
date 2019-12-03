@@ -57,7 +57,7 @@ export default {
       }
     },
     bezierOffset () {
-      return 0.5 * Math.sqrt(Math.pow(this.centerEnd.x - this.centerStart.x, 2) + Math.pow(this.centerEnd.y - this.centerStart.y, 2))
+      return 0.5 * Math.sqrt((this.centerEnd.x - this.centerStart.x) ** 2 + (this.centerEnd.y - this.centerStart.y) ** 2)
     },
     padding () {
       return this.bezierOffset

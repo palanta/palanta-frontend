@@ -1,6 +1,6 @@
 <template>
   <div :class="this.output ? 'float-right' : 'float-left'" id="container">
-    <div id="name" v-if="output">{{ spec.name }}</div>
+    <div id="name" class="non-selectable" v-if="output">{{ spec.name }}</div>
     <div id="stump">
       <div
         id="connector"
@@ -17,7 +17,7 @@
         @drop="onDrop"
       />
     </div>
-    <div id="name" v-if="input">{{ spec.name }}</div>
+    <div id="name" class="non-selectable" v-if="input">{{ spec.name }}</div>
   </div>
 </template>
 
