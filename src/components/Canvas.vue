@@ -22,7 +22,7 @@
         :key="index"
         :start="edge.start.$refs.connector"
         :end="edge.end.$refs.connector"
-        :ref="`${edge.start.nodeId}.${edge.end.nodeId}`"
+        :ref="edge.id"
         :color="edge.color"
       />
       <p-node
@@ -51,7 +51,7 @@ import Number from '../components/nodes/Number'
 import Average from '../components/nodes/Average'
 import Binarize from '../components/nodes/Binarize'
 
-import { NodeInstance } from '../utils/instances'
+import { NodeInstance, EdgeInstance } from '../utils/instances'
 import types from '../utils/types'
 
 const nodeTypes = {
@@ -75,44 +75,15 @@ export default {
     }
   },
   methods: {
-    onConnect (event) {
-      if (event.isFinal) {
-        if (this.newEdge && event.connector !== this.newEdge.start) {
-          const edge = {
-            start: this.newEdge.start,
-            end: event.instance,
-            color: this.newEdge.color
-          }
-          if (event.isOutput) edge.start = [edge.end, edge.end = edge.start][0]
-          this.addEdge(edge)
-        }
-        this.newEdge = null
-        event.instance.connecting = false
-      } else {
-        this.newEdge = {
-          start: event.instance,
-          end: {
-            x: event.position.x - this.$el.offsetLeft,
-            y: event.position.y - this.$el.offsetTop
-          },
-          color: types.colors[event.instance.spec.type]
-        }
-        if (!event.isOutput) this.newEdge.start = [this.newEdge.end, this.newEdge.end = this.newEdge.start][0]
-        event.instance.connecting = true
-        if (this.$refs.newEdge) this.$refs.newEdge.refresh()
-      }
-    },
-    onNodeMove (nodeId) {
-      for (let edgeId in this.$refs) {
-        if (edgeId.split('.').includes(nodeId)) {
-          for (let edge of this.$refs[edgeId]) {
-            edge.refresh()
-          }
-        }
-      }
-    },
     addNode (component, spec) {
       this.nodes.push(new NodeInstance(component, spec))
+    },
+    addEdge (edge) {
+      if (this.isValidEdge(edge)) {
+        this.edges.push(edge)
+        edge.start.addEdge(edge)
+        edge.end.addEdge(edge)
+      } else console.log('Edge rejected') // TODO: make clearer to user
     },
     isValidEdge (edge) {
       // Connect output to input
@@ -127,16 +98,37 @@ export default {
       if (edge.end.connected) return false
 
       // Prevent connecting a node to itself
-      if (edge.start.nodeId === edge.end.nodeId) return false
+      if (edge.start.node === edge.end.node) return false
 
       return true
     },
-    addEdge (edge) {
-      if (this.isValidEdge(edge)) {
-        this.edges.push(edge)
-        edge.start.connected += 1
-        edge.end.connected += 1
+    onConnect (event) {
+      if (event.isFinal) {
+        if (this.newEdge && event.connector !== this.newEdge.start) {
+          if (event.isOutput) {
+            this.newEdge.end = this.newEdge.start
+            this.newEdge.start = event.instance
+          } else this.newEdge.end = event.instance
+          this.addEdge(this.newEdge)
+        }
+        this.newEdge = null
+        event.instance.connecting = false
+      } else {
+        this.newEdge = new EdgeInstance(
+          event.instance,
+          {
+            x: event.position.x - this.$el.offsetLeft,
+            y: event.position.y - this.$el.offsetTop
+          },
+          types.colors[event.instance.spec.type]
+        )
+        if (!event.isOutput) this.newEdge.start = [this.newEdge.end, this.newEdge.end = this.newEdge.start][0]
+        event.instance.connecting = true
+        if (this.$refs.newEdge) this.$refs.newEdge.refresh()
       }
+    },
+    onNodeMove (node) {
+      node.edges.forEach(edge => this.$refs[edge.id].forEach(component => component.refresh()))
     }
   }
 }

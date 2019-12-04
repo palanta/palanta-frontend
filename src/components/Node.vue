@@ -12,8 +12,9 @@
             input
             v-if="i <= instance.inputs.length"
             :spec="instance.inputs[instance.inputs.length - i]"
-            :nodeId="instance.id"
+            :node="instance"
             @connect="onConnect"
+            @connected="onConnected"
           />
         </div>
         <div class="col-6">
@@ -21,8 +22,9 @@
             output
             v-if="i <= instance.outputs.length"
             :spec="instance.outputs[instance.outputs.length - i]"
-            :nodeId="instance.id"
+            :node="instance"
             @connect="onConnect"
+            @connected="onConnected"
           />
         </div>
       </div>
@@ -65,6 +67,7 @@ export default {
   },
   data () {
     return {
+      edges: [],
       isMoving: false,
       left: this.x || 0,
       top: this.y || 100
@@ -82,10 +85,13 @@ export default {
     onPan (event) {
       this.left += event.delta.x
       this.top += event.delta.y
-      this.$emit('move', this.instance.id)
+      this.$emit('move', this)
     },
     onConnect (event) {
       this.$emit('connect', event)
+    },
+    onConnected (edge) {
+      this.edges.push(edge)
     }
   }
 }

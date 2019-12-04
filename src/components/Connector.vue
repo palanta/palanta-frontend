@@ -54,7 +54,7 @@ import types from '../utils/types'
 export default {
   props: {
     spec: Object,
-    nodeId: String,
+    node: Object,
     input: Boolean,
     output: Boolean
   },
@@ -71,6 +71,10 @@ export default {
     }
   },
   methods: {
+    addEdge (edge) {
+      this.connected++
+      this.$emit('connected', edge)
+    },
     emitDrag (event, isFirst, isFinal) {
       this.$emit('connect', {
         instance: this,
