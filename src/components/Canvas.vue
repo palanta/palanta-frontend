@@ -37,6 +37,7 @@ import PEdge from '../components/Edge'
 import Number from '../components/nodes/Number'
 import Average from '../components/nodes/Average'
 import Binarize from '../components/nodes/Binarize'
+import Note from '../components/nodes/Note'
 
 import { NodeInstance } from '../utils/instances'
 import types from '../utils/types'
@@ -44,7 +45,8 @@ import types from '../utils/types'
 const nodeTypes = {
   Number,
   Average,
-  Binarize
+  Binarize,
+  Note
 }
 
 export default {
