@@ -1,6 +1,6 @@
 <template>
   <div class="q-px-md q-pt-md">
-    <q-input filled v-model="value" />
+    <q-input filled v-model="value" type="number" float-label="Number" />
   </div>
 </template>
 
