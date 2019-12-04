@@ -9,16 +9,19 @@ export default {
     title: 'Binarize',
     inputs: [
       {
+        id: 'image',
         name: 'Image',
         type: 'image'
       },
       {
+        id: 'threshold',
         name: 'Threshold',
         type: 'number'
       }
     ],
     outputs: [
       {
+        id: 'output',
         name: 'Image',
         type: 'image'
       }
