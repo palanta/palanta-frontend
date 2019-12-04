@@ -7,6 +7,7 @@ export default {
   spec: {
     id: 'std::binarize',
     title: 'Binarize',
+    icon: require('../../assets/node_icons/node_binarize.svg'),
     inputs: [
       {
         name: 'Image',
