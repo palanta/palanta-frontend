@@ -161,6 +161,7 @@ export default {
     },
     onNodeMove (node) {
       node.edges.forEach(edge => this.$refs[edge.id].forEach(component => component.refresh()))
+      if (this.$refs.newEdge) this.$refs.newEdge.refresh()
     }
   }
 }
