@@ -8,9 +8,12 @@
       fill="none"
       :stroke="color"
       stroke-width="4"
-      :d="`M${relativeStart.x},${relativeStart.y}
-           C${relativeStart.x + bezierOffset},${relativeStart.y} ${relativeEnd.x - bezierOffset},${relativeEnd.y}
-           ${relativeEnd.x},${relativeEnd.y}`"
+      :d="`
+        M ${relativeStart.x} ${relativeStart.y}
+        C ${relativeStart.x + bezierOffset} ${relativeStart.y}
+          ${relativeEnd.x - bezierOffset} ${relativeEnd.y}
+          ${relativeEnd.x} ${relativeEnd.y}
+        `"
     />
   </svg>
 </template>
