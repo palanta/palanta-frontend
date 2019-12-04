@@ -1,6 +1,6 @@
 <template>
-  <div class="q-px-md q-pt-md">
-    <q-input filled v-model="text" type="textarea" float-label="Textarea" :max-height="5" rows="3" placeholder="enter Text here"/>
+  <div class="q-px-md q-py-md">
+    <q-input filled v-model="text" type="textarea" float-label="Textarea" rows="3" placeholder="Enter text here"/>
   </div>
 </template>
 
