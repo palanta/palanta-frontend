@@ -70,8 +70,9 @@ export default {
     return {
       nodeTypes,
       nodes: [],
+      edges: [],
       newEdge: null,
-      edges: []
+      preserveStart: false
     }
   },
   methods: {
@@ -83,7 +84,12 @@ export default {
         this.edges.push(edge)
         edge.start.addEdge(edge)
         edge.end.addEdge(edge)
-      } else console.log('Edge rejected') // TODO: make clearer to user
+      } else console.error('Edge rejected') // TODO: make clearer to user
+    },
+    removeEdge (edge) {
+      edge.start.removeEdge(edge)
+      edge.end.removeEdge(edge)
+      if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
     },
     isValidEdge (edge) {
       // Connect output to input
@@ -104,27 +110,53 @@ export default {
     },
     onConnect (event) {
       if (event.isFinal) {
-        if (this.newEdge && event.connector !== this.newEdge.start) {
-          if (event.isOutput) {
-            this.newEdge.end = this.newEdge.start
-            this.newEdge.start = event.instance
-          } else this.newEdge.end = event.instance
-          this.addEdge(this.newEdge)
+        if (!this.preserveStart) {
+          if (this.newEdge && event.connector !== this.newEdge.start) {
+            this.newEdge.start = event.isOutput ? event.instance : this.newEdge.start
+            this.newEdge.end = event.isOutput ? this.newEdge.end : event.instance
+            this.addEdge(this.newEdge)
+          }
+          event.instance.connecting = false
+        } else {
+          // TODO: This check is REALLY bad. Needs rework for detecting pulloff on preserveStart
+          if (this.newEdge.end.x > 0 && this.newEdge.end.y > 0) {
+            this.newEdge.start = this.newEdge.start
+            this.newEdge.end = event.instance
+            this.addEdge(this.newEdge)
+          }
+          this.newEdge.start.connecting = false
+          this.preserveStart = false
         }
         this.newEdge = null
-        event.instance.connecting = false
       } else {
-        this.newEdge = new EdgeInstance(
-          event.instance,
-          {
+        if (event.instance.input && event.instance.connected) {
+          const edge = event.instance.edges[0] // TODO: check (/enforce) if exists and only one
+          this.removeEdge(edge)
+          this.newEdge = new EdgeInstance(
+            edge.start,
+            {
+              x: event.position.x - this.$el.offsetLeft,
+              y: event.position.y - this.$el.offsetTop
+            },
+            edge.color
+          )
+          edge.start.connecting = true
+          this.preserveStart = true
+        } else {
+          const to = {
             x: event.position.x - this.$el.offsetLeft,
             y: event.position.y - this.$el.offsetTop
-          },
-          types.colors[event.instance.spec.type]
-        )
-        if (!event.isOutput) this.newEdge.start = [this.newEdge.end, this.newEdge.end = this.newEdge.start][0]
-        event.instance.connecting = true
-        if (this.$refs.newEdge) this.$refs.newEdge.refresh()
+          }
+          if (!this.preserveStart) {
+            const from = event.instance
+            const color = types.colors[event.instance.spec.type]
+            this.newEdge = event.isOutput ? new EdgeInstance(from, to, color) : new EdgeInstance(to, from, color)
+            event.instance.connecting = true
+          } else {
+            this.newEdge.end = to
+          }
+          if (this.$refs.newEdge) this.$refs.newEdge.refresh()
+        }
       }
     },
     onNodeMove (node) {

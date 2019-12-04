@@ -60,7 +60,8 @@ export default {
   },
   data: () => ({
     connecting: false,
-    connected: 0
+    connected: 0,
+    edges: []
   }),
   computed: {
     color () {
@@ -72,8 +73,14 @@ export default {
   },
   methods: {
     addEdge (edge) {
+      this.edges.push(edge)
       this.connected++
       this.$emit('connected', edge)
+    },
+    removeEdge (edge) {
+      if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+      this.connected--
+      this.$emit('disconnected', edge)
     },
     emitDrag (event, isFirst, isFinal) {
       this.$emit('connect', {

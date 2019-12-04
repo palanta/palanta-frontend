@@ -15,6 +15,7 @@
             :node="instance"
             @connect="onConnect"
             @connected="onConnected"
+            @disconnected="onDisconnected"
           />
         </div>
         <div class="col-6">
@@ -25,6 +26,7 @@
             :node="instance"
             @connect="onConnect"
             @connected="onConnected"
+            @disconnected="onDisconnected"
           />
         </div>
       </div>
@@ -92,6 +94,9 @@ export default {
     },
     onConnected (edge) {
       this.edges.push(edge)
+    },
+    onDisconnected (edge) {
+      if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
     }
   }
 }
