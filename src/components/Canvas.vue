@@ -18,9 +18,8 @@
         :color="newEdge.color"
       />
       <p-edge
-        v-for="edge in edges"
+        v-for="edge in edges" :ref="edge.id"
         :key="edge.id"
-        :ref="edge.id"
         :start="edge.start.$refs.connector"
         :end="edge.end.$refs.connector"
         :color="edge.color"
