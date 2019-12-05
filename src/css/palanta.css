@@ -5,9 +5,9 @@
   left: 0;
   top: 50px;
   background-color: rgba(0, 0, 0, 0.5);
-  border-bottom-right-radius: 8px;
-  border-right: solid #a0a0a0 1px;
-  border-bottom: solid #a0a0a0 1px;
+  border-bottom-right-radius: 10px;
+  border-right: solid #505050 3px;
+  border-bottom: solid #505050 3px;
   z-index: 1;
 }
 
@@ -17,14 +17,14 @@
 }
 
 .node-list-element {
-  margin: 0.5em 0;
+  margin: 0.5em 1em;
 }
 
 .tree-line {
   border-left: solid #505050 3px;
   border-bottom: solid #505050 3px;
   height: 43px;
-  width: 15px;
+  width: 1em;
   float: left;
   top: -23px;
   position: relative;
