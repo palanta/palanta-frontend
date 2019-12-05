@@ -1,7 +1,6 @@
 .toolbox-container {
   width: 200px;
   height: 400px;
-  padding: 10px;
   position: fixed;
   left: 0;
   top: 50px;
@@ -12,20 +11,24 @@
   z-index: 1;
 }
 
-.toolbox-node {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: white;
-  background-color: #505050;
-  border-radius: 5px;
-  padding: 5px 0;
-  text-align: center;
-  cursor: pointer;
-  transition: 100ms;
+.node-category-header {
+  background-color: #303030;
+  border-bottom: solid #505050 3px;
 }
 
-.toolbox-node:hover {
-  background-color: #707070;
+.node-list-element {
+  margin: 0.5em 0;
+}
+
+.tree-line {
+  border-left: solid #505050 3px;
+  border-bottom: solid #505050 3px;
+  height: 43px;
+  width: 15px;
+  float: left;
+  top: -23px;
+  position: relative;
+  z-index: -1;
 }
 
 .disable-highlight {

@@ -1,12 +1,23 @@
 <template>
   <div style="position: relative">
     <div class="toolbox-container">
-      <div
-        class="toolbox-node"
-        v-for="(nodeType, component) in nodeTypes"
-        :key="nodeType.spec.id"
-        @click="addNode(component, nodeType.spec)"
-      >{{ nodeType.spec.title }}</div>
+      <q-expansion-item
+        v-for="(nodeCategory, categoryIndex) in nodeTypes"
+        :key="categoryIndex"
+        :label="nodeCategory.title"
+        header-class="node-category-header"
+      >
+        <div class="node-list-element"
+             v-for="(nodeType, component) in nodeCategory.nodes"
+             :key="nodeType.spec.id"
+        >
+          <div class="tree-line"></div>
+          <q-btn
+            color="primary"
+            @click="addNode(component, nodeType.spec)"
+          >{{ nodeType.spec.title }}</q-btn>
+        </div>
+      </q-expansion-item>
     </div>
 
     <p-background>
@@ -43,10 +54,25 @@ import { NodeInstance } from '../utils/instances'
 import types from '../utils/types'
 
 const nodeTypes = {
-  Number,
-  Average,
-  Binarize,
-  Note
+  Values: {
+    title: 'Values',
+    nodes: {
+      Number
+    }
+  },
+  Numerical: {
+    title: 'Numerical',
+    nodes: {
+      Average,
+      Binarize
+    }
+  },
+  Other: {
+    title: 'Other',
+    nodes: {
+      Note
+    }
+  }
 }
 
 export default {
@@ -54,7 +80,11 @@ export default {
     PBackground,
     PNode,
     PEdge
-  }, nodeTypes),
+  },
+  nodeTypes.Numerical.nodes,
+  nodeTypes.Values.nodes,
+  nodeTypes.Other.nodes
+  ),
   data () {
     return {
       nodeTypes,
