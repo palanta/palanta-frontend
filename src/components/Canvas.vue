@@ -117,12 +117,12 @@ export default {
     },
     onConnect (event) {
       let nearbyConnector = null
-      {
+      if (this.newEdge) {
         let closest = null
         let closestDist = null
         for (let node of this.$refs.nodes) {
           for (let connector of node.$refs.connectors) {
-            let edge = connector.output ? new EdgeInstance(connector, event.instance) : new EdgeInstance(event.instance, connector)
+            let edge = connector.output ? new EdgeInstance(connector, this.newEdge.end) : new EdgeInstance(this.newEdge.start, connector)
             // Only snap if the potential edge is valid.
             if (!this.isValidEdge(edge)) continue
             let cr = connector.$refs.connector.getBoundingClientRect()
@@ -158,11 +158,7 @@ export default {
           if (event.instance.input && event.instance.connected) {
             const edge = event.instance.edges[0] // TODO: check (/enforce) if exists and only one
             this.removeEdge(edge)
-            this.newEdge = new EdgeInstance(
-              edge.start,
-              to,
-              edge.color
-            )
+            this.newEdge = edge
             this.newEdge.start.connecting = true
             this.newEdgeForwards = true
           } else {
@@ -172,11 +168,11 @@ export default {
             event.instance.connecting = true
             this.newEdgeForwards = event.isOutput
           }
+        } else {
+          if (this.newEdgeForwards) this.newEdge.end = to
+          else this.newEdge.start = to
+          if (this.$refs.newEdge) this.$refs.newEdge.refresh()
         }
-
-        if (this.newEdgeForwards) this.newEdge.end = to
-        else this.newEdge.start = to
-        if (this.$refs.newEdge) this.$refs.newEdge.refresh()
       }
     },
     onNodeMove (node) {
