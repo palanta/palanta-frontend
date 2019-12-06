@@ -120,6 +120,7 @@ export default {
       cr0.y += event.offset.y
       for (let node of this.$refs.nodes) {
         for (let connector of node.$refs.connectors) {
+          if (connector.input === event.instance.input) continue
           let cr1 = connector.$refs.connector.getBoundingClientRect()
           let xDist = cr1.x - cr0.x
           let yDist = cr1.y - cr0.y
