@@ -18,16 +18,20 @@
         :color="newEdge.color"
       />
       <p-edge
-        v-for="edge in edges" :ref="edge.id"
+        v-for="edge in edges"
+        :ref="edge.id"
         :key="edge.id"
         :start="edge.start.$refs.connector"
         :end="edge.end.$refs.connector"
         :color="edge.color"
       />
       <p-node
-        v-for="node in nodes" :key="node.id"
+        v-for="node in nodes"
+        :key="node.id"
         :instance="node"
-        :x=300 :y=100
+        :x="300"
+        :y="100"
+        ref="nodes"
         @connect="onConnect"
         @move="onNodeMove"
       >
@@ -108,6 +112,28 @@ export default {
       return true
     },
     onConnect (event) {
+      let nearbyConnector = null
+      let closest = null
+      let closestDist = null
+      let cr0 = event.instance.$refs.connector.getBoundingClientRect()
+      cr0.x += event.offset.x
+      cr0.y += event.offset.y
+      for (let node of this.$refs.nodes) {
+        for (let connector of node.$refs.connectors) {
+          let cr1 = connector.$refs.connector.getBoundingClientRect()
+          let xDist = cr1.x - cr0.x
+          let yDist = cr1.y - cr0.y
+          let dist = Math.sqrt(xDist * xDist + yDist * yDist)
+          if (!closestDist || dist < closestDist) {
+            closest = connector
+            closestDist = dist
+          }
+        }
+      }
+      if (closestDist < 64.0) {
+        nearbyConnector = closest
+      }
+
       if (event.isFinal) {
         if (!this.preserveStart) {
           if (this.newEdge && event.connector !== this.newEdge.start) {
@@ -128,24 +154,22 @@ export default {
         }
         this.newEdge = null
       } else {
+        let to = {
+          x: event.position.x - this.$el.offsetLeft,
+          y: event.position.y - this.$el.offsetTop
+        }
+        if (nearbyConnector) to = nearbyConnector
         if (event.instance.input && event.instance.connected) {
           const edge = event.instance.edges[0] // TODO: check (/enforce) if exists and only one
           this.removeEdge(edge)
           this.newEdge = new EdgeInstance(
             edge.start,
-            {
-              x: event.position.x - this.$el.offsetLeft,
-              y: event.position.y - this.$el.offsetTop
-            },
+            to,
             edge.color
           )
           edge.start.connecting = true
           this.preserveStart = true
         } else {
-          const to = {
-            x: event.position.x - this.$el.offsetLeft,
-            y: event.position.y - this.$el.offsetTop
-          }
           if (!this.preserveStart) {
             const from = event.instance
             const color = types.colors[event.instance.spec.type]

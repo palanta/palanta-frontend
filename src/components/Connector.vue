@@ -1,21 +1,8 @@
 <template>
   <div :class="this.output ? 'float-right' : 'float-left'" id="container">
     <div id="name" class="non-selectable" v-if="output">{{ spec.name }}</div>
-    <div id="stump">
-      <div
-        id="connector"
-        ref="connector"
-        class="cursor-pointer"
-        :style="style"
-        draggable="true"
-        @dragstart="onDragStart"
-        @dragend="onDragEnd"
-        @drag="onDrag"
-        @dragenter="connecting = true"
-        @dragleave="connecting = false"
-        @dragover.prevent
-        @drop="onDrop"
-      />
+    <div id="stump" v-touch-pan.mouse.prevent="handlePan">
+      <div id="connector" ref="connector" class="cursor-pointer" :style="style" />
     </div>
     <div id="name" class="non-selectable" v-if="input">{{ spec.name }}</div>
   </div>
@@ -82,31 +69,16 @@ export default {
       this.connected--
       this.$emit('disconnected', edge)
     },
-    emitDrag (event, isFirst, isFinal) {
+    handlePan (event) {
       this.$emit('connect', {
         instance: this,
         connector: this.$refs.connector,
         isOutput: this.output,
-        isFirst,
-        isFinal,
-        offset: { x: event.offsetX, y: event.offsetY },
-        position: { x: event.x, y: event.y }
+        isFirst: event.isFirst,
+        isFinal: event.isFinal,
+        position: { x: event.position.left, y: event.position.top },
+        offset: event.distance
       })
-    },
-    onDragStart (event) {
-      event.dataTransfer.dropEffect = 'link'
-      event.dataTransfer.setDragImage(document.createElement('div'), 0, 0)
-      this.emitDrag(event, true, false)
-    },
-    onDragEnd (event) {
-      this.emitDrag(event, false, true)
-    },
-    onDrag (event) {
-      this.emitDrag(event, false, false)
-    },
-    onDrop (event) {
-      this.emitDrag(event, false, true)
-      this.connecting = false
     }
   }
 }
