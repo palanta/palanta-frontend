@@ -119,17 +119,14 @@ export default {
       let nearbyConnector = null
       let closest = null
       let closestDist = null
-      let cr0 = event.instance.$refs.connector.getBoundingClientRect()
-      cr0.x += event.offset.x
-      cr0.y += event.offset.y
       for (let node of this.$refs.nodes) {
         for (let connector of node.$refs.connectors) {
           let edge = connector.output ? new EdgeInstance(connector, event.instance) : new EdgeInstance(event.instance, connector)
           // Only snap if the potential edge is valid.
           if (!this.isValidEdge(edge)) continue
-          let cr1 = connector.$refs.connector.getBoundingClientRect()
-          let xDist = cr1.x - cr0.x
-          let yDist = cr1.y - cr0.y
+          let cr = connector.$refs.connector.getBoundingClientRect()
+          let xDist = (cr.x + cr.width / 2.0) - event.position.x
+          let yDist = (cr.y + cr.height / 2.0) - event.position.y
           let dist = Math.sqrt(xDist * xDist + yDist * yDist)
           if (!closestDist || dist < closestDist) {
             closest = connector
