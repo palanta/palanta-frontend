@@ -117,25 +117,27 @@ export default {
     },
     onConnect (event) {
       let nearbyConnector = null
-      let closest = null
-      let closestDist = null
-      for (let node of this.$refs.nodes) {
-        for (let connector of node.$refs.connectors) {
-          let edge = connector.output ? new EdgeInstance(connector, event.instance) : new EdgeInstance(event.instance, connector)
-          // Only snap if the potential edge is valid.
-          if (!this.isValidEdge(edge)) continue
-          let cr = connector.$refs.connector.getBoundingClientRect()
-          let xDist = (cr.x + cr.width / 2.0) - event.position.x
-          let yDist = (cr.y + cr.height / 2.0) - event.position.y
-          let dist = Math.sqrt(xDist * xDist + yDist * yDist)
-          if (!closestDist || dist < closestDist) {
-            closest = connector
-            closestDist = dist
+      {
+        let closest = null
+        let closestDist = null
+        for (let node of this.$refs.nodes) {
+          for (let connector of node.$refs.connectors) {
+            let edge = connector.output ? new EdgeInstance(connector, event.instance) : new EdgeInstance(event.instance, connector)
+            // Only snap if the potential edge is valid.
+            if (!this.isValidEdge(edge)) continue
+            let cr = connector.$refs.connector.getBoundingClientRect()
+            let xDist = (cr.x + cr.width / 2.0) - event.position.x
+            let yDist = (cr.y + cr.height / 2.0) - event.position.y
+            let dist = Math.sqrt(xDist * xDist + yDist * yDist)
+            if (!closestDist || dist < closestDist) {
+              closest = connector
+              closestDist = dist
+            }
           }
         }
-      }
-      if (closestDist < 64.0) {
-        nearbyConnector = closest
+        if (closestDist < 64.0) {
+          nearbyConnector = closest
+        }
       }
 
       if (event.isFinal) {
