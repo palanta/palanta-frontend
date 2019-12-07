@@ -135,7 +135,8 @@ export default {
             }
           }
         }
-        if (closestDist < 64.0) {
+        // TODO: make this configurable
+        if (closestDist < 48.0) {
           nearbyConnector = closest
         }
       }
