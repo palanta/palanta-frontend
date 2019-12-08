@@ -123,6 +123,8 @@ export default {
         let closest = null
         let closestDist = null
         for (let node of this.$refs.nodes) {
+          // Ignore nodes that have no connectors.
+          if (!node.$refs.connectors) continue
           for (let connector of node.$refs.connectors) {
             let edge = connector.output ? new EdgeInstance(connector, this.newEdge.end) : new EdgeInstance(this.newEdge.start, connector)
             // Only snap if the potential edge is valid.
