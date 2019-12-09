@@ -1,25 +1,6 @@
 <template>
   <div style="position: relative">
-    <div class="toolbox-container">
-      <q-expansion-item
-        v-for="(nodeCategory, categoryIndex) in nodeTypes"
-        :key="categoryIndex"
-        :label="nodeCategory.title"
-        header-class="node-category-header"
-      >
-        <div class="node-list-element"
-             v-for="(nodeType, component) in nodeCategory.nodes"
-             :key="nodeType.spec.id"
-        >
-          <div class="tree-line"></div>
-          <q-btn class="node-list-button"
-            color="primary"
-            @click="addNode(component, nodeType.spec)"
-          >{{ nodeType.spec.title }}</q-btn>
-        </div>
-      </q-expansion-item>
-    </div>
-
+    <p-toolbox :types="nodeTypes" @add="addNode" />
     <p-background>
       <p-edge v-if="newEdge" :start="newEdge.start" :end="newEdge.end" :color="newEdge.color" />
       <p-edge
@@ -42,6 +23,7 @@
 
 <script>
 import PBackground from '../components/Background'
+import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
 
@@ -54,36 +36,27 @@ import { NodeInstance } from '../utils/instances'
 import types from '../utils/types'
 
 const nodeTypes = {
-  Values: {
-    title: 'Values',
-    nodes: {
-      Number
-    }
+  'Values': {
+    Number
   },
-  Numerical: {
-    title: 'Numerical',
-    nodes: {
-      Average,
-      Binarize
-    }
+  'Numerical': {
+    Average,
+    Binarize
   },
-  Other: {
-    title: 'Other',
-    nodes: {
-      Note
-    }
+  'Other': {
+    Note
   }
 }
 
 export default {
-  components: Object.assign({
-    PBackground,
-    PNode,
-    PEdge
-  },
-  nodeTypes.Numerical.nodes,
-  nodeTypes.Values.nodes,
-  nodeTypes.Other.nodes
+  components: Object.assign(
+    {
+      PBackground,
+      PToolbox,
+      PNode,
+      PEdge
+    },
+    Object.assign.apply(null, [{}, ...Object.values(nodeTypes)])
   ),
   data () {
     return {
