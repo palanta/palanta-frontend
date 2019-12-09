@@ -1,8 +1,8 @@
 <template>
   <div :class="this.output ? 'float-right' : 'float-left'" id="container">
     <div id="name" class="non-selectable" v-if="output">{{ spec.name }}</div>
-    <div id="stump" v-touch-pan.mouse="onPan">
-      <div id="connector" :style="style" ref="connector" />
+    <div id="stump" v-touch-pan.mouse.prevent="handlePan">
+      <div id="connector" ref="connector" class="cursor-pointer" :style="style" />
     </div>
     <div id="name" class="non-selectable" v-if="input">{{ spec.name }}</div>
   </div>
@@ -41,12 +41,14 @@ import types from '../utils/types'
 export default {
   props: {
     spec: Object,
+    node: Object,
     input: Boolean,
-    output: Boolean,
-    connected: Boolean
+    output: Boolean
   },
   data: () => ({
-    connecting: false
+    connecting: false,
+    connected: 0,
+    edges: []
   }),
   computed: {
     color () {
@@ -57,15 +59,25 @@ export default {
     }
   },
   methods: {
-    onPan (event) {
+    addEdge (edge) {
+      this.edges.push(edge)
+      this.connected++
+      this.$emit('connected', edge)
+    },
+    removeEdge (edge) {
+      if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+      this.connected--
+      this.$emit('disconnected', edge)
+    },
+    handlePan (event) {
       this.$emit('connect', {
         instance: this,
         connector: this.$refs.connector,
         isOutput: this.output,
         isFirst: event.isFirst,
         isFinal: event.isFinal,
-        offset: event.offset,
-        position: event.position
+        position: { x: event.position.left, y: event.position.top },
+        offset: event.distance
       })
     }
   }

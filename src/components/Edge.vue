@@ -8,9 +8,12 @@
       fill="none"
       :stroke="color"
       stroke-width="4"
-      :d="`M${relativeStart.x},${relativeStart.y}
-           C${relativeStart.x + bezierOffset},${relativeStart.y} ${relativeEnd.x - bezierOffset},${relativeEnd.y}
-           ${relativeEnd.x},${relativeEnd.y}`"
+      :d="`
+        M ${relativeStart.x} ${relativeStart.y}
+        C ${relativeStart.x + bezierOffset} ${relativeStart.y}
+          ${relativeEnd.x - bezierOffset} ${relativeEnd.y}
+          ${relativeEnd.x} ${relativeEnd.y}
+        `"
     />
   </svg>
 </template>
@@ -24,41 +27,16 @@ export default {
   },
   data () {
     return {
-      isMounted: false
+      isMounted: false,
+      centerStart: { x: 0, y: 0 },
+      centerEnd: { x: 0, y: 0 }
     }
   },
   mounted () {
     this.isMounted = true
+    this.refresh()
   },
   computed: {
-    centerStart () {
-      if (!this.isMounted) {
-        return { x: 0, y: 0 }
-      }
-      let x = this.start.x
-      let y = this.start.y
-      if (this.start instanceof HTMLElement) {
-        let rect = this.start.getBoundingClientRect()
-        let parentRect = this.$el.parentElement.getBoundingClientRect()
-        x = rect.x + rect.width / 2 - parentRect.x
-        y = rect.y + rect.height / 2 - parentRect.y
-      }
-      return { x, y }
-    },
-    centerEnd () {
-      if (!this.isMounted) {
-        return { x: 0, y: 0 }
-      }
-      let x = this.end.x
-      let y = this.end.y
-      if (this.end instanceof HTMLElement) {
-        let rect = this.end.getBoundingClientRect()
-        let parentRect = this.$el.parentElement.getBoundingClientRect()
-        x = rect.x + rect.width / 2 - parentRect.x
-        y = rect.y + rect.height / 2 - parentRect.y
-      }
-      return { x, y }
-    },
     svgRect () {
       let x = Math.min(this.centerStart.x, this.centerEnd.x) - this.padding
       let y = Math.min(this.centerStart.y, this.centerEnd.y) - this.padding
@@ -86,6 +64,40 @@ export default {
     },
     padding () {
       return this.bezierOffset
+    }
+  },
+  methods: {
+    getCenterStart () {
+      if (!this.isMounted) {
+        return { x: 0, y: 0 }
+      }
+      let x = this.start.x
+      let y = this.start.y
+      if (this.start instanceof HTMLElement) {
+        let rect = this.start.getBoundingClientRect()
+        let parentRect = this.$el.parentElement.getBoundingClientRect()
+        x = rect.x + rect.width / 2 - parentRect.x
+        y = rect.y + rect.height / 2 - parentRect.y
+      }
+      return { x, y }
+    },
+    getCenterEnd () {
+      if (!this.isMounted) {
+        return { x: 0, y: 0 }
+      }
+      let x = this.end.x
+      let y = this.end.y
+      if (this.end instanceof HTMLElement) {
+        let rect = this.end.getBoundingClientRect()
+        let parentRect = this.$el.parentElement.getBoundingClientRect()
+        x = rect.x + rect.width / 2 - parentRect.x
+        y = rect.y + rect.height / 2 - parentRect.y
+      }
+      return { x, y }
+    },
+    refresh () {
+      this.centerStart = this.getCenterStart()
+      this.centerEnd = this.getCenterEnd()
     }
   }
 }
