@@ -7,15 +7,25 @@
         :label="title"
         header-style="background-color: #303030; border-bottom: solid #505050 3px"
       >
-        <div class="node-list-element"
-              v-for="(type, component) in category"
-              :key="type.spec.id"
-        >
-          <div class="tree-line"></div>
-          <q-btn class="node-list-button"
-            color="primary"
-            @click="$emit('add', component, type.spec)"
-          >{{ type.spec.title }}</q-btn>
+        <div class="q-py-sm">
+          <div class="node-list-element row justify-start q-mx-sm q-my-none"
+                v-for="(type, component) in category"
+                :key="type.spec.id"
+          >
+            <div class="col-1">
+              <div class="tree-line" />
+            </div>
+            <div class="col q-py-sm">
+              <q-btn
+                color="primary"
+                class="full-width row"
+                @click="$emit('add', component, type.spec)"
+              >
+                <img id="icon" class="non-selectable col-auto" v-if="type.spec.icon" :src="type.spec.icon" />
+                <div class="col">{{ type.spec.title }}</div>
+              </q-btn>
+            </div>
+          </div>
         </div>
       </q-expansion-item>
     </div>
@@ -34,23 +44,14 @@
   z-index: 1;
 }
 
-.node-list-element {
-  margin: 0.5em 1em;
-  position: relative;
-}
-
-.node-list-button {
-  margin-left: 1em;
-}
-
 .tree-line {
-  border-left: solid #505050 3px;
-  border-bottom: solid #505050 3px;
-  height: 43px;
-  width: 1em;
-  float: left;
-  top: -23px;
-  position: absolute;
+  position: relative;
+  top: -50%;
+  width: 100%;
+  height: 100%;
+  border-left: solid #505050 4px;
+  border-bottom: solid #505050 2px;
+  box-shadow: 0px 2px 0 0 #505050;
   z-index: -1;
 }
 </style>
@@ -58,7 +59,7 @@
 <script>
 export default {
   props: {
-    types: Array
+    types: Object
   }
 }
 </script>
