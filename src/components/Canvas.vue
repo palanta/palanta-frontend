@@ -12,7 +12,7 @@
              :key="nodeType.spec.id"
         >
           <div class="tree-line"></div>
-          <q-btn
+          <q-btn class="node-list-button"
             color="primary"
             @click="addNode(component, nodeType.spec)"
           >{{ nodeType.spec.title }}</q-btn>
