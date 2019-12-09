@@ -1,25 +1,6 @@
 <template>
   <div style="position: relative">
-    <div class="toolbox-container">
-      <q-expansion-item
-        v-for="(category, title) in nodeTypes"
-        :key="title"
-        :label="title"
-        header-class="node-category-header"
-      >
-        <div class="node-list-element"
-             v-for="(nodeType, component) in category"
-             :key="nodeType.spec.id"
-        >
-          <div class="tree-line"></div>
-          <q-btn class="node-list-button"
-            color="primary"
-            @click="addNode(component, nodeType.spec)"
-          >{{ nodeType.spec.title }}</q-btn>
-        </div>
-      </q-expansion-item>
-    </div>
-
+    <p-toolbox :types="nodeTypes" @add="addNode" />
     <p-background>
       <p-edge v-if="newEdge" :start="newEdge.start" :end="newEdge.end" :color="newEdge.color" />
       <p-edge
@@ -42,6 +23,7 @@
 
 <script>
 import PBackground from '../components/Background'
+import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
 
@@ -70,6 +52,7 @@ export default {
   components: Object.assign(
     {
       PBackground,
+      PToolbox,
       PNode,
       PEdge
     },
