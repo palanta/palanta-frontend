@@ -56,7 +56,7 @@ export default {
       PNode,
       PEdge
     },
-    Object.assign.apply(null, Object.values(nodeTypes))
+    Object.assign.apply(null, [{}, ...Object.values(nodeTypes)])
   ),
   data () {
     return {
