@@ -5,13 +5,12 @@
       {{ instance.title }}
     </q-card-section>
     <slot />
-    <div class="doc-container column reverse">
-      <div v-for="i in slotRows" :key="i" class="row">
-        <div class="col-6 no-wrap">
+    <div class="row">
+      <div class="col-6 column reverse">
+        <div v-for="input in instance.inputs" :key="input.id">
           <p-connector
             input
-            v-if="i <= instance.inputs.length"
-            :spec="instance.inputs[instance.inputs.length - i]"
+            :spec="input"
             :node="instance"
             ref="connectors"
             @connect="onConnect"
@@ -19,11 +18,12 @@
             @disconnected="onDisconnected"
           />
         </div>
-        <div class="col-6">
+      </div>
+      <div class="col-6 column reverse">
+        <div v-for="output in instance.outputs" :key="output.id">
           <p-connector
             output
-            v-if="i <= instance.outputs.length"
-            :spec="instance.outputs[instance.outputs.length - i]"
+            :spec="output"
             :node="instance"
             ref="connectors"
             @connect="onConnect"
