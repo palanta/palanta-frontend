@@ -35,7 +35,6 @@
 <style scoped>
 #toolbox-container {
   width: 200px;
-  height: 400px;
   position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
   border-bottom-right-radius: 10px;
