@@ -152,6 +152,7 @@ export default {
           this.addEdge(this.newEdge)
           this.newEdge = null
         }
+        this.$refs.nodes.forEach(node => node.updateVariadics())
       } else {
         let to = {
           x: event.position.x - this.$el.offsetLeft,
