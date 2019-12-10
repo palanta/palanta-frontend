@@ -10,16 +10,19 @@ export default {
     icon: require('../../assets/node_icons/node_binarize.svg'),
     inputs: [
       {
+        id: 'image',
         name: 'Image',
         type: 'image'
       },
       {
+        id: 'threshold',
         name: 'Threshold',
         type: 'number'
       }
     ],
     outputs: [
       {
+        id: 'image',
         name: 'Image',
         type: 'image'
       }
