@@ -10,12 +10,10 @@ export default {
     title: 'Subtraction',
     inputs: [
       {
-        name: 'Minuend',
-        type: 'number'
-      },
-      {
-        name: 'Subtrahend',
-        type: 'number'
+        id: 'number',
+        name: 'Number',
+        type: 'number',
+        variadic: true
       }
     ],
     outputs: [

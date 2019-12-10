@@ -16,7 +16,8 @@ export default {
     inputs: [],
     outputs: [
       {
-        name: 'Image',
+        id: 'value',
+        name: 'Value',
         type: 'image'
       }
     ]

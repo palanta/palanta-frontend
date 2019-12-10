@@ -10,12 +10,10 @@ export default {
     title: 'Division',
     inputs: [
       {
-        name: 'Dividend',
-        type: 'number'
-      },
-      {
-        name: 'Divisor',
-        type: 'number'
+        id: 'number',
+        name: 'Number',
+        type: 'number',
+        variadic: true
       }
     ],
     outputs: [

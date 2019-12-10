@@ -10,7 +10,7 @@ export default {
     title: 'Logarithm',
     inputs: [
       {
-        name: 'Anti-Logarithm',
+        name: 'Number',
         type: 'number'
       },
       {

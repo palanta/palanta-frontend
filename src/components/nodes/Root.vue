@@ -10,7 +10,7 @@ export default {
     title: 'Root',
     inputs: [
       {
-        name: 'Radicant',
+        name: 'Number',
         type: 'number'
       },
       {

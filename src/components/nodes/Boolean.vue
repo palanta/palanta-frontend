@@ -20,7 +20,8 @@ export default {
     inputs: [],
     outputs: [
       {
-        name: 'Boolean',
+        id: 'value',
+        name: 'Value',
         type: 'boolean'
       }
     ]

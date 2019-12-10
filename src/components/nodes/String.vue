@@ -18,7 +18,8 @@ export default {
     inputs: [],
     outputs: [
       {
-        name: 'Text',
+        id: 'value',
+        name: 'Value',
         type: 'text'
       }
     ]

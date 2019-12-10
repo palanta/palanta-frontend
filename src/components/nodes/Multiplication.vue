@@ -10,12 +10,10 @@ export default {
     title: 'Multiplication',
     inputs: [
       {
-        name: 'Factor',
-        type: 'number'
-      },
-      {
-        name: 'Factor',
-        type: 'number'
+        id: 'number',
+        name: 'Number',
+        type: 'number',
+        variadic: true
       }
     ],
     outputs: [

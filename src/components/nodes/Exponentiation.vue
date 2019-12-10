@@ -10,7 +10,7 @@ export default {
     title: 'Exponentiation',
     inputs: [
       {
-        name: 'Base',
+        name: 'Number',
         type: 'number'
       },
       {

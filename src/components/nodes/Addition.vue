@@ -10,12 +10,10 @@ export default {
     title: 'Addition',
     inputs: [
       {
-        name: 'Summand',
-        type: 'number'
-      },
-      {
-        name: 'Summand',
-        type: 'number'
+        id: 'number',
+        name: 'Number',
+        type: 'number',
+        variadic: true
       }
     ],
     outputs: [
