@@ -153,8 +153,9 @@ export default {
           if (this.newEdge.start) this.newEdge.start.connecting = false
           if (this.newEdge.end) this.newEdge.end.connecting = false
           this.addEdge(this.newEdge)
-          this.newEdge = null
           event.instance.node.updateVariadics()
+          if (this.newEdge.start.node) this.newEdge.start.node.updateVariadics()
+          this.newEdge = null
         }
       } else {
         let to = {
