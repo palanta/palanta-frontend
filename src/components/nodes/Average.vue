@@ -11,6 +11,7 @@ export default {
     icon: require('../../assets/node_icons/node_average.svg'),
     inputs: [
       {
+        id: 'number',
         name: 'Number',
         type: 'number',
         variadic: true
@@ -18,6 +19,7 @@ export default {
     ],
     outputs: [
       {
+        id: 'average',
         name: 'Average',
         type: 'number'
       }
