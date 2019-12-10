@@ -1,7 +1,7 @@
 <template>
   <div class="q-px-md q-pt-md">
     <q-input @input="val => { file = val[0] }"
-      filled
+      borderless
       type="file"
       accept=".jpg, image/*"
     />
