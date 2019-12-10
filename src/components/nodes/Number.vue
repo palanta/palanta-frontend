@@ -13,7 +13,8 @@ export default {
     inputs: [],
     outputs: [
       {
-        name: 'Number',
+        id: 'value',
+        name: 'Value',
         type: 'number'
       }
     ]

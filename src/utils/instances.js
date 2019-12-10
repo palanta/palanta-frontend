@@ -1,24 +1,22 @@
 import uuid from './uuid'
 
-// TODO: Use ES6 classes
-
-export function NodeInstance (component, spec) {
-  return {
-    id: uuid(),
-    title: spec.title,
+export class NodeInstance {
+  constructor (component, spec) {
+    this.id = uuid()
+    this.title = spec.title
     // TODO: deep copy inputs and outputs arrays
-    inputs: spec.inputs,
-    outputs: spec.outputs,
-    component,
-    spec
+    this.inputs = spec.inputs
+    this.outputs = spec.outputs
+    this.component = component
+    this.spec = spec
   }
 }
 
-export function EdgeInstance (start, end, color) {
-  return {
-    id: uuid(),
-    start,
-    end,
-    color
+export class EdgeInstance {
+  constructor (start, end, color) {
+    this.id = uuid()
+    this.start = start
+    this.end = end
+    this.color = color
   }
 }

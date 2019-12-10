@@ -1,6 +1,12 @@
 <template>
   <div class="q-px-md q-py-md">
-    <q-input filled v-model="text" type="textarea" float-label="Textarea" rows="3" placeholder="Enter text here"/>
+    <q-input
+      filled
+      autogrow
+      v-model="text"
+      type="textarea"
+      placeholder="Enter text here"
+    />
   </div>
 </template>
 
@@ -11,6 +17,9 @@ export default {
     title: 'Note',
     inputs: [],
     outputs: []
-  }
+  },
+  data: () => ({
+    text: ''
+  })
 }
 </script>
