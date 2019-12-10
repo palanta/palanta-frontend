@@ -109,7 +109,6 @@ export default {
         const index = channel.indexOf(afterSpec)
         if (index >= 0) {
           const newSpec = new ConnectorInstance(afterSpec)
-          newSpec.first = false
           newSpec.last = true
           afterSpec.last = false
           channel.splice(index + 1, 0, newSpec)
@@ -122,7 +121,6 @@ export default {
         channels.forEach(channel => {
           const index = channel.indexOf(spec)
           if (index >= 0) {
-            if (spec.first) channel[index + 1].first = true
             if (spec.last) channel[index - 1].last = true
             channel.splice(index, 1)
           }

@@ -3,13 +3,11 @@ import uuid from './uuid'
 export class ConnectorInstance {
   constructor (spec) {
     this.id = uuid()
+    this.specId = spec instanceof ConnectorInstance ? spec.specId : spec.id
     this.name = spec.name
     this.type = spec.type
     this.variadic = spec.variadic
-    if (this.variadic) {
-      this.first = true
-      this.last = true
-    }
+    if (this.variadic) this.last = true
   }
 }
 
