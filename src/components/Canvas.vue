@@ -1,14 +1,6 @@
 <template>
   <div style="position: relative">
-    <div class="toolbox-container">
-      <div
-        class="toolbox-node"
-        v-for="(nodeType, component) in nodeTypes"
-        :key="nodeType.spec.id"
-        @click="addNode(component, nodeType.spec)"
-      >{{ nodeType.spec.title }}</div>
-    </div>
-
+    <p-toolbox :types="nodeTypes" @add="addNode" />
     <p-background>
       <p-edge
         v-if="newEdge"
@@ -47,30 +39,61 @@
 
 <script>
 import PBackground from '../components/Background'
+import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
 
 import Number from '../components/nodes/Number'
+import Boolean from '../components/nodes/Boolean'
+import String from '../components/nodes/String'
+import File from '../components/nodes/File'
 import Average from '../components/nodes/Average'
 import Binarize from '../components/nodes/Binarize'
 import Note from '../components/nodes/Note'
+import Addition from '../components/nodes/Addition'
+import Subtraction from '../components/nodes/Subtraction'
+import Multiplication from '../components/nodes/Multiplication'
+import Division from '../components/nodes/Division'
+import Exponentiation from '../components/nodes/Exponentiation'
+import Root from '../components/nodes/Root'
+import Logarithm from '../components/nodes/Logarithm'
 
 import { NodeInstance, EdgeInstance } from '../utils/instances'
 import types from '../utils/types'
 
 const nodeTypes = {
-  Number,
-  Average,
-  Binarize,
-  Note
+  'Values': {
+    Number,
+    Boolean,
+    String,
+    File
+  },
+  'Numerical': {
+    Average,
+    Binarize,
+    Addition,
+    Subtraction,
+    Multiplication,
+    Division,
+    Exponentiation,
+    Root,
+    Logarithm
+  },
+  'Other': {
+    Note
+  }
 }
 
 export default {
-  components: Object.assign({
-    PBackground,
-    PNode,
-    PEdge
-  }, nodeTypes),
+  components: Object.assign(
+    {
+      PBackground,
+      PToolbox,
+      PNode,
+      PEdge
+    },
+    Object.assign.apply(null, [{}, ...Object.values(nodeTypes)])
+  ),
   data () {
     return {
       nodeTypes,
@@ -104,17 +127,13 @@ export default {
       // Connect output to input
       if (!edge.start.output) return false
       if (!edge.end.input) return false
-
       // Type checking
       // TODO: more elaborate typechecking (bundles, casting)
       if (edge.start.spec.type !== edge.end.spec.type) return false
-
       // Each input may be connected once only
       if (edge.end.connected) return false
-
       // Prevent connecting a node to itself
       if (edge.start.node === edge.end.node) return false
-
       return true
     },
     onConnect (event) {
@@ -123,6 +142,8 @@ export default {
         let closest = null
         let closestDist = null
         for (let node of this.$refs.nodes) {
+          // Ignore nodes that have no connectors.
+          if (!node.$refs.connectors) continue
           for (let connector of node.$refs.connectors) {
             let edge = connector.output ? new EdgeInstance(connector, this.newEdge.end) : new EdgeInstance(this.newEdge.start, connector)
             // Only snap if the potential edge is valid.
@@ -142,7 +163,6 @@ export default {
           nearbyConnector = closest
         }
       }
-
       if (event.isFinal) {
         if (this.newEdge) {
           if (this.newEdge.start) this.newEdge.start.connecting = false
@@ -156,7 +176,6 @@ export default {
           y: event.position.y - this.$el.offsetTop
         }
         if (nearbyConnector) to = nearbyConnector
-
         if (!this.newEdge) {
           if (event.instance.input && event.instance.connected) {
             const edge = event.instance.edges[0] // TODO: check (/enforce) if exists and only one
