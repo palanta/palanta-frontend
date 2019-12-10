@@ -58,7 +58,7 @@
 </style>
 
 <script>
-import uuid from '../utils/uuid'
+import { ConnectorInstance } from '../utils/instances'
 
 import PConnector from './Connector'
 
@@ -108,9 +108,7 @@ export default {
       channels.forEach(channel => {
         const index = channel.indexOf(afterSpec)
         if (index >= 0) {
-          // TODO: rather hacky deep copy, using some library might be better
-          const newSpec = JSON.parse(JSON.stringify(afterSpec))
-          newSpec.id = uuid()
+          const newSpec = new ConnectorInstance(afterSpec)
           newSpec.first = false
           newSpec.last = true
           afterSpec.last = false

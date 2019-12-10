@@ -2,23 +2,25 @@ import uuid from './uuid'
 
 // TODO: Use ES6 classes
 
+export function ConnectorInstance (spec) {
+  this.id = uuid()
+  this.name = spec.name
+  this.type = spec.type
+  this.variadic = spec.variadic
+  if (this.variadic) {
+    this.first = true
+    this.last = true
+  }
+}
+
 export function NodeInstance (component, spec) {
   this.id = uuid()
   this.title = spec.title
   // TODO: rather hacky deep copy, using some library might be better
-  this.inputs = JSON.parse(JSON.stringify(spec.inputs))
-  this.outputs = JSON.parse(JSON.stringify(spec.outputs))
+  this.inputs = spec.inputs.map(input => new ConnectorInstance(input))
+  this.outputs = spec.outputs.map(output => new ConnectorInstance(output))
   this.component = component
   this.spec = spec
-
-  const channels = [this.inputs, this.outputs]
-  channels.forEach(channel => channel.forEach(connector => {
-    connector.id = uuid()
-    if (connector.variadic) {
-      connector.first = true
-      connector.last = true
-    }
-  }))
 }
 
 export function EdgeInstance (start, end, color) {
