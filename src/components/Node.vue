@@ -11,7 +11,7 @@
           <p-connector
             input
             :spec="input"
-            :node="instance"
+            :node="_self"
             ref="connectors"
             @connect="onConnect"
             @connected="onConnected"
@@ -24,7 +24,7 @@
           <p-connector
             output
             :spec="output"
-            :node="instance"
+            :node="_self"
             ref="connectors"
             @connect="onConnect"
             @connected="onConnected"
