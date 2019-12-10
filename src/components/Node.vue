@@ -67,22 +67,18 @@ export default {
     PConnector
   },
   props: {
-    instance: Object,
-    x: Number,
-    y: Number
+    instance: Object
   },
   data () {
     return {
       edges: [],
       isMoving: false,
-      panStart: null,
-      left: this.x || 0,
-      top: this.y || 100
+      panStart: null
     }
   },
   computed: {
     style () {
-      return `left: ${this.left}px; top: ${this.top}px;`
+      return `left: ${this.instance.position.x}px; top: ${this.instance.position.y}px;`
     },
     slotRows () {
       return Math.max(this.instance.inputs.length, this.instance.outputs.length)
@@ -90,15 +86,14 @@ export default {
   },
   methods: {
     onPan (event) {
-      if (event.isFirst) this.panStart = { x: this.left, y: this.top }
-      let newLeft = this.panStart.x + event.offset.x
-      let newTop = this.panStart.y + event.offset.y
+      if (event.isFirst) this.panStart = this.instance.position
+      let newX = this.panStart.x + event.offset.x
+      let newY = this.panStart.y + event.offset.y
       if (event.evt.ctrlKey) {
-        newLeft = Math.round(newLeft / 50) * 50
-        newTop = Math.round(newTop / 50) * 50
+        newX = Math.round(newX / 50) * 50
+        newY = Math.round(newY / 50) * 50
       }
-      this.left = newLeft
-      this.top = newTop
+      this.instance.position = { x: newX, y: newY }
       if (event.isFinal) this.panStart = null
       this.$emit('move', this)
     },
