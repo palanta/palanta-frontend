@@ -73,6 +73,7 @@ export default {
     return {
       edges: [],
       isMoving: false,
+      panStart: null,
       left: this.x || 0,
       top: this.y || 100
     }
@@ -87,8 +88,16 @@ export default {
   },
   methods: {
     onPan (event) {
-      this.left += event.delta.x
-      this.top += event.delta.y
+      if (event.isFirst) this.panStart = { x: this.left, y: this.top }
+      let newLeft = this.panStart.x + event.offset.x
+      let newTop = this.panStart.y + event.offset.y
+      if (event.evt.ctrlKey) {
+        newLeft = Math.round(newLeft / 50) * 50
+        newTop = Math.round(newTop / 50) * 50
+      }
+      this.left = newLeft
+      this.top = newTop
+      if (event.isFinal) this.panStart = null
       this.$emit('move', this)
     },
     onConnect (event) {
