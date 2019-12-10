@@ -43,44 +43,44 @@ import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
 
-import Number from '../components/nodes/Number'
-import Boolean from '../components/nodes/Boolean'
-import String from '../components/nodes/String'
-import File from '../components/nodes/File'
-import Average from '../components/nodes/Average'
-import Binarize from '../components/nodes/Binarize'
-import Note from '../components/nodes/Note'
-import Addition from '../components/nodes/Addition'
-import Subtraction from '../components/nodes/Subtraction'
-import Multiplication from '../components/nodes/Multiplication'
-import Division from '../components/nodes/Division'
-import Exponentiation from '../components/nodes/Exponentiation'
-import Root from '../components/nodes/Root'
-import Logarithm from '../components/nodes/Logarithm'
+import PNNumber from '../components/nodes/Number'
+import PNBoolean from '../components/nodes/Boolean'
+import PNText from '../components/nodes/Text'
+import PNImage from '../components/nodes/Image'
+import PNAverage from '../components/nodes/Average'
+import PNBinarize from '../components/nodes/Binarize'
+import PNNote from '../components/nodes/Note'
+import PNAddition from '../components/nodes/Addition'
+import PNSubtraction from '../components/nodes/Subtraction'
+import PNMultiplication from '../components/nodes/Multiplication'
+import PNDivision from '../components/nodes/Division'
+import PNExponentiation from '../components/nodes/Exponentiation'
+import PNRoot from '../components/nodes/Root'
+import PNLogarithm from '../components/nodes/Logarithm'
 
 import { NodeInstance, EdgeInstance } from '../utils/instances'
 import types from '../utils/types'
 
 const nodeTypes = {
   'Values': {
-    Number,
-    Boolean,
-    String,
-    File
+    PNNumber,
+    PNBoolean,
+    PNText,
+    PNImage
   },
   'Numerical': {
-    Average,
-    Binarize,
-    Addition,
-    Subtraction,
-    Multiplication,
-    Division,
-    Exponentiation,
-    Root,
-    Logarithm
+    PNAverage,
+    PNBinarize,
+    PNAddition,
+    PNSubtraction,
+    PNMultiplication,
+    PNDivision,
+    PNExponentiation,
+    PNRoot,
+    PNLogarithm
   },
   'Other': {
-    Note
+    PNNote
   }
 }
 
@@ -127,13 +127,17 @@ export default {
       // Connect output to input
       if (!edge.start.output) return false
       if (!edge.end.input) return false
+
       // Type checking
       // TODO: more elaborate typechecking (bundles, casting)
       if (edge.start.spec.type !== edge.end.spec.type) return false
+
       // Each input may be connected once only
       if (edge.end.connected) return false
+
       // Prevent connecting a node to itself
       if (edge.start.node === edge.end.node) return false
+
       return true
     },
     onConnect (event) {

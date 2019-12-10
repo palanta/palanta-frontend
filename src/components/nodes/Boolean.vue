@@ -6,8 +6,8 @@
       checked-icon="check"
       color="green"
       unchecked-icon="clear"
-      true-value="true"
-      false-value="false"
+      true-value=true
+      false-value=false
     />
   </div>
 </template>
