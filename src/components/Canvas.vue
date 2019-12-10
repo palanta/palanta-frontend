@@ -161,8 +161,8 @@ export default {
         }
       } else {
         let to = {
-          x: event.position.x - this.$el.offsetLeft,
-          y: event.position.y - this.$el.offsetTop
+          x: event.position.x - this.$el.offsetLeft + window.scrollX,
+          y: event.position.y - this.$el.offsetTop + window.scrollY
         }
         if (nearbyConnector) to = nearbyConnector
 
