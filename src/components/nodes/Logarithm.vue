@@ -8,6 +8,7 @@ export default {
   spec: {
     id: 'std::logarithm',
     title: 'Logarithm',
+    icon: require('../../assets/node_icons/node_logarithm.svg'),
     inputs: [
       {
         name: 'Number',

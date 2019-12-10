@@ -8,6 +8,7 @@ export default {
   spec: {
     id: 'std::root',
     title: 'Root',
+    icon: require('../../assets/node_icons/node_root.svg'),
     inputs: [
       {
         name: 'Number',

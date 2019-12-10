@@ -8,6 +8,7 @@ export default {
   spec: {
     id: 'std::subtraction',
     title: 'Subtraction',
+    icon: require('../../assets/node_icons/node_subtraction.svg'),
     inputs: [
       {
         id: 'number',

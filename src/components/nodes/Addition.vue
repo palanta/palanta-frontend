@@ -8,6 +8,7 @@ export default {
   spec: {
     id: 'std::addition',
     title: 'Addition',
+    icon: require('../../assets/node_icons/node_addition.svg'),
     inputs: [
       {
         id: 'number',

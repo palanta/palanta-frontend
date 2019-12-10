@@ -17,6 +17,7 @@ export default {
   spec: {
     id: 'std::boolean',
     title: 'Boolean',
+    icon: require('../../assets/node_icons/node_boolean.svg'),
     inputs: [],
     outputs: [
       {
