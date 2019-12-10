@@ -5,26 +5,26 @@
       {{ instance.title }}
     </q-card-section>
     <slot />
-    <div class="doc-container column reverse">
-      <div v-for="i in slotRows" :key="i" class="row">
-        <div class="col-6 no-wrap">
+    <div class="row">
+      <div class="col-6 column justify-end">
+        <div v-for="input in instance.inputs" :key="input.id">
           <p-connector
             input
-            v-if="i <= instance.inputs.length"
-            :spec="instance.inputs[instance.inputs.length - i]"
-            :node="instance"
+            :spec="input"
+            :node="_self"
             ref="connectors"
             @connect="onConnect"
             @connected="onConnected"
             @disconnected="onDisconnected"
           />
         </div>
-        <div class="col-6">
+      </div>
+      <div class="col-6 column justify-end">
+        <div v-for="output in instance.outputs" :key="output.id">
           <p-connector
             output
-            v-if="i <= instance.outputs.length"
-            :spec="instance.outputs[instance.outputs.length - i]"
-            :node="instance"
+            :spec="output"
+            :node="_self"
             ref="connectors"
             @connect="onConnect"
             @connected="onConnected"
@@ -58,6 +58,8 @@
 </style>
 
 <script>
+import { ConnectorInstance } from '../utils/instances'
+
 import PConnector from './Connector'
 
 export default {
@@ -105,9 +107,45 @@ export default {
     },
     onConnected (edge) {
       this.edges.push(edge)
+      this.updateVariadics()
     },
     onDisconnected (edge) {
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+    },
+    insertVariadic (afterSpec) {
+      const channels = [this.instance.inputs, this.instance.outputs]
+      channels.forEach(channel => {
+        const index = channel.indexOf(afterSpec)
+        if (index >= 0) {
+          const newSpec = new ConnectorInstance(afterSpec)
+          newSpec.last = true
+          afterSpec.last = false
+          channel.splice(index + 1, 0, newSpec)
+        }
+      })
+    },
+    removeVariadic (spec) {
+      if (!spec.last) {
+        const channels = [this.instance.inputs, this.instance.outputs]
+        channels.forEach(channel => {
+          const index = channel.indexOf(spec)
+          if (index >= 0) {
+            if (spec.last) channel[index - 1].last = true
+            channel.splice(index, 1)
+          }
+        })
+      }
+      this.$nextTick(function () {
+        this.$emit('move', this)
+      })
+    },
+    updateVariadics () {
+      this.$refs.connectors.forEach(connector => {
+        if (connector.spec.variadic) {
+          if (!connector.connected) this.removeVariadic(connector.spec)
+          if (connector.connected && connector.spec.last) this.insertVariadic(connector.spec)
+        }
+      })
     }
   }
 }
