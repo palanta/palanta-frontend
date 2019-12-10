@@ -3,7 +3,7 @@
     <q-input @input="val => { file = val[0] }"
       borderless
       type="file"
-      accept=".jpg, image/*"
+      accept="image/*"
     />
   </div>
 </template>
