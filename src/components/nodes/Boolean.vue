@@ -1,13 +1,13 @@
 <template>
   <div class="q-px-md q-pt-md">
     <q-toggle
-      :label="toggle"
+      :label="toggle ? 'True' : 'False'"
       v-model="toggle"
       checked-icon="check"
       color="green"
       unchecked-icon="clear"
-      true-value=true
-      false-value=false
+      :true-value=true
+      :false-value=false
     />
   </div>
 </template>
@@ -29,7 +29,7 @@ export default {
   },
   data () {
     return {
-      toggle: 'true'
+      toggle: true
     }
   }
 }
