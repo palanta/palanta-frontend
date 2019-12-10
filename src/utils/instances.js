@@ -16,7 +16,6 @@ export function ConnectorInstance (spec) {
 export function NodeInstance (component, spec) {
   this.id = uuid()
   this.title = spec.title
-  // TODO: rather hacky deep copy, using some library might be better
   this.inputs = spec.inputs.map(input => new ConnectorInstance(input))
   this.outputs = spec.outputs.map(output => new ConnectorInstance(output))
   this.component = component
