@@ -21,7 +21,7 @@ export default {
     ],
     outputs: [
       {
-        id: 'output',
+        id: 'image',
         name: 'Image',
         type: 'image'
       }
