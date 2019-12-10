@@ -1,14 +1,6 @@
 <template>
   <div style="position: relative">
-    <div class="toolbox-container">
-      <div
-        class="toolbox-node"
-        v-for="(nodeType, component) in nodeTypes"
-        :key="nodeType.spec.id"
-        @click="addNode(component, nodeType.spec)"
-      >{{ nodeType.spec.title }}</div>
-    </div>
-
+    <p-toolbox :types="nodeTypes" @add="addNode" />
     <p-background>
       <p-edge
         v-if="newEdge"
@@ -47,6 +39,7 @@
 
 <script>
 import PBackground from '../components/Background'
+import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
 
@@ -59,18 +52,28 @@ import { NodeInstance, EdgeInstance } from '../utils/instances'
 import types from '../utils/types'
 
 const nodeTypes = {
-  Number,
-  Average,
-  Binarize,
-  Note
+  'Values': {
+    Number
+  },
+  'Numerical': {
+    Average,
+    Binarize
+  },
+  'Other': {
+    Note
+  }
 }
 
 export default {
-  components: Object.assign({
-    PBackground,
-    PNode,
-    PEdge
-  }, nodeTypes),
+  components: Object.assign(
+    {
+      PBackground,
+      PToolbox,
+      PNode,
+      PEdge
+    },
+    Object.assign.apply(null, [{}, ...Object.values(nodeTypes)])
+  ),
   data () {
     return {
       nodeTypes,
