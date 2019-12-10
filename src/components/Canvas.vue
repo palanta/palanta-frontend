@@ -163,17 +163,17 @@ export default {
         if (nearbyConnector) to = nearbyConnector
 
         if (!this.newEdge) {
-          if (event.instance.input && event.instance.connected) {
-            const edge = event.instance.edges[0] // TODO: check (/enforce) if exists and only one
+          if (event.component.input && event.component.connected) {
+            const edge = event.component.edges[0] // TODO: check (/enforce) if exists and only one
             this.removeEdge(edge)
             this.newEdge = edge
             this.newEdge.start.connecting = true
             this.newEdgeForwards = true
           } else {
-            const from = event.instance
-            const color = types.colors[event.instance.spec.type]
+            const from = event.component
+            const color = types.colors[event.component.spec.type]
             this.newEdge = event.isOutput ? new EdgeInstance(from, to, color) : new EdgeInstance(to, from, color)
-            event.instance.connecting = true
+            event.component.connecting = true
             this.newEdgeForwards = event.isOutput
           }
         } else {

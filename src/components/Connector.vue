@@ -71,7 +71,7 @@ export default {
     },
     handlePan (event) {
       this.$emit('connect', {
-        instance: this,
+        component: this,
         connector: this.$refs.connector,
         isOutput: this.output,
         isFirst: event.isFirst,
