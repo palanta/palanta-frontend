@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     addNode (component, spec) {
-      this.nodes.push(new NodeInstance(component, spec))
+      this.nodes.push(new NodeInstance(component, spec, { x: 300, y: 100 }))
     },
     addEdge (edge) {
       if (this.isValidEdge(edge)) {

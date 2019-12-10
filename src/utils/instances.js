@@ -12,13 +12,14 @@ export class ConnectorInstance {
 }
 
 export class NodeInstance {
-  constructor (component, spec) {
+  constructor (component, spec, position) {
     this.id = uuid()
     this.title = spec.title
     this.inputs = spec.inputs.map(input => new ConnectorInstance(input))
     this.outputs = spec.outputs.map(output => new ConnectorInstance(output))
     this.component = component
     this.spec = spec
+    this.position = position
   }
 }
 
