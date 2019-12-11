@@ -91,7 +91,10 @@ export default {
   },
   methods: {
     addNode (component, spec) {
-      this.nodes.push(new NodeInstance(component, spec, { x: window.scrollX + 300, y: window.scrollY + 100 }))
+      this.nodes.push(new NodeInstance(component, spec, {
+        x: window.scrollX - this.scroll.x + 300,
+        y: window.scrollY - this.scroll.y + 100
+      }))
     },
     addEdge (edge) {
       if (this.isValidEdge(edge)) {
