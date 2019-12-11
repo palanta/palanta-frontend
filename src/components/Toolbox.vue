@@ -35,11 +35,10 @@
 <style scoped>
 #toolbox-container {
   width: 200px;
+  height: 100vh;
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-bottom-right-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
   border-right: solid #505050 3px;
-  border-bottom: solid #505050 3px;
   z-index: 1;
 }
 
