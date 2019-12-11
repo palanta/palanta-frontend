@@ -7,7 +7,7 @@ export default {
   spec: {
     id: 'std::implication',
     title: 'Implication',
-    icon: require('../../assets/node_icons/node_implication.svg'),
+    icon: require('../../../assets/node_icons/node_implication.svg'),
     inputs: [
       {
         id: 'boolean',

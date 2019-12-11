@@ -7,7 +7,7 @@ export default {
   spec: {
     id: 'std::disjunction',
     title: 'Disjunction',
-    icon: require('../../assets/node_icons/node_disjunction.svg'),
+    icon: require('../../../assets/node_icons/node_disjunction.svg'),
     inputs: [
       {
         id: 'boolean',

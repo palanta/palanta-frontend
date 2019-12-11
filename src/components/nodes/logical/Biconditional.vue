@@ -7,7 +7,7 @@ export default {
   spec: {
     id: 'std::biconditional',
     title: 'Biconditional',
-    icon: require('../../assets/node_icons/node_biconditional.svg'),
+    icon: require('../../../assets/node_icons/node_biconditional.svg'),
     inputs: [
       {
         id: 'boolean',

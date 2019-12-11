@@ -7,7 +7,7 @@ export default {
   spec: {
     id: 'std::exclusivedisjunction',
     title: 'Exclusive Disjunction',
-    icon: require('../../assets/node_icons/node_exclusivedisjunction.svg'),
+    icon: require('../../../assets/node_icons/node_exclusivedisjunction.svg'),
     inputs: [
       {
         id: 'boolean',
