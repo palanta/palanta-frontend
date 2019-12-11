@@ -6,9 +6,11 @@
           v-for="(category, title) in types"
           :key="title"
           :label="title"
-          header-style="background-color: #303030; border-bottom: solid #505050 3px"
+          header-style="background-color: #303030;
+                        border-bottom: solid #505050 3px;
+                        min-height: 36px;"
         >
-          <div class="q-py-sm">
+          <div class="q-py-xs">
             <div class="node-list-element row justify-start q-mx-sm q-my-none"
                   v-for="(type, component) in category"
                   :key="type.spec.id"
@@ -16,7 +18,7 @@
               <div class="col-1">
                 <div class="tree-line" />
               </div>
-              <div class="col q-py-sm">
+              <div class="col q-py-xs">
                 <q-btn dense
                   color="primary"
                   class="full-width row"
@@ -39,12 +41,10 @@
 
 <style scoped>
 #toolbox-wrapper {
-  width: 220px;
-  max-width: 220px;
   height: 100vh;
   position: fixed;
   display: flex;
-  transition: 120ms ease-in-out;
+  transition: 150ms ease-in-out;
   z-index: 1;
 }
 
@@ -63,7 +63,7 @@
   height: 100%;
   border-left: solid #505050 4px;
   border-bottom: solid #505050 2px;
-  box-shadow: 0px 2px 0 0 #505050;
+  box-shadow: 0 2px 0 0 #505050;
   z-index: -1;
 }
 
@@ -73,7 +73,7 @@
 }
 
 .toolbox-toggle {
-  width: 2.7em;
+  width: 2.5em;
   height: 2.5em;
   background-color: #202020;
   border-right: solid #505050 3px;
