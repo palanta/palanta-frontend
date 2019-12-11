@@ -18,11 +18,11 @@
             <div class="col q-py-sm">
               <q-btn
                 color="primary"
-                class="full-width row"
+                class="full-width row toolbox-button"
                 @click="$emit('add', component, type.spec)"
               >
                 <img id="icon" class="non-selectable col-auto" v-if="type.spec.icon" :src="type.spec.icon" />
-                <div class="col">{{ type.spec.title }}</div>
+                <div class="col toolbox-text">{{ type.spec.title }}</div>
               </q-btn>
             </div>
           </div>
@@ -52,6 +52,15 @@
   border-bottom: solid #505050 2px;
   box-shadow: 0px 2px 0 0 #505050;
   z-index: -1;
+}
+
+.toolbox-button {
+  padding: 4px;
+}
+
+.toolbox-text {
+  margin-left: 4px;
+  text-align: left;
 }
 </style>
 
