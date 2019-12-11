@@ -2,7 +2,7 @@
   <div
     id="background"
     class="grid-background"
-    :style="{backgroundPosition: `${-scroll.x}px ${-scroll.y}px`}"
+    :style="{ backgroundPosition: `${-scroll.x}px ${-scroll.y}px` }"
   >
     <slot />
   </div>

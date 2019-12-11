@@ -2,7 +2,7 @@
   <div id="canvas">
     <p-toolbox id="toolbox" :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
-      <div :style="{position: 'absolute', top: -scroll.y + 'px', left: -scroll.x + 'px'}">
+      <div :style="{ position: 'absolute', top: -scroll.y + 'px', left: -scroll.x + 'px' }">
         <p-edge
           v-if="newEdge"
           ref="newEdge"
