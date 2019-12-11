@@ -15,7 +15,7 @@ export default {
   spec: {
     id: 'std::text',
     title: 'Text',
-    icon: require('../../assets/node_icons/node_text.svg'),
+    icon: require('../../../assets/node_icons/node_text.svg'),
     inputs: [],
     outputs: [
       {

@@ -43,45 +43,19 @@ import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
 
-import PNNumber from '../components/nodes/Number'
-import PNBoolean from '../components/nodes/Boolean'
-import PNText from '../components/nodes/Text'
-import PNImage from '../components/nodes/Image'
-import PNAverage from '../components/nodes/Average'
-import PNBinarize from '../components/nodes/Binarize'
-import PNNote from '../components/nodes/Note'
-import PNAddition from '../components/nodes/Addition'
-import PNSubtraction from '../components/nodes/Subtraction'
-import PNMultiplication from '../components/nodes/Multiplication'
-import PNDivision from '../components/nodes/Division'
-import PNExponentiation from '../components/nodes/Exponentiation'
-import PNRoot from '../components/nodes/Root'
-import PNLogarithm from '../components/nodes/Logarithm'
+import Values from '../components/nodes/values/values'
+import Numerical from '../components/nodes/numerical/numerical'
+import ImageProcessing from '../components/nodes/image_processing/image_processing'
+import Miscellanious from '../components/nodes/miscellanious/miscellanious'
 
 import { NodeInstance, EdgeInstance } from '../utils/instances'
 import types from '../utils/types'
 
 const nodeTypes = {
-  'Values': {
-    PNNumber,
-    PNBoolean,
-    PNText,
-    PNImage
-  },
-  'Numerical': {
-    PNAverage,
-    PNBinarize,
-    PNAddition,
-    PNSubtraction,
-    PNMultiplication,
-    PNDivision,
-    PNExponentiation,
-    PNRoot,
-    PNLogarithm
-  },
-  'Other': {
-    PNNote
-  }
+  'Values': Values,
+  'Numerical': Numerical,
+  'Image Processing': ImageProcessing,
+  'Miscellanious': Miscellanious
 }
 
 export default {

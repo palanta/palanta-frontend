@@ -6,9 +6,9 @@
 
 export default {
   spec: {
-    id: 'std::subtraction',
-    title: 'Subtraction',
-    icon: require('../../assets/node_icons/node_subtraction.svg'),
+    id: 'std::addition',
+    title: 'Addition',
+    icon: require('../../../assets/node_icons/node_addition.svg'),
     inputs: [
       {
         id: 'number',
@@ -19,7 +19,7 @@ export default {
     ],
     outputs: [
       {
-        name: 'Difference',
+        name: 'Sum',
         type: 'number'
       }
     ]

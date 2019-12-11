@@ -14,7 +14,7 @@ export default {
   spec: {
     id: 'std::image',
     title: 'Image',
-    icon: require('../../assets/node_icons/node_image.svg'),
+    icon: require('../../../assets/node_icons/node_image.svg'),
     inputs: [],
     outputs: [
       {

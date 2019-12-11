@@ -6,9 +6,9 @@
 
 export default {
   spec: {
-    id: 'std::multiplication',
-    title: 'Multiplication',
-    icon: require('../../assets/node_icons/node_multiplication.svg'),
+    id: 'std::subtraction',
+    title: 'Subtraction',
+    icon: require('../../../assets/node_icons/node_subtraction.svg'),
     inputs: [
       {
         id: 'number',
@@ -19,7 +19,7 @@ export default {
     ],
     outputs: [
       {
-        name: 'Product',
+        name: 'Difference',
         type: 'number'
       }
     ]
