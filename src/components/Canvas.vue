@@ -43,24 +43,38 @@ import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
 
-import Number from '../components/nodes/Number'
-import Average from '../components/nodes/Average'
-import Binarize from '../components/nodes/Binarize'
-import Note from '../components/nodes/Note'
+import PNNumber from '../components/nodes/Number'
+import PNAverage from '../components/nodes/Average'
+import PNBinarize from '../components/nodes/Binarize'
+import PNNote from '../components/nodes/Note'
+import PNConjunction from '../components/nodes/Conjunction'
+import PNDisjunction from '../components/nodes/Disjunction'
+import PNExclusiveDisjunction from '../components/nodes/ExclusiveDisjunction'
+import PNNegation from '../components/nodes/Negation'
+import PNImplication from '../components/nodes/Implication'
+import PNBiconditional from '../components/nodes/Biconditional'
 
 import { NodeInstance, EdgeInstance } from '../utils/instances'
 import types from '../utils/types'
 
 const nodeTypes = {
   'Values': {
-    Number
+    PNNumber
   },
   'Numerical': {
-    Average,
-    Binarize
+    PNAverage,
+    PNBinarize
+  },
+  'Logical': {
+    PNConjunction,
+    PNDisjunction,
+    PNExclusiveDisjunction,
+    PNNegation,
+    PNImplication,
+    PNBiconditional
   },
   'Other': {
-    Note
+    PNNote
   }
 }
 
