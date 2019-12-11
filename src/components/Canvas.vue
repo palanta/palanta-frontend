@@ -43,24 +43,44 @@ import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
 
-import Number from '../components/nodes/Number'
-import Average from '../components/nodes/Average'
-import Binarize from '../components/nodes/Binarize'
-import Note from '../components/nodes/Note'
+import PNNumber from '../components/nodes/Number'
+import PNBoolean from '../components/nodes/Boolean'
+import PNText from '../components/nodes/Text'
+import PNImage from '../components/nodes/Image'
+import PNAverage from '../components/nodes/Average'
+import PNBinarize from '../components/nodes/Binarize'
+import PNNote from '../components/nodes/Note'
+import PNAddition from '../components/nodes/Addition'
+import PNSubtraction from '../components/nodes/Subtraction'
+import PNMultiplication from '../components/nodes/Multiplication'
+import PNDivision from '../components/nodes/Division'
+import PNExponentiation from '../components/nodes/Exponentiation'
+import PNRoot from '../components/nodes/Root'
+import PNLogarithm from '../components/nodes/Logarithm'
 
 import { NodeInstance, EdgeInstance } from '../utils/instances'
 import types from '../utils/types'
 
 const nodeTypes = {
   'Values': {
-    Number
+    PNNumber,
+    PNBoolean,
+    PNText,
+    PNImage
   },
   'Numerical': {
-    Average,
-    Binarize
+    PNAverage,
+    PNBinarize,
+    PNAddition,
+    PNSubtraction,
+    PNMultiplication,
+    PNDivision,
+    PNExponentiation,
+    PNRoot,
+    PNLogarithm
   },
   'Other': {
-    Note
+    PNNote
   }
 }
 
@@ -147,7 +167,6 @@ export default {
           nearbyConnector = closest
         }
       }
-
       if (event.isFinal) {
         if (this.newEdge) {
           if (this.newEdge.start) this.newEdge.start.connecting = false
@@ -165,7 +184,6 @@ export default {
           y: event.position.y - this.$el.offsetTop + window.scrollY
         }
         if (nearbyConnector) to = nearbyConnector
-
         if (!this.newEdge) {
           if (event.component.input && event.component.connected) {
             const edge = event.component.edges[0] // TODO: check (/enforce) if exists and only one

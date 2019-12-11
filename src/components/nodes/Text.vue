@@ -1,5 +1,5 @@
 <template>
-  <div class="q-px-md q-py-md">
+  <div class="q-px-md q-pt-md">
     <q-input
       filled
       autogrow
@@ -13,11 +13,17 @@
 <script>
 export default {
   spec: {
-    id: 'std::note',
-    title: 'Note',
-    icon: require('../../assets/node_icons/node_note.svg'),
+    id: 'std::text',
+    title: 'Text',
+    icon: require('../../assets/node_icons/node_text.svg'),
     inputs: [],
-    outputs: []
+    outputs: [
+      {
+        id: 'value',
+        name: 'Value',
+        type: 'text'
+      }
+    ]
   },
   data: () => ({
     text: ''
