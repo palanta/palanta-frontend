@@ -44,9 +44,19 @@ import PNode from '../components/Node'
 import PEdge from '../components/Edge'
 
 import PNNumber from '../components/nodes/Number'
+import PNBoolean from '../components/nodes/Boolean'
+import PNText from '../components/nodes/Text'
+import PNImage from '../components/nodes/Image'
 import PNAverage from '../components/nodes/Average'
 import PNBinarize from '../components/nodes/Binarize'
 import PNNote from '../components/nodes/Note'
+import PNAddition from '../components/nodes/Addition'
+import PNSubtraction from '../components/nodes/Subtraction'
+import PNMultiplication from '../components/nodes/Multiplication'
+import PNDivision from '../components/nodes/Division'
+import PNExponentiation from '../components/nodes/Exponentiation'
+import PNRoot from '../components/nodes/Root'
+import PNLogarithm from '../components/nodes/Logarithm'
 import PNConjunction from '../components/nodes/Conjunction'
 import PNDisjunction from '../components/nodes/Disjunction'
 import PNExclusiveDisjunction from '../components/nodes/ExclusiveDisjunction'
@@ -59,11 +69,21 @@ import types from '../utils/types'
 
 const nodeTypes = {
   'Values': {
-    PNNumber
+    PNNumber,
+    PNBoolean,
+    PNText,
+    PNImage
   },
   'Numerical': {
     PNAverage,
-    PNBinarize
+    PNBinarize,
+    PNAddition,
+    PNSubtraction,
+    PNMultiplication,
+    PNDivision,
+    PNExponentiation,
+    PNRoot,
+    PNLogarithm
   },
   'Logical': {
     PNConjunction,
@@ -99,7 +119,7 @@ export default {
   },
   methods: {
     addNode (component, spec) {
-      this.nodes.push(new NodeInstance(component, spec))
+      this.nodes.push(new NodeInstance(component, spec, { x: window.scrollX + 300, y: window.scrollY + 100 }))
     },
     addEdge (edge) {
       if (this.isValidEdge(edge)) {
@@ -161,7 +181,6 @@ export default {
           nearbyConnector = closest
         }
       }
-
       if (event.isFinal) {
         if (this.newEdge) {
           if (this.newEdge.start) this.newEdge.start.connecting = false
@@ -175,11 +194,10 @@ export default {
         }
       } else {
         let to = {
-          x: event.position.x - this.$el.offsetLeft,
-          y: event.position.y - this.$el.offsetTop
+          x: event.position.x - this.$el.offsetLeft + window.scrollX,
+          y: event.position.y - this.$el.offsetTop + window.scrollY
         }
         if (nearbyConnector) to = nearbyConnector
-
         if (!this.newEdge) {
           if (event.component.input && event.component.connected) {
             const edge = event.component.edges[0] // TODO: check (/enforce) if exists and only one
