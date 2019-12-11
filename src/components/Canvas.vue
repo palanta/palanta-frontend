@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative">
-    <p-toolbox :types="nodeTypes" @add="addNode" />
+    <p-toolbox :types="nodeTypes" @add="addNode" @toggle="toolboxVisible = !toolboxVisible"/>
     <p-background>
       <p-edge
         v-if="newEdge"
@@ -74,7 +74,8 @@ export default {
       nodes: [],
       edges: [],
       newEdge: null,
-      newEdgeForwards: null
+      newEdgeForwards: null,
+      toolboxVisible: true
     }
   },
   methods: {
