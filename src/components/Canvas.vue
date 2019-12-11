@@ -1,34 +1,36 @@
 <template>
   <div style="position: relative">
     <p-toolbox :types="nodeTypes" @add="addNode" />
-    <p-background>
-      <p-edge
-        v-if="newEdge"
-        ref="newEdge"
-        :start="newEdge.start.$refs ? newEdge.start.$refs.connector : newEdge.start"
-        :end="newEdge.end.$refs ? newEdge.end.$refs.connector : newEdge.end"
-        :color="newEdge.color"
-      />
-      <p-edge
-        v-for="edge in edges"
-        :ref="edge.id"
-        :key="edge.id"
-        :start="edge.start.$refs.connector"
-        :end="edge.end.$refs.connector"
-        :color="edge.color"
-      />
-      <p-node
-        v-for="node in nodes"
-        :key="node.id"
-        :instance="node"
-        :x="300"
-        :y="100"
-        ref="nodes"
-        @connect="onConnect"
-        @move="onNodeMove"
-      >
-        <component :is="node.component" />
-      </p-node>
+    <p-background v-touch-pan.mouse.prevent="handlePan">
+      <div :style="{position: 'absolute', top: scroll.y + 'px', left: scroll.x + 'px'}">
+        <p-edge
+          v-if="newEdge"
+          ref="newEdge"
+          :start="newEdge.start.$refs ? newEdge.start.$refs.connector : newEdge.start"
+          :end="newEdge.end.$refs ? newEdge.end.$refs.connector : newEdge.end"
+          :color="newEdge.color"
+        />
+        <p-edge
+          v-for="edge in edges"
+          :ref="edge.id"
+          :key="edge.id"
+          :start="edge.start.$refs.connector"
+          :end="edge.end.$refs.connector"
+          :color="edge.color"
+        />
+        <p-node
+          v-for="node in nodes"
+          :key="node.id"
+          :instance="node"
+          :x="300"
+          :y="100"
+          ref="nodes"
+          @connect="onConnect"
+          @move="onNodeMove"
+        >
+          <component :is="node.component" />
+        </p-node>
+      </div>
     </p-background>
   </div>
 </template>
@@ -74,7 +76,11 @@ export default {
       nodes: [],
       edges: [],
       newEdge: null,
-      newEdgeForwards: null
+      newEdgeForwards: null,
+      scroll: {
+        x: 0,
+        y: 0
+      }
     }
   },
   methods: {
@@ -154,8 +160,8 @@ export default {
         }
       } else {
         let to = {
-          x: event.position.x - this.$el.offsetLeft + window.scrollX,
-          y: event.position.y - this.$el.offsetTop + window.scrollY
+          x: event.position.x - this.$el.offsetLeft + window.scrollX - this.scroll.x,
+          y: event.position.y - this.$el.offsetTop + window.scrollY - this.scroll.y
         }
         if (nearbyConnector) to = nearbyConnector
         if (!this.newEdge) {
@@ -182,6 +188,10 @@ export default {
     onNodeMove (node) {
       node.edges.forEach(edge => this.$refs[edge.id].forEach(component => component.refresh()))
       if (this.$refs.newEdge) this.$refs.newEdge.refresh()
+    },
+    handlePan (event) {
+      this.scroll.x += event.delta.x
+      this.scroll.y += event.delta.y
     }
   }
 }
