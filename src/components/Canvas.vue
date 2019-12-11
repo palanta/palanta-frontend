@@ -1,5 +1,5 @@
 <template>
-  <div style="position: absolute; width: 100%; height: 100%;">
+  <div id="canvas">
     <p-toolbox :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
       <div :style="{position: 'absolute', top: scroll.y + 'px', left: scroll.x + 'px'}">
@@ -37,6 +37,12 @@
 
 <style>
 @import "../css/palanta.css";
+#canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 </style>
 
 <script>
