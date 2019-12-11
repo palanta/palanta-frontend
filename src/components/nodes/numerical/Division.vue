@@ -8,7 +8,7 @@ export default {
   spec: {
     id: 'std::division',
     title: 'Division',
-    icon: require('../../assets/node_icons/node_division.svg'),
+    icon: require('../../../assets/node_icons/node_division.svg'),
     inputs: [
       {
         id: 'number',

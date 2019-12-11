@@ -6,22 +6,22 @@
 
 export default {
   spec: {
-    id: 'std::root',
-    title: 'Root',
-    icon: require('../../assets/node_icons/node_root.svg'),
+    id: 'std::logarithm',
+    title: 'Logarithm',
+    icon: require('../../../assets/node_icons/node_logarithm.svg'),
     inputs: [
       {
         name: 'Number',
         type: 'number'
       },
       {
-        name: 'Degree',
+        name: 'Base',
         type: 'number'
       }
     ],
     outputs: [
       {
-        name: 'Root',
+        name: 'Logarithm',
         type: 'number'
       }
     ]

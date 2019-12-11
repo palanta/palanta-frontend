@@ -8,7 +8,7 @@ export default {
   spec: {
     id: 'std::average',
     title: 'Average',
-    icon: require('../../assets/node_icons/node_average.svg'),
+    icon: require('../../../assets/node_icons/node_average.svg'),
     inputs: [
       {
         id: 'number',

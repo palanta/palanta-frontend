@@ -15,7 +15,7 @@ export default {
   spec: {
     id: 'std::note',
     title: 'Note',
-    icon: require('../../assets/node_icons/node_note.svg'),
+    icon: require('../../../assets/node_icons/node_note.svg'),
     inputs: [],
     outputs: []
   },
