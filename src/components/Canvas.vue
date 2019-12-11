@@ -2,7 +2,7 @@
   <div id="canvas">
     <p-toolbox :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
-      <div :style="{position: 'absolute', top: scroll.y + 'px', left: scroll.x + 'px'}">
+      <div :style="{position: 'absolute', top: -scroll.y + 'px', left: -scroll.x + 'px'}">
         <p-edge
           v-if="newEdge"
           ref="newEdge"
@@ -92,8 +92,8 @@ export default {
   methods: {
     addNode (component, spec) {
       this.nodes.push(new NodeInstance(component, spec, {
-        x: window.scrollX - this.scroll.x + 300,
-        y: window.scrollY - this.scroll.y + 100
+        x: window.scrollX + this.scroll.x + 300,
+        y: window.scrollY + this.scroll.y + 100
       }))
     },
     addEdge (edge) {
@@ -169,8 +169,8 @@ export default {
         }
       } else {
         let to = {
-          x: event.position.x - this.$el.offsetLeft + window.scrollX - this.scroll.x,
-          y: event.position.y - this.$el.offsetTop + window.scrollY - this.scroll.y
+          x: event.position.x - this.$el.offsetLeft + window.scrollX + this.scroll.x,
+          y: event.position.y - this.$el.offsetTop + window.scrollY + this.scroll.y
         }
         if (nearbyConnector) to = nearbyConnector
         if (!this.newEdge) {
@@ -199,8 +199,8 @@ export default {
       if (this.$refs.newEdge) this.$refs.newEdge.refresh()
     },
     handlePan (event) {
-      this.scroll.x += event.delta.x
-      this.scroll.y += event.delta.y
+      this.scroll.x -= event.delta.x
+      this.scroll.y -= event.delta.y
     }
   }
 }
