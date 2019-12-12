@@ -102,14 +102,15 @@ export default {
     },
     onConnected (edge) {
       this.edges.push(edge)
-      if (edge.start.node === this) this.insertVariadic(this.instance.outputs, edge.start.spec)
-      if (edge.end.node === this) this.insertVariadic(this.instance.inputs, edge.end.spec)
+      if (edge.start.node === this) this.insertVariadic('output', edge.start.spec)
+      if (edge.end.node === this) this.insertVariadic('input', edge.end.spec)
     },
     onDisconnected (edge) {
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
     },
-    insertVariadic (channel, afterSpec) {
+    insertVariadic (type, afterSpec) {
       if (!afterSpec.variadic) return
+      const channel = type === 'input' ? this.instance.inputs : this.instance.outputs
       const index = channel.indexOf(afterSpec)
       if (index >= 0) {
         const connected = this.$refs.connectors.filter(connector => channel.indexOf(connector.spec) >= 0 && connector.spec.specId === afterSpec.specId)
@@ -145,9 +146,10 @@ export default {
         this.$emit('move', this)
       })
     },
-    removeVariadic (channel, spec) {
+    removeVariadic (type, spec) {
       if (!spec.variadic) return
       if (!spec.variadic.collapse) return
+      const channel = type === 'input' ? this.instance.inputs : this.instance.outputs
       const index = channel.indexOf(spec)
       if (index >= 0) {
         const connected = this.$refs.connectors.filter(connector => connector.connected && connector.spec.specId === spec.specId).length
