@@ -11,8 +11,13 @@ export default {
     icon: require('../../../assets/node_icons/node_division.svg'),
     inputs: [
       {
-        id: 'number',
-        name: 'Number',
+        id: 'dividend',
+        name: 'Dividend',
+        type: 'number'
+      },
+      {
+        id: 'divisor',
+        name: 'Divisor',
         type: 'number',
         variadic: true
       }

@@ -11,8 +11,13 @@ export default {
     icon: require('../../../assets/node_icons/node_subtraction.svg'),
     inputs: [
       {
-        id: 'number',
-        name: 'Number',
+        id: 'minuend',
+        name: 'Minuend',
+        type: 'number'
+      },
+      {
+        id: 'subtrahend',
+        name: 'Subtrahend',
         type: 'number',
         variadic: true
       }
