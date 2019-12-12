@@ -102,44 +102,62 @@ export default {
     },
     onConnected (edge) {
       this.edges.push(edge)
-      this.updateVariadics()
+      if (edge.start.node === this) this.insertVariadic(this.instance.outputs, edge.start.spec)
+      if (edge.end.node === this) this.insertVariadic(this.instance.inputs, edge.end.spec)
     },
     onDisconnected (edge) {
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
     },
-    insertVariadic (afterSpec) {
-      const channels = [this.instance.inputs, this.instance.outputs]
-      channels.forEach(channel => {
-        const index = channel.indexOf(afterSpec)
-        if (index >= 0) {
+    insertVariadic (channel, afterSpec) {
+      if (!afterSpec.variadic) return
+      const index = channel.indexOf(afterSpec)
+      if (index >= 0) {
+        const connected = this.$refs.connectors.filter(connector => channel.indexOf(connector.spec) >= 0 && connector.spec.specId === afterSpec.specId)
+        if (connected.length === connected.filter(connector => connector.connected).length) {
           const newSpec = new ConnectorInstance(afterSpec)
-          newSpec.last = true
-          afterSpec.last = false
-          channel.splice(index + 1, 0, newSpec)
-        }
-      })
-    },
-    removeVariadic (spec) {
-      if (!spec.last) {
-        const channels = [this.instance.inputs, this.instance.outputs]
-        channels.forEach(channel => {
-          const index = channel.indexOf(spec)
-          if (index >= 0) {
-            if (spec.last) channel[index - 1].last = true
-            channel.splice(index, 1)
+          let lastIndex = index
+          for (let i = index; i < channel.length; ++i) {
+            if (channel[i].specId === newSpec.specId) lastIndex = i
           }
-        })
+          channel.splice(lastIndex + 1, 0, newSpec)
+          channel.counts[newSpec.specId]++
+        } else {
+          if (afterSpec.variadic.collapse) {
+            // Move unconnected connector behind last connected one
+            channel.reverse()
+            const emptyIndex = channel.findIndex(connector =>
+              connector.specId === afterSpec.specId &&
+              !this.$refs.connectors.filter(component => component.spec === connector)[0].connected
+            )
+            const lastIndex = channel.findIndex(connector =>
+              connector.specId === afterSpec.specId &&
+              this.$refs.connectors.filter(component => component.spec === connector)[0].connected
+            )
+            if (emptyIndex > lastIndex) {
+              // Move empty connector before last connected (because the channel is reversed)
+              channel.splice(lastIndex, 0, channel.splice(emptyIndex, 1)[0])
+            }
+            channel.reverse()
+          }
+        }
       }
       this.$nextTick(function () {
         this.$emit('move', this)
       })
     },
-    updateVariadics () {
-      this.$refs.connectors.forEach(connector => {
-        if (connector.spec.variadic) {
-          if (!connector.connected) this.removeVariadic(connector.spec)
-          if (connector.connected && connector.spec.last) this.insertVariadic(connector.spec)
+    removeVariadic (channel, spec) {
+      if (!spec.variadic) return
+      if (!spec.variadic.collapse) return
+      const index = channel.indexOf(spec)
+      if (index >= 0) {
+        const connected = this.$refs.connectors.filter(connector => connector.connected && connector.spec.specId === spec.specId).length
+        if (Math.max(connected + 1, spec.variadic.minimum) < channel.counts[spec.specId]) {
+          channel.splice(index, 1)
+          channel.counts[spec.specId]--
         }
+      }
+      this.$nextTick(function () {
+        this.$emit('move', this)
       })
     }
   }
