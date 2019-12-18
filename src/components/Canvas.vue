@@ -22,8 +22,6 @@
           v-for="node in nodes"
           :key="node.id"
           :instance="node"
-          :x="300"
-          :y="100"
           ref="nodes"
           @connect="onConnect"
           @move="onNodeMove"
