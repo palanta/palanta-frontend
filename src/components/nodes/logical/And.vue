@@ -5,9 +5,9 @@
 <script>
 export default {
   spec: {
-    id: 'std::exclusivedisjunction',
-    title: 'Exclusive Disjunction',
-    icon: require('../../../assets/node_icons/node_exclusivedisjunction.svg'),
+    id: 'std::and',
+    title: 'And',
+    icon: require('../../../assets/node_icons/node_conjunction.svg'),
     inputs: [
       {
         id: 'boolean',

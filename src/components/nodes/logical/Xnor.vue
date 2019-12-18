@@ -5,10 +5,15 @@
 <script>
 export default {
   spec: {
-    id: 'std::negation',
-    title: 'Negation',
-    icon: require('../../../assets/node_icons/node_negation.svg'),
+    id: 'std::xnor',
+    title: 'Xnor',
+    icon: require('../../../assets/node_icons/node_biconditional.svg'),
     inputs: [
+      {
+        id: 'boolean',
+        name: 'Boolean',
+        type: 'boolean'
+      },
       {
         id: 'boolean',
         name: 'Boolean',

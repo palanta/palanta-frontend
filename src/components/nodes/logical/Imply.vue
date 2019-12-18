@@ -5,8 +5,8 @@
 <script>
 export default {
   spec: {
-    id: 'std::implication',
-    title: 'Implication',
+    id: 'std::imply',
+    title: 'Imply',
     icon: require('../../../assets/node_icons/node_implication.svg'),
     inputs: [
       {

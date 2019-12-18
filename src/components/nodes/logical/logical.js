@@ -1,9 +1,11 @@
-import PNConjunction from './Conjunction'
-import PNDisjunction from './Disjunction'
-import PNExclusiveDisjunction from './ExclusiveDisjunction'
-import PNNegation from './Negation'
-import PNImplication from './Implication'
-import PNBiconditional from './Biconditional'
+import PNConjunction from './And'
+import PNDisjunction from './Or'
+import PNExclusiveDisjunction from './Xor'
+import PNNegation from './Not'
+import PNImplication from './Imply'
+import PNBiconditional from './Xnor'
+import PNAlternativeDenial from './Nand'
+import PNJointDenial from './Nor'
 
 export default {
   PNConjunction,
@@ -11,5 +13,7 @@ export default {
   PNExclusiveDisjunction,
   PNNegation,
   PNImplication,
-  PNBiconditional
+  PNBiconditional,
+  PNAlternativeDenial,
+  PNJointDenial
 }

@@ -5,15 +5,14 @@
 <script>
 export default {
   spec: {
-    id: 'std::disjunction',
-    title: 'Disjunction',
-    icon: require('../../../assets/node_icons/node_disjunction.svg'),
+    id: 'std::not',
+    title: 'Not',
+    icon: require('../../../assets/node_icons/node_negation.svg'),
     inputs: [
       {
         id: 'boolean',
         name: 'Boolean',
-        type: 'boolean',
-        variadic: true
+        type: 'boolean'
       }
     ],
     outputs: [

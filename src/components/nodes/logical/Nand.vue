@@ -5,9 +5,9 @@
 <script>
 export default {
   spec: {
-    id: 'std::biconditional',
-    title: 'Biconditional',
-    icon: require('../../../assets/node_icons/node_biconditional.svg'),
+    id: 'std::nand',
+    title: 'Nand',
+    icon: require('../../../assets/node_icons/node_alternativedenial.svg'),
     inputs: [
       {
         id: 'boolean',
