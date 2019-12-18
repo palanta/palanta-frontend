@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="toolbox-wrapper" :style="'left:' + toolboxOffset + 'px;'">
-      <div id="toolbox-container">
+      <div id="toolbox-container" :style="'min-width: ' + toolboxWidth + 'px;'">
         <q-expansion-item
           v-for="(category, title) in types"
           :key="title"
@@ -33,7 +33,7 @@
         </q-expansion-item>
       </div>
       <div class="toolbox-toggle">
-        <q-btn flat dense icon="menu" @click="$emit('toggle')"></q-btn>
+        <q-btn flat dense icon="menu" @click="toggleToolbox"></q-btn>
       </div>
     </div>
   </div>
@@ -49,7 +49,6 @@
 }
 
 #toolbox-container {
-  min-width: 200px;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   border-right: solid #505050 3px;
@@ -84,12 +83,23 @@
 
 <script>
 export default {
+  data () {
+    return {
+      toolboxWidth: 200,
+      toolboxVisible: true
+    }
+  },
   props: {
     types: Object
   },
   computed: {
     toolboxOffset: function () {
-      return this.$parent.$data.toolboxVisible ? '0' : '-200'
+      return this.toolboxVisible ? '0' : '-' + this.toolboxWidth
+    }
+  },
+  methods: {
+    toggleToolbox () {
+      this.toolboxVisible = !this.toolboxVisible
     }
   }
 }
