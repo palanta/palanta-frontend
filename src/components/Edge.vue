@@ -4,6 +4,7 @@
     :height="svgRect.height"
     :style="`position: absolute; left: ${svgRect.x}px; top: ${svgRect.y}px;`"
   >
+    <!-- TODO: add alternative if bundle prop is true -->
     <path
       fill="none"
       :stroke="color"
