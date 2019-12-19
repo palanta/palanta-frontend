@@ -23,7 +23,8 @@ export default {
   props: {
     start: [Object, HTMLElement],
     end: [Object, HTMLElement],
-    color: String
+    color: String,
+    bundle: Boolean
   },
   data () {
     return {

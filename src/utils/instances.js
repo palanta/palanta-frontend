@@ -7,6 +7,7 @@ export class ConnectorInstance {
     this.name = spec.name
     this.type = spec.type
     this.variadic = spec.variadic
+    this.bundle = spec.bundle
     if (this.variadic) this.last = true
   }
 }
@@ -24,10 +25,11 @@ export class NodeInstance {
 }
 
 export class EdgeInstance {
-  constructor (start, end, color) {
+  constructor (start, end, color, bundle) {
     this.id = uuid()
     this.start = start
     this.end = end
     this.color = color
+    this.bundle = bundle
   }
 }
