@@ -132,24 +132,31 @@ export default {
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
     },
     calculate (start) {
-      // Traverse canvas breadth-first to update node outputs
+      // Traverse canvas breadth-first to determine update order
       const affected = [start]
-      const processed = new Set(affected)
-      while (affected.length) {
-        const node = affected.shift()
+      const processed = new Set()
+      let index = 0
+      while (index < affected.length) {
+        const node = affected[index]
+        processed.add(node)
+        const nextNodes = new Set(node.edges.filter(edge => edge.start.node === node).map(edge => edge.end.node))
+        nextNodes.forEach(next => {
+          if (processed.has(next)) {
+            affected.splice(affected.indexOf(next), 1)
+            index--
+          }
+          affected.push(next)
+        })
+        index++
+      }
+
+      // Process in determined order
+      affected.forEach(node => {
         const [component] = this.$refs[`nodes.${node.instance.id}`]
         node.instance.calculate(component)
-
         const outEdges = node.edges.filter(edge => edge.start.node === node)
-        outEdges.forEach(edge => {
-          const next = edge.end.node
-          if (!processed.has(next)) {
-            edge.transport()
-            affected.push(next)
-            processed.add(next)
-          }
-        })
-      }
+        outEdges.forEach(edge => edge.transport())
+      })
     },
     isValidEdge (edge) {
       // Connect output to input
