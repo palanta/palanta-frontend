@@ -26,7 +26,11 @@
           @connect="onConnect"
           @move="onNodeMove"
         >
-          <component :is="node.component" />
+          <component
+            :is="node.component"
+            :ref="`nodes.${node.id}`"
+            @change="onNodeChange"
+          />
         </p-node>
       </div>
     </p-background>
@@ -96,9 +100,15 @@ export default {
   },
   methods: {
     addNode (component, spec) {
-      this.nodes.push(new NodeInstance(component, spec, {
+      const newNode = new NodeInstance(component, spec, {
         x: window.scrollX + this.scroll.x + 300,
         y: window.scrollY + this.scroll.y + 100
+      })
+      this.nodes.push(newNode)
+      // Initial calculation
+      this.$nextTick(() => this.$nextTick(() => {
+        const [component] = this.$refs[`nodes.${newNode.id}`]
+        newNode.calculate(component)
       }))
     },
     addEdge (edge) {
@@ -106,6 +116,8 @@ export default {
         this.edges.push(edge)
         edge.start.addEdge(edge)
         edge.end.addEdge(edge)
+        edge.transport()
+        this.calculate(edge.end.node)
         return true
       } else {
         console.error('Edge rejected') // TODO: make clearer to user
@@ -115,7 +127,29 @@ export default {
     removeEdge (edge) {
       edge.start.removeEdge(edge)
       edge.end.removeEdge(edge)
+      edge.clear()
+      this.calculate(edge.end.node)
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+    },
+    calculate (start) {
+      // Traverse canvas breadth-first to update node outputs
+      const affected = [start]
+      const processed = new Set(affected)
+      while (affected.length) {
+        const node = affected.shift()
+        const [component] = this.$refs[`nodes.${node.instance.id}`]
+        node.instance.calculate(component)
+
+        const outEdges = node.edges.filter(edge => edge.start.node === node)
+        outEdges.forEach(edge => {
+          const next = edge.end.node
+          if (!processed.has(next)) {
+            edge.transport()
+            affected.push(next)
+            processed.add(next)
+          }
+        })
+      }
     },
     isValidEdge (edge) {
       // Connect output to input
@@ -198,6 +232,9 @@ export default {
           if (this.$refs.newEdge) this.$refs.newEdge.refresh()
         }
       }
+    },
+    onNodeChange (node) {
+      this.calculate(node.$parent.$parent)
     },
     onNodeMove (node) {
       node.edges.forEach(edge => this.$refs[edge.id].forEach(component => component.refresh()))
