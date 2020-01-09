@@ -8,6 +8,7 @@
       fill="none"
       :stroke="color"
       stroke-width="4"
+      stroke-linecap="round"
       :d="`
         M ${relativeStart.x} ${relativeStart.y}
         C ${relativeStart.x + bezierOffset} ${relativeStart.y}
