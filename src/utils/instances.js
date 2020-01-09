@@ -24,10 +24,9 @@ export class NodeInstance {
 }
 
 export class EdgeInstance {
-  constructor (start, end, color) {
+  constructor (start, end) {
     this.id = uuid()
     this.start = start
     this.end = end
-    this.color = color
   }
 }
