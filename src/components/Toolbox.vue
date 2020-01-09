@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div id="toolbox-wrapper" :style="'left:' + toolboxOffset + 'px;'">
-      <div id="toolbox-container" :style="'min-width: ' + toolboxWidth + 'px;'">
+    <div id="toolbox-wrapper" :style="`left: ${toolboxOffset}px;`">
+      <div id="toolbox-container" :style="`min-width: ${toolboxWidth}px;`">
+        <div class="toolbox-title">Nodes</div>
         <q-expansion-item
           v-for="(category, title) in types"
           :key="title"
@@ -10,7 +11,7 @@
                         border-bottom: solid #505050 3px;
                         min-height: 36px;"
         >
-          <div class="q-py-xs">
+          <div class="q-py-xs" style="border-bottom: solid #505050 3px;">
             <div class="node-list-element row justify-start q-mx-sm q-my-none"
                   v-for="(type, component) in category"
                   :key="type.spec.id"
@@ -41,7 +42,6 @@
 
 <style scoped>
 #toolbox-wrapper {
-  height: 100vh;
   position: fixed;
   display: flex;
   transition: 150ms ease-in-out;
@@ -49,10 +49,18 @@
 }
 
 #toolbox-container {
-  height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   border-right: solid #505050 3px;
+  box-shadow: black 0 0 10px;
   z-index: 2;
+}
+
+.toolbox-title {
+  padding: 10px;
+  font-size: 18px;
+  background-color: #202020;
+  text-align: center;
+  border-bottom: solid #505050 3px;
 }
 
 .tree-line {
@@ -78,6 +86,7 @@
   border-right: solid #505050 3px;
   border-bottom: solid #505050 3px;
   border-bottom-right-radius: 8px;
+  z-index: 2;
 }
 </style>
 

@@ -1,6 +1,6 @@
 <template>
   <div id="canvas">
-    <p-toolbox id="toolbox" :types="nodeTypes" @add="addNode"/>
+    <p-toolbox id="toolbox" :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
       <div :style="{ position: 'absolute', top: -scroll.y + 'px', left: -scroll.x + 'px' }">
         <p-edge
@@ -28,7 +28,7 @@
           @connect="onConnect"
           @move="onNodeMove"
         >
-        <component :is="node.component" />
+          <component :is="node.component" />
         </p-node>
       </div>
     </p-background>
