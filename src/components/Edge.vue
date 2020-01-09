@@ -9,6 +9,8 @@
       fill="none"
       :stroke="color"
       stroke-width="4"
+      :stroke-dasharray="bundle && '16 8'"
+      stroke-dashoffset="-8"
       :d="`
         M ${relativeStart.x} ${relativeStart.y}
         C ${relativeStart.x + bezierOffset} ${relativeStart.y}
