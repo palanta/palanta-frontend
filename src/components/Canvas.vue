@@ -122,7 +122,7 @@ export default {
 
       // Type checking
       // TODO: more elaborate typechecking (bundles, casting)
-      if (edge.start.spec.type !== edge.end.spec.type) return false
+      if (!types.isCastable(edge.start.spec.type, edge.end.spec.type)) return false
 
       // Each input may be connected once only
       if (edge.end.connected) return false
