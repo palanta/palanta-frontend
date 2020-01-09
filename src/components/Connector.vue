@@ -2,7 +2,7 @@
   <div :class="this.output ? 'float-right' : 'float-left'" id="container">
     <div id="name" class="non-selectable" v-if="output">{{ spec.name }}</div>
     <div id="stump" v-touch-pan.mouse.prevent="handlePan">
-      <div v-if="spec.bundle" style="position: relative;"><div id="bundle" /></div>
+      <div v-if="spec.bundle" class="cursor-pointer" style="position: relative;"><div id="bundle" /></div>
       <div id="connector" ref="connector" class="cursor-pointer" :style="style" />
     </div>
     <div id="name" class="non-selectable" v-if="input">{{ spec.name }}</div>
