@@ -128,7 +128,6 @@ export default {
       edge.start.removeEdge(edge)
       edge.end.removeEdge(edge)
       edge.clear()
-      this.calculate(edge.end.node)
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
     },
     calculate (start) {
@@ -206,6 +205,13 @@ export default {
         if (this.newEdge) {
           if (this.newEdge.start) this.newEdge.start.connecting = false
           if (this.newEdge.end) this.newEdge.end.connecting = false
+
+          // Recalculate node where edge has been detached from
+          if (
+            this.newEdge.end.node !== event.component.node &&
+            this.newEdge.start && this.newEdge.start.node !== event.component.node
+          ) this.calculate(event.component.node)
+
           this.addEdge(this.newEdge)
           event.component.node.updateVariadics()
           if (this.newEdge.start.node && event.component.node !== this.newEdge.start.node) {
