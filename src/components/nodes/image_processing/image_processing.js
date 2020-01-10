@@ -1,5 +1,8 @@
 import PNBinarize from './Binarize'
 
 export default {
-  PNBinarize
+  basic: {
+    PNBinarize
+  },
+  advanced: {}
 }

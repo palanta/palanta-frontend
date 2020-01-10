@@ -13,8 +13,8 @@
         >
           <div class="q-py-xs" style="border-bottom: solid #505050 3px;">
             <div class="node-list-element row justify-start q-mx-sm q-my-none"
-                  v-for="(type, component) in category"
-                  :key="type.spec.id"
+                 v-for="(type, component) in category.basic"
+                 :key="type.spec.id"
             >
               <div class="col-1">
                 <div class="tree-line" />
@@ -29,6 +29,53 @@
                   <div class="col toolbox-text">{{ type.spec.title }}</div>
                 </q-btn>
               </div>
+            </div>
+            <div v-if="Object.keys(category.advanced).length > 0">
+              <div class="node-list-element row justify-start q-mx-sm q-my-none">
+                <div class="col-1">
+                  <div class="tree-line" />
+                </div>
+                <div class="col q-py-xs">
+                  <q-btn dense
+                         class="full-width"
+                         @click="toggleAdvanced(title)"
+                         style="background-color: #303030;
+                                border-radius: 0;
+                                border: solid #505050 3px;">
+                    <img id="icon" class="non-selectable col-auto"
+                         src="../assets/advanced.svg" />
+                    <div class="col toolbox-text">Advanced Nodes</div>
+                  </q-btn>
+                </div>
+              </div>
+              <q-expansion-item dense
+                                v-model="advancedNodes[title]"
+                                label="Advanced"
+                                class="advanced-section"
+                                header-style="display: none;">
+                <div class="node-list-element row justify-start q-mx-sm q-my-none"
+                     v-for="(type, component) in category.advanced"
+                     :key="type.spec.id"
+                     style="margin-left: 45px;"
+                >
+                  <div class="col-1">
+                    <div class="tree-line" />
+                  </div>
+                  <div class="col q-py-xs">
+                    <q-btn dense
+                           color="secondary"
+                           class="full-width row"
+                           @click="$emit('add', component, type.spec)"
+                    >
+                      <img id="icon"
+                           class="non-selectable col-auto"
+                           v-if="type.spec.icon"
+                           :src="type.spec.icon" />
+                      <div class="col toolbox-text">{{ type.spec.title }}</div>
+                    </q-btn>
+                  </div>
+                </div>
+              </q-expansion-item>
             </div>
           </div>
         </q-expansion-item>
@@ -94,8 +141,14 @@
 export default {
   data () {
     return {
-      toolboxWidth: 200,
-      toolboxVisible: true
+      toolboxWidth: 250,
+      toolboxVisible: true,
+      advancedNodes: {
+        'Values': false,
+        'Numerical': false,
+        'Image Processing': false,
+        'Miscellaneous': false
+      }
     }
   },
   props: {
@@ -109,6 +162,10 @@ export default {
   methods: {
     toggleToolbox () {
       this.toolboxVisible = !this.toolboxVisible
+    },
+    toggleAdvanced (category) {
+      console.log(category)
+      this.advancedNodes[category] = !this.advancedNodes[category]
     }
   }
 }

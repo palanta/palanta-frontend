@@ -1,5 +1,8 @@
 import PNNote from './Note'
 
 export default {
-  PNNote
+  basic: {
+    PNNote
+  },
+  advanced: {}
 }
