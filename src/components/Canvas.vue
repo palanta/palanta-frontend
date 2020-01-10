@@ -166,12 +166,12 @@ export default {
           if (this.newEdge.start) this.newEdge.start.connecting = false
           if (this.newEdge.end) this.newEdge.end.connecting = false
           this.addEdge(this.newEdge)
-          event.component.node.updateVariadics()
           if (this.newEdge.start.node && event.component.node !== this.newEdge.start.node) {
-            this.newEdge.start.node.updateVariadics()
+            this.newEdge.start.node.removeVariadic('output', this.newEdge.start.spec)
+            event.component.node.removeVariadic('input', event.component.spec)
           }
-          this.newEdge = null
         }
+        this.newEdge = null
       } else {
         let to = {
           x: event.position.x - this.$el.offsetLeft + window.scrollX + this.scroll.x,
