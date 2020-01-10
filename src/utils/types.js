@@ -8,7 +8,7 @@ export default {
   },
   casts: {
     image: ['any'],
-    number: ['any', 'boolean'],
+    number: ['any', 'text', 'boolean'],
     boolean: ['any'],
     text: ['any', 'boolean']
   },
