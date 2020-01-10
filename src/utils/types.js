@@ -7,14 +7,13 @@ export default {
     text: '#d47b00'
   },
   casts: {
-    image: ['any'],
-    number: ['any', 'text', 'boolean'],
-    boolean: ['any'],
-    text: ['any', 'boolean']
+    'any': ['image', 'number', 'boolean', 'text'],
+    'boolean': ['number', 'text'],
+    'text': ['number']
   },
   isCastable (from, to) {
     if (from === to) return true
-    if (this.casts[from] && this.casts[from].includes(to)) return true
+    if (this.casts[to] && this.casts[to].includes(from)) return true
     return false
   }
 }
