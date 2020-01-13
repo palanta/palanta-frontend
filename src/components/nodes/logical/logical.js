@@ -1,19 +1,19 @@
-import PNConjunction from './And'
-import PNDisjunction from './Or'
-import PNExclusiveDisjunction from './Xor'
-import PNNegation from './Not'
-import PNImplication from './Imply'
-import PNBiconditional from './Xnor'
-import PNAlternativeDenial from './Nand'
-import PNJointDenial from './Nor'
+import PNAnd from './And'
+import PNOr from './Or'
+import PNXor from './Xor'
+import PNNot from './Not'
+import PNImply from './Imply'
+import PNXnor from './Xnor'
+import PNNand from './Nand'
+import PNNor from './Nor'
 
 export default {
-  PNConjunction,
-  PNDisjunction,
-  PNExclusiveDisjunction,
-  PNNegation,
-  PNImplication,
-  PNBiconditional,
-  PNAlternativeDenial,
-  PNJointDenial
+  PNAnd,
+  PNOr,
+  PNXor,
+  PNNot,
+  PNImply,
+  PNXnor,
+  PNNand,
+  PNNor
 }
