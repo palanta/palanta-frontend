@@ -8,7 +8,6 @@
           ref="newEdge"
           :start="newEdge.start.$refs ? newEdge.start.$refs.connector : newEdge.start"
           :end="newEdge.end.$refs ? newEdge.end.$refs.connector : newEdge.end"
-          :color="newEdge.color"
         />
         <p-edge
           v-for="edge in edges"
@@ -16,7 +15,6 @@
           :key="edge.id"
           :start="edge.start.$refs.connector"
           :end="edge.end.$refs.connector"
-          :color="edge.color"
         />
         <p-node
           v-for="node in nodes"
@@ -124,7 +122,7 @@ export default {
 
       // Type checking
       // TODO: more elaborate typechecking (bundles, casting)
-      if (edge.start.spec.type !== edge.end.spec.type) return false
+      if (!types.isCastable(edge.start.spec.type, edge.end.spec.type)) return false
 
       // Each input may be connected once only
       if (edge.end.connected) return false
@@ -187,8 +185,7 @@ export default {
             this.newEdgeForwards = true
           } else {
             const from = event.component
-            const color = types.colors[event.component.spec.type]
-            this.newEdge = event.isOutput ? new EdgeInstance(from, to, color) : new EdgeInstance(to, from, color)
+            this.newEdge = event.isOutput ? new EdgeInstance(from, to) : new EdgeInstance(to, from)
             event.component.connecting = true
             this.newEdgeForwards = event.isOutput
           }

@@ -4,9 +4,22 @@
     :height="svgRect.height"
     :style="`position: absolute; left: ${svgRect.x}px; top: ${svgRect.y}px;`"
   >
+    <defs>
+      <linearGradient
+        :id="`gradient-${id}`"
+        gradientUnits="userSpaceOnUse"
+        :x1="relativeStart.x"
+        :y1="relativeStart.y"
+        :x2="relativeEnd.x"
+        :y2="relativeEnd.y"
+      >
+        <stop offset="50%"  :stop-color="startColor" />
+        <stop offset="90%" :stop-color="endColor" />
+      </linearGradient>
+    </defs>
     <path
       fill="none"
-      :stroke="color"
+      :stroke="`url(#gradient-${id})`"
       stroke-width="4"
       stroke-linecap="round"
       :d="`
@@ -20,14 +33,16 @@
 </template>
 
 <script lang="ts">
+import uuid from '../utils/uuid'
+
 export default {
   props: {
     start: [Object, HTMLElement],
-    end: [Object, HTMLElement],
-    color: String
+    end: [Object, HTMLElement]
   },
   data () {
     return {
+      id: uuid(),
       isMounted: false,
       centerStart: { x: 0, y: 0 },
       centerEnd: { x: 0, y: 0 }
@@ -65,6 +80,12 @@ export default {
     },
     padding () {
       return this.bezierOffset
+    },
+    startColor () {
+      return this.start.style.borderColor
+    },
+    endColor () {
+      return this.end.style ? this.end.style.borderColor : this.startColor
     }
   },
   methods: {
