@@ -13,7 +13,9 @@ export default {
         id: 'boolean',
         name: 'Boolean',
         type: 'boolean',
-        variadic: true
+        variadic: {
+          minimum: 2
+        }
       }
     ],
     outputs: [

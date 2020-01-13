@@ -12,12 +12,10 @@ export default {
       {
         id: 'boolean',
         name: 'Boolean',
-        type: 'boolean'
-      },
-      {
-        id: 'boolean',
-        name: 'Boolean',
-        type: 'boolean'
+        type: 'boolean',
+        variadic: {
+          minimum: 2
+        }
       }
     ],
     outputs: [
