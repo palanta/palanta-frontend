@@ -28,9 +28,9 @@ export default {
     ],
     calculate () {
       let sum = 0
-      const factors = this.input('number').filter(factor => !isNaN(factor.value))
-      factors.forEach(summand => {
-        sum += summand.value
+      const summands = this.input('number').map(summand => summand.value).filter(summand => !isNaN(summand))
+      summands.forEach(summand => {
+        sum += summand
       })
       this.output('sum').value = sum
     }

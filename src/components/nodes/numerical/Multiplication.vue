@@ -28,9 +28,9 @@ export default {
     ],
     calculate () {
       let product = 1
-      const factors = this.input('number').filter(factor => !isNaN(factor.value))
+      const factors = this.input('number').map(factor => factor.value).filter(factor => !isNaN(factor))
       factors.forEach(factor => {
-        product *= factor.value
+        product *= factor
       })
       this.output('product').value = product
     }
