@@ -18,8 +18,10 @@ export default {
         type: 'number'
       }
     ],
-    calculate (component) {
-      this.output('value').value = parseInt(component.value, 10)
+    calculate (input, component) {
+      return {
+        value: parseInt(component.value)
+      }
     }
   },
   data: () => ({

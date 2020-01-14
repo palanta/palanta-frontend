@@ -27,8 +27,8 @@ export default {
         type: 'boolean'
       }
     ],
-    calculate (component) {
-      this.output('value').value = component.toggle
+    calculate (input, component) {
+      return { value: component.toggle }
     }
   },
   data () {

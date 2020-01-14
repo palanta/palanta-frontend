@@ -28,15 +28,15 @@ export default {
         type: 'number'
       }
     ],
-    calculate () {
+    calculate (input) {
       let logarithm = 0
-      if (!isNaN(this.input('number').value)) {
-        logarithm = Math.log(this.input('number').value)
+      if (!isNaN(input.number)) {
+        logarithm = Math.log(input.number)
       }
-      if (!isNaN(this.input('base').value)) {
-        logarithm /= Math.log(this.input('base').value)
+      if (!isNaN(input.base)) {
+        logarithm /= Math.log(input.base)
       }
-      this.output('logarithm').value = logarithm
+      return { logarithm }
     }
   }
 }

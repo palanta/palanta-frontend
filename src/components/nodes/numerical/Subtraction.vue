@@ -26,16 +26,16 @@ export default {
         type: 'number'
       }
     ],
-    calculate () {
+    calculate (input) {
       let difference = 0
-      const factors = this.input('number').map(factor => factor.value).filter(factor => !isNaN(factor))
+      const factors = input.number.filter(factor => !isNaN(factor))
       if (factors.length > 0) {
         difference = factors.shift()
         factors.forEach(minuend => {
           difference -= minuend
         })
       }
-      this.output('difference').value = difference
+      return { difference }
     }
   }
 }

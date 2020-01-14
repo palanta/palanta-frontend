@@ -26,8 +26,8 @@ export default {
       }
     ],
     outputs: [],
-    calculate (component) {
-      component.value = this.input('value').value
+    calculate (input, component) {
+      component.value = input.value
     }
   },
   data: () => ({

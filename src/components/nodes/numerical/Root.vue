@@ -28,16 +28,14 @@ export default {
         type: 'number'
       }
     ],
-    calculate () {
+    calculate (input) {
       let root = 0
-      let number = this.input('number').value
-      let degree = this.input('degree').value
-      if (!isNaN(number)) {
-        if (!isNaN(degree)) {
-          root = Math.pow(number, 1 / degree)
-        } else root = Math.sqrt(number)
+      if (!isNaN(input.number)) {
+        if (!isNaN(input.degree)) {
+          root = Math.pow(input.number, 1 / input.degree)
+        } else root = Math.sqrt(input.number)
       }
-      this.output('root').value = root
+      return { root }
     }
   }
 }

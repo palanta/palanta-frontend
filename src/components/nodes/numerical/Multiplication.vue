@@ -26,13 +26,13 @@ export default {
         type: 'number'
       }
     ],
-    calculate () {
+    calculate (input) {
       let product = 1
-      const factors = this.input('number').map(factor => factor.value).filter(factor => !isNaN(factor))
+      const factors = input.number.filter(factor => !isNaN(factor))
       factors.forEach(factor => {
         product *= factor
       })
-      this.output('product').value = product
+      return { product }
     }
   }
 }

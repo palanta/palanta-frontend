@@ -26,16 +26,16 @@ export default {
         type: 'number'
       }
     ],
-    calculate () {
+    calculate (input) {
       let power = 1
-      const factors = this.input('number').map(factor => factor.value).filter(factor => !isNaN(factor))
+      const factors = input.number.filter(factor => !isNaN(factor))
       if (factors.length > 1) {
         power = factors.shift()
         factors.forEach(exponent => {
           power **= exponent
         })
       }
-      this.output('power').value = power
+      return { power }
     }
   }
 }
