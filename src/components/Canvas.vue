@@ -142,6 +142,7 @@ export default {
       }
       const deprecatedIndex = dependencies.indexOf(notDependsOn)
       if (deprecatedIndex >= 0) dependencies.splice(deprecatedIndex, 1)
+      node.isComputing = true
       return this.computeQueue.push({ dependencies, node }) - 1
     },
     async queueComputation (start, dependsOn, notDependsOn) {
@@ -160,23 +161,23 @@ export default {
       const ready = entry => {
         for (let dependency of entry.dependencies) {
           if (this.computing.has(dependency)) return false
-          if (this.computeQueue.includes(dependency)) return false
+          if (this.computeQueue.find(entry => entry.node === dependency)) return false
         }
         return true
       }
       // Start all computations that are ready
       const promises = this.computeQueue.filter(ready).map(async entry => {
         this.computeQueue.splice(this.computeQueue.indexOf(entry), 1)
-        this.computing.add(entry)
+        this.computing.add(entry.node)
 
         // Process node
-        console.log('PROC', entry.node.instance.id)
         const [component] = this.$refs[`nodes.${entry.node.instance.id}`]
         await entry.node.instance.calculate(component)
         const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
         outEdges.forEach(edge => edge.transport())
 
-        this.computing.delete(entry)
+        this.computing.delete(entry.node)
+        entry.node.isComputing = false
       })
       // Repeat as long as queue is not empty
       if (promises.length) {
