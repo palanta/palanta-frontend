@@ -1,5 +1,6 @@
 <template>
   <div id="canvas">
+    <p-delete-switch :deleting="deleteMode" @toggle="deleteMode = !deleteMode" />
     <p-toolbox id="toolbox" :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
       <div :style="{ position: 'absolute', top: -scroll.y + 'px', left: -scroll.x + 'px' }">
@@ -23,6 +24,7 @@
           :key="node.id"
           :instance="node"
           ref="nodes"
+          @delete="removeNode"
           @connect="onConnect"
           @move="onNodeMove"
         >
@@ -52,6 +54,7 @@
 
 <script>
 import PBackground from '../components/Background'
+import PDeleteSwitch from '../components/DeleteSwitch'
 import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
@@ -75,6 +78,7 @@ export default {
   components: Object.assign(
     {
       PBackground,
+      PDeleteSwitch,
       PToolbox,
       PNode,
       PEdge
@@ -88,6 +92,7 @@ export default {
       edges: [],
       newEdge: null,
       newEdgeForwards: null,
+      deleteMode: false,
       scroll: {
         x: 0,
         y: 0
@@ -100,6 +105,13 @@ export default {
         x: window.scrollX + this.scroll.x + 300,
         y: window.scrollY + this.scroll.y + 100
       }))
+    },
+    removeNode (node, instance) {
+      if (this.deleteMode) {
+        let edgesCopy = Array.from(node.edges)
+        edgesCopy.forEach(this.removeEdge)
+        if (this.nodes.includes(instance)) this.nodes.splice(this.nodes.indexOf(instance), 1)
+      }
     },
     addEdge (edge) {
       if (this.isValidEdge(edge)) {

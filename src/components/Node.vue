@@ -1,5 +1,5 @@
 <template>
-  <q-card id="node" class="shadow-1" :style="style" @touchstart.stop @mousedown.stop>
+  <q-card id="node" class="shadow-1" :style="style" @mousedown="onDelete" @touchstart.stop @mousedown.stop>
     <q-card-section class="header non-selectable text-center" v-touch-pan.mouse="onPan">
       <img id="icon" class="non-selectable" v-if="instance.spec.icon" :src="instance.spec.icon" />
       {{ instance.title }}
@@ -106,6 +106,9 @@ export default {
     },
     onDisconnected (edge) {
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+    },
+    onDelete () {
+      this.$emit('delete', this, this.instance)
     },
     insertVariadic (afterSpec) {
       const channels = [this.instance.inputs, this.instance.outputs]
