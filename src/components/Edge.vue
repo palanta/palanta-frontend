@@ -22,6 +22,8 @@
       :stroke="`url(#gradient-${id})`"
       stroke-width="4"
       stroke-linecap="round"
+      :stroke-dasharray="bundle && '16 8'"
+      stroke-dashoffset="-8"
       :d="`
         M ${relativeStart.x} ${relativeStart.y}
         C ${relativeStart.x + bezierOffset} ${relativeStart.y}
@@ -38,7 +40,8 @@ import uuid from '../utils/uuid'
 export default {
   props: {
     start: [Object, HTMLElement],
-    end: [Object, HTMLElement]
+    end: [Object, HTMLElement],
+    bundle: Boolean
   },
   data () {
     return {

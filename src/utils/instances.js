@@ -7,6 +7,7 @@ export class ConnectorInstance {
     this.name = spec.name
     this.type = spec.type
     this.variadic = spec.variadic
+    this.bundle = spec.bundle
   }
 }
 
@@ -44,9 +45,10 @@ export class NodeInstance {
 }
 
 export class EdgeInstance {
-  constructor (start, end) {
+  constructor (start, end, bundle) {
     this.id = uuid()
     this.start = start
     this.end = end
+    this.bundle = bundle
   }
 }
