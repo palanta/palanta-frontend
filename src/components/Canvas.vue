@@ -153,10 +153,36 @@ export default {
         nextNodes.forEach(next => this.queueNode(next, node))
         index++
       }
-      this.computeStep()
+      this.compute()
     },
-    async computeStep () {
-      // stub
+    async compute () {
+      // A node is considered ready when no dependency is either scheduled or being computed
+      const ready = entry => {
+        for (let dependency of entry.dependencies) {
+          if (this.computing.has(dependency)) return false
+          if (this.computeQueue.includes(dependency)) return false
+        }
+        return true
+      }
+      // Start all computations that are ready
+      const promises = this.computeQueue.filter(ready).map(async entry => {
+        this.computeQueue.splice(this.computeQueue.indexOf(entry), 1)
+        this.computing.add(entry)
+
+        // Process node
+        console.log('PROC', entry.node.instance.id)
+        const [component] = this.$refs[`nodes.${entry.node.instance.id}`]
+        await entry.node.instance.calculate(component)
+        const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
+        outEdges.forEach(edge => edge.transport())
+
+        this.computing.delete(entry)
+      })
+      // Repeat as long as queue is not empty
+      if (promises.length) {
+        await Promise.all(promises)
+        return this.compute()
+      }
     },
     isValidEdge (edge) {
       // Connect output to input
