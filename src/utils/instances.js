@@ -22,7 +22,7 @@ export class NodeInstance {
     this.component = component
     this.position = position
 
-    this.calculate = spec.calculate ? spec.calculate.bind(this) : () => undefined
+    this.calculate = spec.calculate ? this.mapCalculate(spec.calculate) : () => undefined
 
     // initialize variadic counts
     const channels = [this.inputs, this.outputs]
@@ -63,6 +63,32 @@ export class NodeInstance {
 
   output (id) {
     return this.getConnector(this.outputs, id)
+  }
+
+  mapCalculate (calculate) {
+    return async component => {
+      // Create input map
+      const input = {}
+      const inputIds = new Set(this.inputs.map(connector => connector.specId))
+      inputIds.forEach(id => { input[id] = this.input(id) })
+      for (let id in input) {
+        if (input[id] instanceof Array) input[id] = input[id].map(connector => connector.value)
+        else input[id] = input[id].value
+      }
+      // Execute node computation
+      const result = await calculate.bind(this)(input, component)
+      // Retreive output map
+      if (result) {
+        const outputIds = new Set(this.outputs.map(connector => connector.specId))
+        outputIds.forEach(id => {
+          const output = this.output(id)
+          if (output instanceof Array) {
+            if (!(result[id] instanceof Array)) throw new Error(`Output ${id} of ${this.title} node is expected to be variadic, but is not`)
+            output.forEach((connector, index) => { connector.value = result[id][index] })
+          } else output.value = result[id]
+        })
+      }
+    }
   }
 }
 
