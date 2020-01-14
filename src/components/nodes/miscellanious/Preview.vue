@@ -17,6 +17,7 @@ export default {
   spec: {
     id: 'std::preview',
     title: 'Preview',
+    icon: require('../../../assets/node_icons/node_preview.svg'),
     inputs: [
       {
         id: 'value',
