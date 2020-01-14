@@ -6,6 +6,7 @@
       v-model="text"
       type="textarea"
       placeholder="Enter text here"
+      @input="onInput"
     />
   </div>
 </template>
@@ -23,10 +24,18 @@ export default {
         name: 'Value',
         type: 'text'
       }
-    ]
+    ],
+    calculate (component) {
+      this.output('value').value = component.text
+    }
   },
   data: () => ({
     text: ''
-  })
+  }),
+  methods: {
+    onInput () {
+      this.$emit('change', this)
+    }
+  }
 }
 </script>
