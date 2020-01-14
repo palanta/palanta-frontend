@@ -25,7 +25,19 @@ export default {
         name: 'Average',
         type: 'number'
       }
-    ]
+    ],
+    calculate () {
+      let average = 0
+      const factors = this.input('number').map(factor => factor.value).filter(factor => !isNaN(factor))
+      if (factors.length > 0) {
+        let sum = 0
+        factors.forEach(number => {
+          sum += number
+        })
+        average = sum / factors.length
+      }
+      this.output('average').value = average
+    }
   }
 }
 </script>
