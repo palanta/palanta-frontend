@@ -21,10 +21,19 @@ export default {
     ],
     outputs: [
       {
+        id: 'product',
         name: 'Product',
         type: 'number'
       }
-    ]
+    ],
+    calculate () {
+      let product = 1
+      const factors = this.input('number').filter(factor => !isNaN(factor.value))
+      factors.forEach(factor => {
+        product *= factor.value
+      })
+      this.output('product').value = product
+    }
   }
 }
 </script>

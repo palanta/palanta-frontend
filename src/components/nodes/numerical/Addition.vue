@@ -21,10 +21,19 @@ export default {
     ],
     outputs: [
       {
+        id: 'sum',
         name: 'Sum',
         type: 'number'
       }
-    ]
+    ],
+    calculate () {
+      let sum = 0
+      const factors = this.input('number').filter(factor => !isNaN(factor.value))
+      factors.forEach(summand => {
+        sum += summand.value
+      })
+      this.output('sum').value = sum
+    }
   }
 }
 </script>
