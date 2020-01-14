@@ -8,7 +8,7 @@ export class ConnectorInstance {
     this.name = spec.name
     this.type = spec.type
     this.variadic = spec.variadic
-    if (this.variadic) this.last = true
+    this.bundle = spec.bundle
   }
 }
 
@@ -21,7 +21,30 @@ export class NodeInstance {
     this.outputs = spec.outputs.map(output => new ConnectorInstance(output))
     this.component = component
     this.position = position
+
     this.calculate = spec.calculate ? spec.calculate.bind(this) : () => undefined
+
+    // initialize variadic counts
+    const channels = [this.inputs, this.outputs]
+    channels.forEach(channel => {
+      channel.counts = {}
+      channel.connected = {}
+      for (let i in channel) {
+        const connector = channel[i]
+        if (connector.variadic) {
+          // Allow truthy values or numbers as variadics
+          connector.variadic = connector.variadic instanceof Object ? connector.variadic : { minimum: 1, collapse: true }
+          // Variadic defaults:
+          if (!('minimum' in connector.variadic)) connector.variadic.minimum = 1
+          if (!('collapse' in connector.variadic)) connector.variadic.collapse = true
+
+          channel.counts[connector.specId] = connector.variadic.minimum
+          for (let j = 0; j < channel.counts[connector.specId] - 1; ++j) {
+            channel.splice(i + j + 1, 0, new ConnectorInstance(connector))
+          }
+        }
+      }
+    })
   }
 
   getConnector (channel, id) {
@@ -44,11 +67,11 @@ export class NodeInstance {
 }
 
 export class EdgeInstance {
-  constructor (start, end, color) {
+  constructor (start, end, bundle) {
     this.id = uuid()
     this.start = start
     this.end = end
-    this.color = color
+    this.bundle = bundle
   }
 
   transport () {

@@ -14,7 +14,9 @@ export default {
         id: 'number',
         name: 'Number',
         type: 'number',
-        variadic: true
+        variadic: {
+          minimum: 2
+        }
       }
     ],
     outputs: [
