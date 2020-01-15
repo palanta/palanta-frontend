@@ -180,7 +180,7 @@ export default {
         outEdges.forEach(edge => edge.transport())
 
         this.computing.delete(entry.node)
-        entry.node.isComputing = false
+        if (this.computeQueue.findIndex(newEntry => newEntry.node === entry.node)) { entry.node.isComputing = false }
       })
       // Repeat as long as queue is not empty
       if (promises.length) {
