@@ -22,9 +22,9 @@ export class BackendImage {
     } else return undefined
   }
 
-  static async binarize (image, threshold) {
+  async binarized (threshold) {
     try {
-      const result = await axios.get(`${backendUrl}/binarize?image=${image.id}&threshold=${threshold}`)
+      const result = await axios.get(`${backendUrl}/binarize?image=${this.id}&threshold=${threshold}`)
       return new BackendImage(result.data)
     } catch (err) {
       return undefined

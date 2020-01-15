@@ -32,7 +32,7 @@ export default {
     async calculate (input) {
       if (input.image instanceof BackendImage && !isNaN(input.threshold)) {
         return {
-          image: await BackendImage.binarize(input.image, input.threshold)
+          image: await input.image.binarized(input.threshold)
         }
       }
     }
