@@ -173,6 +173,7 @@ export default {
         // Process node
         const [component] = this.$refs[`nodes.${entry.node.instance.id}`]
         await entry.node.instance.calculate(component)
+        entry.node.$emit('move', entry.node)
         const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
         outEdges.forEach(edge => edge.transport())
 
