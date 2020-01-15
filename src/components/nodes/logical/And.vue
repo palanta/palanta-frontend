@@ -20,11 +20,21 @@ export default {
     ],
     outputs: [
       {
-        id: 'boolean',
-        name: 'Boolean',
+        id: 'result',
+        name: 'Result',
         type: 'boolean'
       }
-    ]
+    ],
+    calculate (input) {
+      let result = true
+      const booleans = input.boolean.filter(booleans => !isNaN(booleans))
+      booleans.forEach(bool => {
+        if (!bool) {
+          result = false
+        }
+      })
+      return { result }
+    }
   }
 }
 </script>
