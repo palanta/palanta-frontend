@@ -65,6 +65,7 @@ import Numerical from '../components/nodes/numerical/numerical'
 import ImageProcessing from '../components/nodes/image_processing/image_processing'
 import Miscellanious from '../components/nodes/miscellanious/miscellanious'
 
+import uuid from '../utils/uuid'
 import { NodeInstance, EdgeInstance } from '../utils/instances'
 import types from '../utils/types'
 
@@ -98,7 +99,8 @@ export default {
       },
       // processing
       computeQueue: [],
-      computing: new Set()
+      computing: new Set(),
+      computations: {}
     }
   },
   methods: {
@@ -159,7 +161,7 @@ export default {
     async compute () {
       // A node is considered ready when no dependency is either scheduled or being computed
       const ready = entry => {
-        if (this.computing.has(entry.node)) return false
+        // if (this.computing.has(entry.node)) return false
         for (let dependency of entry.dependencies) {
           if (this.computing.has(dependency)) return false
           if (this.computeQueue.find(entry => entry.node === dependency)) return false
@@ -174,15 +176,25 @@ export default {
 
         // Process node
         const [component] = this.$refs[`nodes.${entry.node.instance.id}`]
-        await entry.node.instance.calculate(component)
-        const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
-        outEdges.forEach(edge => edge.transport())
 
-        await this.$nextTick()
-        entry.node.$emit('move', entry.node)
+        const calculationId = uuid()
+        this.computations[entry.node.instance.id] = calculationId
 
-        this.computing.delete(entry.node)
-        if (this.computeQueue.findIndex(newEntry => newEntry.node === entry.node)) { entry.node.isComputing = false }
+        const result = await entry.node.instance.calculate(component)
+
+        const cancelled = calculationId !== this.computations[entry.node.instance.id]
+
+        if (!cancelled) {
+          entry.node.instance.applyCalculation(result)
+          const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
+          outEdges.forEach(edge => edge.transport())
+
+          await this.$nextTick()
+          entry.node.$emit('move', entry.node)
+
+          this.computing.delete(entry.node)
+          if (this.computeQueue.findIndex(newEntry => newEntry.node === entry.node)) { entry.node.isComputing = false }
+        }
       })
       // Repeat as long as queue is not empty
       if (promises.length) {
