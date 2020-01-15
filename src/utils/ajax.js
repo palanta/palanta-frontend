@@ -30,4 +30,22 @@ export class BackendImage {
       return undefined
     }
   }
+
+  async otsu () {
+    try {
+      const result = await axios.get(`${backendUrl}/otsu?image=${this.id}`)
+      return parseFloat(result.data)
+    } catch (err) {
+      return undefined
+    }
+  }
+
+  async greyscaled () {
+    try {
+      const result = await axios.get(`${backendUrl}/greyscale?image=${this.id}`)
+      return new BackendImage(result.data)
+    } catch (err) {
+      return undefined
+    }
+  }
 }
