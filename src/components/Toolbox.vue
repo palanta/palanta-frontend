@@ -164,7 +164,6 @@ export default {
       this.toolboxVisible = !this.toolboxVisible
     },
     toggleAdvanced (category) {
-      console.log(category)
       this.advancedNodes[category] = !this.advancedNodes[category]
     }
   }

@@ -73,6 +73,17 @@ const nodeTypes = {
   'Miscellanious': Miscellanious
 }
 
+const nodeTypesFlat = {
+  'VB': nodeTypes.Values.basic,
+  'VA': nodeTypes.Values.advanced,
+  'NB': nodeTypes.Numerical.basic,
+  'NA': nodeTypes.Numerical.advanced,
+  'IB': nodeTypes['Image Processing'].basic,
+  'IA': nodeTypes['Image Processing'].advanced,
+  'MB': nodeTypes.Miscellanious.basic,
+  'MA': nodeTypes.Miscellanious.advanced
+}
+
 export default {
   components: Object.assign(
     {
@@ -81,7 +92,7 @@ export default {
       PNode,
       PEdge
     },
-    Object.assign.apply(null, [{}, ...Object.values(nodeTypes)])
+    Object.assign.apply(null, [{}, ...Object.values(nodeTypesFlat)])
   ),
   data () {
     return {
