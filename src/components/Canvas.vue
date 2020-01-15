@@ -106,11 +106,11 @@ export default {
         y: window.scrollY + this.scroll.y + 100
       }))
     },
-    removeNode (node, instance) {
+    removeNode (node) {
       if (this.deleteMode) {
         let edgesCopy = Array.from(node.edges)
         edgesCopy.forEach(this.removeEdge)
-        if (this.nodes.includes(instance)) this.nodes.splice(this.nodes.indexOf(instance), 1)
+        if (this.nodes.includes(node.instance)) this.nodes.splice(this.nodes.indexOf(node.instance), 1)
       }
     },
     addEdge (edge) {

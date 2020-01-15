@@ -109,7 +109,7 @@ export default {
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
     },
     onDelete () {
-      this.$emit('delete', this, this.instance)
+      this.$emit('delete', this)
     },
     insertVariadic (type, afterSpec) {
       if (!afterSpec.variadic) return

@@ -1,6 +1,6 @@
 <template>
   <q-btn id="delete-switch"
-         color="negative"
+         :color="color"
          :label="text"
          @click="$emit('toggle')"
   >
@@ -16,6 +16,9 @@ export default {
   computed: {
     text () {
       return this.deleting ? 'DELETE MODE ON' : 'DELETE MODE OFF'
+    },
+    color () {
+      return this.deleting ? 'negative' : 'grey-8'
     }
   }
 }
