@@ -1,11 +1,14 @@
 <template>
-  <div class="q-px-md q-pt-md">
-    <q-input
-      @input="onInput"
-      borderless
-      type="file"
-      accept="image/*"
-    />
+  <div >
+    <img v-if="image" :src="image.url" width="100%" />
+    <div class="q-px-md q-pt-md">
+      <q-input
+        @input="onInput"
+        borderless
+        type="file"
+        accept="image/*"
+      />
+    </div>
   </div>
 </template>
 
@@ -31,7 +34,8 @@ export default {
   },
   data () {
     return {
-      file: null
+      file: null,
+      image: null
     }
   },
   methods: {
@@ -40,7 +44,8 @@ export default {
       this.$emit('change', this)
     },
     async upload () {
-      return BackendImage.upload(this.file)
+      this.image = await BackendImage.upload(this.file)
+      return this.image
     }
   }
 }

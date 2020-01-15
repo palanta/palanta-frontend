@@ -20,7 +20,7 @@ export default {
     ],
     calculate (input, component) {
       return {
-        value: parseInt(component.value)
+        value: parseFloat(component.value)
       }
     }
   },

@@ -1,13 +1,13 @@
 <template>
-  <div class="text-center q-mt-md">
+  <div class="text-center">
     <!-- TODO: display bools as True/False -->
     <div v-if="type === 'image'">
-      <img :src="value.url" />
+      <img :src="value.url" width="100%" />
     </div>
-    <div v-if="type === 'other'">
+    <div v-if="type === 'other'" class="q-mt-md">
       {{ value }}
     </div>
-    <div v-if="type === undefined">
+    <div v-if="type === undefined" class="q-mt-md">
       <i>nothing to preview</i>
     </div>
   </div>

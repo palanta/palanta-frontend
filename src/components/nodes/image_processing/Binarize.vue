@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { BackendImage } from '../../../utils/ajax'
+
 export default {
   spec: {
     id: 'std::binarize',
@@ -26,7 +28,14 @@ export default {
         name: 'Image',
         type: 'image'
       }
-    ]
+    ],
+    async calculate (input) {
+      if (input.image instanceof BackendImage && !isNaN(input.threshold)) {
+        return {
+          image: await BackendImage.binarize(input.image, input.threshold)
+        }
+      }
+    }
   }
 }
 </script>
