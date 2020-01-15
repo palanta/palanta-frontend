@@ -23,6 +23,7 @@
           v-for="node in nodes"
           :key="node.id"
           :instance="node"
+          :class="nodeClasses"
           ref="nodes"
           @delete="removeNode"
           @connect="onConnect"
@@ -44,6 +45,10 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+.delete-border:hover > div:first-child {
+  background-color: #a0000080;
 }
 
 #toolbox {
@@ -97,6 +102,11 @@ export default {
         x: 0,
         y: 0
       }
+    }
+  },
+  computed: {
+    nodeClasses () {
+      return this.deleteMode ? 'delete-border' : ''
     }
   },
   methods: {
