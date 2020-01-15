@@ -175,9 +175,11 @@ export default {
         // Process node
         const [component] = this.$refs[`nodes.${entry.node.instance.id}`]
         await entry.node.instance.calculate(component)
-        entry.node.$emit('move', entry.node)
         const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
         outEdges.forEach(edge => edge.transport())
+
+        await this.$nextTick()
+        entry.node.$emit('move', entry.node)
 
         this.computing.delete(entry.node)
         if (this.computeQueue.findIndex(newEntry => newEntry.node === entry.node)) { entry.node.isComputing = false }
