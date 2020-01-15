@@ -26,14 +26,11 @@ export default {
       }
     ],
     calculate (input) {
-      let result = true
       const booleans = input.boolean.filter(booleans => !isNaN(booleans))
-      booleans.forEach(bool => {
-        if (!bool) {
-          result = false
-        }
-      })
-      return { result }
+      for (let bool of booleans) {
+        if (!bool) return { result: false }
+      }
+      return { result: true }
     }
   }
 }
