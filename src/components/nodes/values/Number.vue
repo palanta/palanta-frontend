@@ -1,6 +1,6 @@
 <template>
   <div class="q-px-md q-pt-md">
-    <q-input filled v-model="value" type="number" float-label="Number" />
+    <q-input filled v-model="value" @input="onInput" type="number" float-label="Number" />
   </div>
 </template>
 
@@ -17,10 +17,20 @@ export default {
         name: 'Value',
         type: 'number'
       }
-    ]
+    ],
+    calculate (input, component) {
+      return {
+        value: parseFloat(component.value)
+      }
+    }
   },
   data: () => ({
     value: 0
-  })
+  }),
+  methods: {
+    onInput () {
+      this.$emit('change', this)
+    }
+  }
 }
 </script>

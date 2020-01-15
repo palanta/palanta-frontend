@@ -1,8 +1,9 @@
 <template>
   <q-card id="node" class="shadow-1" :style="style" @touchstart.stop @mousedown.stop>
-    <q-card-section class="header non-selectable text-center" v-touch-pan.mouse="onPan">
-      <img id="icon" class="non-selectable" v-if="instance.spec.icon" :src="instance.spec.icon" />
-      {{ instance.title }}
+    <q-card-section class="header non-selectable row justify-center items-center q-pa-sm" v-touch-pan.mouse="onPan">
+      <img id="icon" class="col-1 non-selectable" v-if="instance.spec.icon" :src="instance.spec.icon" />
+      <div class="col-9 text-center">{{ instance.title }}</div>
+      <div class="col-1"><q-circular-progress indeterminate v-show="isComputing" id="loading" /></div>
     </q-card-section>
     <slot />
     <div class="row">
@@ -49,11 +50,12 @@
   background-color: #282828;
 }
 #icon {
-  position: absolute;
   width: 30px;
   height: 30px;
-  left: 10px;
-  top: 10px;
+}
+#loading {
+  width: 16px;
+  height: 16px;
 }
 </style>
 
@@ -73,6 +75,7 @@ export default {
     return {
       edges: [],
       isMoving: false,
+      isComputing: false,
       panStart: null
     }
   },

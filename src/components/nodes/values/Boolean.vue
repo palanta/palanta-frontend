@@ -8,6 +8,7 @@
       unchecked-icon="clear"
       :true-value="true"
       :false-value="false"
+      @input="onInput"
     />
   </div>
 </template>
@@ -25,11 +26,19 @@ export default {
         name: 'Value',
         type: 'boolean'
       }
-    ]
+    ],
+    calculate (input, component) {
+      return { value: component.toggle }
+    }
   },
   data () {
     return {
       toggle: true
+    }
+  },
+  methods: {
+    onInput () {
+      this.$emit('change', this)
     }
   }
 }

@@ -26,7 +26,11 @@
           @connect="onConnect"
           @move="onNodeMove"
         >
-          <component :is="node.component" />
+          <component
+            :is="node.component"
+            :ref="`nodes.${node.id}`"
+            @change="onNodeChange"
+          />
         </p-node>
       </div>
     </p-background>
@@ -91,14 +95,23 @@ export default {
       scroll: {
         x: 0,
         y: 0
-      }
+      },
+      // processing
+      computeQueue: [],
+      computing: new Set()
     }
   },
   methods: {
     addNode (component, spec) {
-      this.nodes.push(new NodeInstance(component, spec, {
+      const newNode = new NodeInstance(component, spec, {
         x: window.scrollX + this.scroll.x + 300,
         y: window.scrollY + this.scroll.y + 100
+      })
+      this.nodes.push(newNode)
+      // Initial calculation
+      this.$nextTick(() => this.$nextTick(() => {
+        const canvasNode = this.$refs.nodes.find(node => node.instance.id === newNode.id)
+        if (canvasNode) this.queueComputation(canvasNode)
       }))
     },
     addEdge (edge) {
@@ -106,6 +119,8 @@ export default {
         this.edges.push(edge)
         edge.start.addEdge(edge)
         edge.end.addEdge(edge)
+        edge.transport()
+        this.queueComputation(edge.end.node, edge.start.node)
         return true
       } else {
         console.error('Edge rejected') // TODO: make clearer to user
@@ -115,7 +130,65 @@ export default {
     removeEdge (edge) {
       edge.start.removeEdge(edge)
       edge.end.removeEdge(edge)
+      edge.clear()
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+    },
+    queueNode (node, dependsOn, notDependsOn) {
+      const index = this.computeQueue.findIndex(element => element.node === node)
+      let dependencies = dependsOn ? [dependsOn] : []
+      if (index >= 0) {
+        const previous = this.computeQueue.splice(index, 1)[0]
+        dependencies = previous.dependencies.concat(dependencies)
+      }
+      const deprecatedIndex = dependencies.indexOf(notDependsOn)
+      if (deprecatedIndex >= 0) dependencies.splice(deprecatedIndex, 1)
+      node.isComputing = true
+      return this.computeQueue.push({ dependencies, node }) - 1
+    },
+    async queueComputation (start, dependsOn, notDependsOn) {
+      // Traverse canvas breadth-first to determine update order
+      let index = this.queueNode(start, dependsOn, notDependsOn)
+      while (index < this.computeQueue.length) {
+        const node = this.computeQueue[index].node
+        const nextNodes = new Set(node.edges.filter(edge => edge.start.node === node).map(edge => edge.end.node))
+        nextNodes.forEach(next => this.queueNode(next, node))
+        index++
+      }
+      this.compute()
+    },
+    async compute () {
+      // A node is considered ready when no dependency is either scheduled or being computed
+      const ready = entry => {
+        if (this.computing.has(entry.node)) return false
+        for (let dependency of entry.dependencies) {
+          if (this.computing.has(dependency)) return false
+          if (this.computeQueue.find(entry => entry.node === dependency)) return false
+        }
+        return true
+      }
+      // Start all computations that are ready
+      const readyEntries = this.computeQueue.filter(ready)
+      readyEntries.forEach(entry => this.computeQueue.splice(this.computeQueue.indexOf(entry), 1))
+      const promises = readyEntries.map(async entry => {
+        this.computing.add(entry.node)
+
+        // Process node
+        const [component] = this.$refs[`nodes.${entry.node.instance.id}`]
+        await entry.node.instance.calculate(component)
+        const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
+        outEdges.forEach(edge => edge.transport())
+
+        await this.$nextTick()
+        entry.node.$emit('move', entry.node)
+
+        this.computing.delete(entry.node)
+        if (this.computeQueue.findIndex(newEntry => newEntry.node === entry.node)) { entry.node.isComputing = false }
+      })
+      // Repeat as long as queue is not empty
+      if (promises.length) {
+        await Promise.all(promises)
+        return this.compute()
+      }
     },
     isValidEdge (edge) {
       // Connect output to input
@@ -165,6 +238,13 @@ export default {
         if (this.newEdge) {
           if (this.newEdge.start) this.newEdge.start.connecting = false
           if (this.newEdge.end) this.newEdge.end.connecting = false
+
+          // Recalculate node where edge has been detached from
+          if (
+            this.newEdge.end.node !== event.component.node &&
+            this.newEdge.start && this.newEdge.start.node !== event.component.node
+          ) this.queueComputation(event.component.node, undefined, this.newEdge.start.node)
+
           this.addEdge(this.newEdge)
           if (this.newEdge.start.node && event.component.node !== this.newEdge.start.node) {
             this.newEdge.start.node.removeVariadic('output', this.newEdge.start.spec)
@@ -198,6 +278,9 @@ export default {
           if (this.$refs.newEdge) this.$refs.newEdge.refresh()
         }
       }
+    },
+    onNodeChange (node) {
+      this.queueComputation(node.$parent.$parent)
     },
     onNodeMove (node) {
       node.edges.forEach(edge => this.$refs[edge.id].forEach(component => component.refresh()))

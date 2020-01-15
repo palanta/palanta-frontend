@@ -123,6 +123,7 @@ export default {
     refresh () {
       this.centerStart = this.getCenterStart()
       this.centerEnd = this.getCenterEnd()
+      this.$forceUpdate()
     }
   }
 }
