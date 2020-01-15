@@ -122,24 +122,6 @@ export default {
           }
           channel.splice(lastIndex + 1, 0, newSpec)
           channel.counts[newSpec.specId]++
-        } else {
-          if (afterSpec.variadic.collapse) {
-            // Move unconnected connector behind last connected one
-            channel.reverse()
-            const emptyIndex = channel.findIndex(connector =>
-              connector.specId === afterSpec.specId &&
-              !this.$refs.connectors.filter(component => component.spec === connector)[0].connected
-            )
-            const lastIndex = channel.findIndex(connector =>
-              connector.specId === afterSpec.specId &&
-              this.$refs.connectors.filter(component => component.spec === connector)[0].connected
-            )
-            if (emptyIndex > lastIndex) {
-              // Move empty connector before last connected (because the channel is reversed)
-              channel.splice(lastIndex, 0, channel.splice(emptyIndex, 1)[0])
-            }
-            channel.reverse()
-          }
         }
       }
       this.$nextTick(function () {
