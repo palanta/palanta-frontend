@@ -159,6 +159,7 @@ export default {
     async compute () {
       // A node is considered ready when no dependency is either scheduled or being computed
       const ready = entry => {
+        if (this.computing.has(entry.node)) return false
         for (let dependency of entry.dependencies) {
           if (this.computing.has(dependency)) return false
           if (this.computeQueue.find(entry => entry.node === dependency)) return false
@@ -166,18 +167,20 @@ export default {
         return true
       }
       // Start all computations that are ready
-      const promises = this.computeQueue.filter(ready).map(async entry => {
-        this.computeQueue.splice(this.computeQueue.indexOf(entry), 1)
+      const readyEntries = this.computeQueue.filter(ready)
+      readyEntries.forEach(entry => this.computeQueue.splice(this.computeQueue.indexOf(entry), 1))
+      const promises = readyEntries.map(async entry => {
         this.computing.add(entry.node)
 
         // Process node
         const [component] = this.$refs[`nodes.${entry.node.instance.id}`]
         await entry.node.instance.calculate(component)
+        entry.node.$emit('move', entry.node)
         const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
         outEdges.forEach(edge => edge.transport())
 
         this.computing.delete(entry.node)
-        entry.node.isComputing = false
+        if (this.computeQueue.findIndex(newEntry => newEntry.node === entry.node)) { entry.node.isComputing = false }
       })
       // Repeat as long as queue is not empty
       if (promises.length) {
