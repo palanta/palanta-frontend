@@ -166,8 +166,9 @@ export default {
         return true
       }
       // Start all computations that are ready
-      const promises = this.computeQueue.filter(ready).map(async entry => {
-        this.computeQueue.splice(this.computeQueue.indexOf(entry), 1)
+      const readyEntries = this.computeQueue.filter(ready)
+      readyEntries.forEach(entry => this.computeQueue.splice(this.computeQueue.indexOf(entry), 1))
+      const promises = readyEntries.map(async entry => {
         this.computing.add(entry.node)
 
         // Process node
