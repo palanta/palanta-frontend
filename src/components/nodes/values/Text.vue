@@ -25,7 +25,7 @@ export default {
         type: 'text'
       }
     ],
-    calculate (component) {
+    calculate (input, component) {
       return { value: component.text }
     }
   },
