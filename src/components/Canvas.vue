@@ -159,6 +159,7 @@ export default {
     async compute () {
       // A node is considered ready when no dependency is either scheduled or being computed
       const ready = entry => {
+        if (this.computing.has(entry.node)) return false
         for (let dependency of entry.dependencies) {
           if (this.computing.has(dependency)) return false
           if (this.computeQueue.find(entry => entry.node === dependency)) return false
