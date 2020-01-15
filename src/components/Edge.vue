@@ -85,7 +85,7 @@ export default {
       return this.bezierOffset
     },
     startColor () {
-      return this.start.style.borderColor
+      return this.start.style ? this.start.style.borderColor : this.endColor
     },
     endColor () {
       return this.end.style ? this.end.style.borderColor : this.startColor
@@ -123,6 +123,7 @@ export default {
     refresh () {
       this.centerStart = this.getCenterStart()
       this.centerEnd = this.getCenterEnd()
+      this.$forceUpdate()
     }
   }
 }
