@@ -1,17 +1,20 @@
 <template>
   <div class="text-center q-mt-md">
-    <div v-if="value !== undefined">
-      <!-- TODO: display differently for each basic type (e.g. booleans as 'True'/'False', images as <img/>) -->
-      <!-- using native js representation string for now -->
+    <!-- TODO: display bools as True/False -->
+    <div v-if="type === 'image'">
+      <img :src="value.url" />
+    </div>
+    <div v-if="type === 'other'">
       {{ value }}
     </div>
-    <div v-if="value === undefined">
+    <div v-if="type === undefined">
       <i>nothing to preview</i>
     </div>
   </div>
 </template>
 
 <script>
+import { BackendImage } from '../../../utils/ajax'
 
 export default {
   spec: {
@@ -28,10 +31,14 @@ export default {
     outputs: [],
     calculate (input, component) {
       component.value = input.value
+      if (input.value === undefined) component.type = undefined
+      else if (input.value instanceof BackendImage) component.type = 'image'
+      else component.type = 'other'
     }
   },
   data: () => ({
-    value: null
+    value: null,
+    type: undefined
   })
 }
 </script>
