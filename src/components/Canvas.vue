@@ -132,7 +132,7 @@ export default {
     removeNode (node) {
       if (this.deleteMode) {
         let edgesCopy = Array.from(node.edges)
-        edgesCopy.forEach(this.removeEdge)
+        edgesCopy.forEach(edge => this.removeEdge(edge, true))
         if (this.nodes.includes(node.instance)) this.nodes.splice(this.nodes.indexOf(node.instance), 1)
       }
     },
@@ -149,11 +149,12 @@ export default {
         return false
       }
     },
-    removeEdge (edge) {
+    removeEdge (edge, recalculate) {
       edge.start.removeEdge(edge)
       edge.end.removeEdge(edge)
       edge.clear()
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+      if (recalculate) this.queueComputation(edge.end.node)
     },
     queueNode (node, dependsOn, notDependsOn) {
       const index = this.computeQueue.findIndex(element => element.node === node)
