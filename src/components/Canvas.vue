@@ -9,7 +9,7 @@
           ref="newEdge"
           :start="newEdge.start.$refs ? newEdge.start.$refs.connector : newEdge.start"
           :end="newEdge.end.$refs ? newEdge.end.$refs.connector : newEdge.end"
-          :color="newEdge.color"
+          :bundle="newEdge.bundle"
         />
         <p-edge
           v-for="edge in edges"
@@ -17,7 +17,7 @@
           :key="edge.id"
           :start="edge.start.$refs.connector"
           :end="edge.end.$refs.connector"
-          :color="edge.color"
+          :bundle="edge.bundle"
         />
         <p-node
           v-for="node in nodes"
@@ -135,8 +135,8 @@ export default {
       if (!edge.end.input) return false
 
       // Type checking
-      // TODO: more elaborate typechecking (bundles, casting)
-      if (edge.start.spec.type !== edge.end.spec.type) return false
+      if (edge.start.spec.bundle !== edge.end.spec.bundle) return false
+      if (!types.isCastable(edge.start.spec.type, edge.end.spec.type)) return false
 
       // Each input may be connected once only
       if (edge.end.connected) return false
@@ -178,12 +178,12 @@ export default {
           if (this.newEdge.start) this.newEdge.start.connecting = false
           if (this.newEdge.end) this.newEdge.end.connecting = false
           this.addEdge(this.newEdge)
-          event.component.node.updateVariadics()
           if (this.newEdge.start.node && event.component.node !== this.newEdge.start.node) {
-            this.newEdge.start.node.updateVariadics()
+            this.newEdge.start.node.removeVariadic('output', this.newEdge.start.spec)
+            event.component.node.removeVariadic('input', event.component.spec)
           }
-          this.newEdge = null
         }
+        this.newEdge = null
       } else {
         let to = {
           x: event.position.x - this.$el.offsetLeft + window.scrollX + this.scroll.x,
@@ -199,8 +199,8 @@ export default {
             this.newEdgeForwards = true
           } else {
             const from = event.component
-            const color = types.colors[event.component.spec.type]
-            this.newEdge = event.isOutput ? new EdgeInstance(from, to, color) : new EdgeInstance(to, from, color)
+            const bundle = event.component.spec.bundle
+            this.newEdge = event.isOutput ? new EdgeInstance(from, to, bundle) : new EdgeInstance(to, from, bundle)
             event.component.connecting = true
             this.newEdgeForwards = event.isOutput
           }
