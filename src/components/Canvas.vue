@@ -181,9 +181,7 @@ export default {
 
         const result = await entry.node.instance.calculate(component)
 
-        const cancelled = calculationId !== this.computations[entry.node.instance.id]
-
-        if (!cancelled) {
+        if (calculationId === this.computations[entry.node.instance.id]) {
           entry.node.instance.applyCalculation(result)
           const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
           outEdges.forEach(edge => edge.transport())
