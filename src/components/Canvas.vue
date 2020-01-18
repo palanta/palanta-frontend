@@ -51,10 +51,6 @@
   overflow: hidden;
 }
 
-.delete-border:hover > div:first-child {
-  background-color: #a0000080;
-}
-
 #toolbox {
   position: absolute;
   top: 50px;

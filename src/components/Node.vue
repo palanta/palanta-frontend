@@ -57,6 +57,10 @@
   width: 16px;
   height: 16px;
 }
+
+.delete-border:hover {
+  box-shadow: red 0 0 10px !important;
+}
 </style>
 
 <script>

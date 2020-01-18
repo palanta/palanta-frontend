@@ -1,10 +1,11 @@
 <template>
-  <q-btn id="delete-switch"
+  <q-fab id="delete-switch"
          :color="color"
-         :label="text"
+         icon="delete_forever"
+         active-icon="delete"
          @click="$emit('toggle')"
   >
-  </q-btn>
+  </q-fab>
 </template>
 
 <script>
@@ -14,9 +15,6 @@ export default {
     deleting: Boolean
   },
   computed: {
-    text () {
-      return this.deleting ? 'DELETE MODE ON' : 'DELETE MODE OFF'
-    },
     color () {
       return this.deleting ? 'negative' : 'grey-8'
     }
@@ -27,7 +25,7 @@ export default {
 <style scoped>
   #delete-switch {
     position: fixed;
-    top: 60px;
+    bottom: 10px;
     right: 10px;
   }
 </style>
