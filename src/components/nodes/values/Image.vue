@@ -1,16 +1,33 @@
 <template>
   <div >
     <img v-if="image" :src="image.url" width="100%" />
-    <div class="q-px-md q-pt-md">
+    <div class="q-pt-md image-input-style text-center">
+      <b>Drop image here</b>
       <q-input
+        class="image-input-core"
         @input="onInput"
-        borderless
         type="file"
         accept="image/*"
       />
     </div>
   </div>
 </template>
+
+<style scoped>
+.image-input-style {
+  margin: 10px;
+  border: dashed #A0A0A0 3px;
+  color: #A0A0A0;
+}
+
+.image-input-core {
+  opacity: 0;
+  margin-top: calc(-1em - 25px);
+  margin-top: -moz-calc(-1em - 25px);
+  margin-top: -webkit-calc(-1em - 25px);
+}
+
+</style>
 
 <script>
 import { BackendImage } from '../../../utils/ajax'
