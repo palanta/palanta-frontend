@@ -2,7 +2,7 @@
   <div >
     <img v-if="image" :src="image.url" width="100%" class="cursor-pointer" @click="lightbox = true" />
     <q-dialog v-if="image" v-model="lightbox" full-width full-height>
-      <img v-if="image" :src="image.url" width="100%" />
+      <img v-if="image" :src="image.url" :style="{ 'max-width': '100%', 'max-height': '100%' }" />
     </q-dialog>
     <div class="q-px-md q-pt-md">
       <q-input
