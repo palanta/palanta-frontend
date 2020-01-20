@@ -66,4 +66,13 @@ export class BackendImage {
       return undefined
     }
   }
+
+  async ocr () {
+    try {
+      const result = await axios.get(`${backendUrl}/ocr?image=${this.id}`)
+      return result.data
+    } catch (err) {
+      return undefined
+    }
+  }
 }
