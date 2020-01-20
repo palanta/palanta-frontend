@@ -9,7 +9,7 @@ export default {
   spec: {
     id: 'std::greyscale',
     title: 'Greyscale',
-    icon: require('../../../assets/node_icons/node_image.svg'),
+    icon: require('../../../assets/node_icons/node_greyscale.svg'),
     inputs: [
       {
         id: 'image',

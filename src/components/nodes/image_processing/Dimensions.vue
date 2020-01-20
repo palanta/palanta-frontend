@@ -9,7 +9,7 @@ export default {
   spec: {
     id: 'std::dims',
     title: 'Dimensions',
-    icon: require('../../../assets/node_icons/node_image.svg'),
+    icon: require('../../../assets/node_icons/node_dimensions.svg'),
     inputs: [
       {
         id: 'image',

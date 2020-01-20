@@ -9,7 +9,7 @@ export default {
   spec: {
     id: 'std::invert',
     title: 'Invert',
-    icon: require('../../../assets/node_icons/node_image.svg'),
+    icon: require('../../../assets/node_icons/node_invert.svg'),
     inputs: [
       {
         id: 'image',

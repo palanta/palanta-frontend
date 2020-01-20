@@ -9,7 +9,7 @@ export default {
   spec: {
     id: 'std::otsu',
     title: 'Otsu',
-    icon: require('../../../assets/node_icons/node_image.svg'),
+    icon: require('../../../assets/node_icons/node_otsu.svg'),
     inputs: [
       {
         id: 'image',
