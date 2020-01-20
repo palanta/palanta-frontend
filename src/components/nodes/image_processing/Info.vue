@@ -7,8 +7,8 @@ import { BackendImage } from '../../../utils/ajax'
 
 export default {
   spec: {
-    id: 'std::otsu',
-    title: 'Otsu',
+    id: 'std::info',
+    title: 'Image Info',
     icon: require('../../../assets/node_icons/node_image.svg'),
     inputs: [
       {
@@ -19,16 +19,25 @@ export default {
     ],
     outputs: [
       {
-        id: 'threshold',
-        name: 'Threshold',
+        id: 'mean',
+        name: 'Mean',
+        type: 'number'
+      },
+      {
+        id: 'median',
+        name: 'Median',
+        type: 'number'
+      },
+      {
+        id: 'std',
+        name: 'Std. Dev.',
         type: 'number'
       }
     ],
     async calculate (input) {
       if (input.image instanceof BackendImage) {
-        return {
-          threshold: await input.image.otsu()
-        }
+        const { mean, median, std } = await input.image.info()
+        return { mean, median, std }
       }
     }
   }

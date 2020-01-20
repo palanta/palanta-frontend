@@ -7,8 +7,8 @@ import { BackendImage } from '../../../utils/ajax'
 
 export default {
   spec: {
-    id: 'std::otsu',
-    title: 'Otsu',
+    id: 'std::invert',
+    title: 'Invert',
     icon: require('../../../assets/node_icons/node_image.svg'),
     inputs: [
       {
@@ -19,15 +19,15 @@ export default {
     ],
     outputs: [
       {
-        id: 'threshold',
-        name: 'Threshold',
-        type: 'number'
+        id: 'image',
+        name: 'Image',
+        type: 'image'
       }
     ],
     async calculate (input) {
       if (input.image instanceof BackendImage) {
         return {
-          threshold: await input.image.otsu()
+          image: await input.image.inverted()
         }
       }
     }

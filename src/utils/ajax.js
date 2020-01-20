@@ -22,6 +22,15 @@ export class BackendImage {
     } else return undefined
   }
 
+  async info () {
+    try {
+      const result = await axios.get(`${backendUrl}/info?image=${this.id}`)
+      return result.data
+    } catch (err) {
+      return undefined
+    }
+  }
+
   async binarized (threshold) {
     try {
       const result = await axios.get(`${backendUrl}/binarize?image=${this.id}&threshold=${threshold}`)
@@ -43,6 +52,15 @@ export class BackendImage {
   async greyscaled () {
     try {
       const result = await axios.get(`${backendUrl}/greyscale?image=${this.id}`)
+      return new BackendImage(result.data)
+    } catch (err) {
+      return undefined
+    }
+  }
+
+  async inverted () {
+    try {
+      const result = await axios.get(`${backendUrl}/invert?image=${this.id}`)
       return new BackendImage(result.data)
     } catch (err) {
       return undefined
