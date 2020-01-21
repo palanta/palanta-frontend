@@ -1,6 +1,9 @@
 <template>
   <div >
-    <img v-if="instance.image" :src="instance.image.url" width="100%" />
+    <img v-if="instance.image" :src="instance.image.url" width="100%" class="cursor-pointer" @click="lightbox = true" />
+    <q-dialog v-if="instance.image" v-model="lightbox" full-width full-height>
+      <img v-if="instance.image" :src="instance.image.url" :style="{ 'max-width': '100%', 'max-height': '100%' }" />
+    </q-dialog>
     <div class="q-px-md q-pt-md">
       <q-input
         @input="onInput"
@@ -38,6 +41,9 @@ export default {
     }
   },
   props: { instance: Object },
+  data: () => ({
+    lightbox: false
+  }),
   methods: {
     onInput (file) {
       this.instance.file = file[0]

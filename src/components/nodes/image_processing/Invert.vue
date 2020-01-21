@@ -7,9 +7,9 @@ import { BackendImage } from '../../../utils/ajax'
 
 export default {
   spec: {
-    id: 'std::greyscale',
-    title: 'Greyscale',
-    icon: require('../../../assets/node_icons/node_greyscale.svg'),
+    id: 'std::invert',
+    title: 'Invert',
+    icon: require('../../../assets/node_icons/node_invert.svg'),
     inputs: [
       {
         id: 'image',
@@ -27,7 +27,7 @@ export default {
     async calculate (input) {
       if (input.image instanceof BackendImage) {
         return {
-          image: await input.image.greyscaled()
+          image: await input.image.inverted()
         }
       }
     }
