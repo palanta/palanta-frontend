@@ -1,5 +1,6 @@
 <template>
   <div id="canvas">
+    <p-delete-switch :deleting="deleteMode" @toggle="deleteMode = !deleteMode" />
     <p-toolbox id="toolbox" :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
       <div :style="{ position: 'absolute', top: -scroll.y + 'px', left: -scroll.x + 'px' }">
@@ -22,7 +23,9 @@
           v-for="node in nodes"
           :key="node.id"
           :instance="node"
+          :class="nodeClasses"
           ref="nodes"
+          @delete="removeNode"
           @connect="onConnect"
           @move="onNodeMove"
         >
@@ -56,6 +59,7 @@
 
 <script>
 import PBackground from '../components/Background'
+import PDeleteSwitch from '../components/DeleteSwitch'
 import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
@@ -65,6 +69,7 @@ import Numerical from '../components/nodes/numerical/numerical'
 import ImageProcessing from '../components/nodes/image_processing/image_processing'
 import Miscellanious from '../components/nodes/miscellanious/miscellanious'
 
+import uuid from '../utils/uuid'
 import { NodeInstance, EdgeInstance } from '../utils/instances'
 import types from '../utils/types'
 
@@ -79,6 +84,7 @@ export default {
   components: Object.assign(
     {
       PBackground,
+      PDeleteSwitch,
       PToolbox,
       PNode,
       PEdge
@@ -92,13 +98,20 @@ export default {
       edges: [],
       newEdge: null,
       newEdgeForwards: null,
+      deleteMode: false,
       scroll: {
         x: 0,
         y: 0
       },
       // processing
       computeQueue: [],
-      computing: new Set()
+      computing: new Set(),
+      computations: {}
+    }
+  },
+  computed: {
+    nodeClasses () {
+      return this.deleteMode ? 'delete-border' : ''
     }
   },
   methods: {
@@ -114,6 +127,13 @@ export default {
         if (canvasNode) this.queueComputation(canvasNode)
       }))
     },
+    removeNode (node) {
+      if (this.deleteMode) {
+        let edgesCopy = Array.from(node.edges)
+        edgesCopy.forEach(edge => this.removeEdge(edge, true))
+        if (this.nodes.includes(node.instance)) this.nodes.splice(this.nodes.indexOf(node.instance), 1)
+      }
+    },
     addEdge (edge) {
       if (this.isValidEdge(edge)) {
         this.edges.push(edge)
@@ -127,11 +147,12 @@ export default {
         return false
       }
     },
-    removeEdge (edge) {
+    removeEdge (edge, recalculate) {
       edge.start.removeEdge(edge)
       edge.end.removeEdge(edge)
       edge.clear()
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+      if (recalculate) this.queueComputation(edge.end.node)
     },
     queueNode (node, dependsOn, notDependsOn) {
       const index = this.computeQueue.findIndex(element => element.node === node)
@@ -159,7 +180,6 @@ export default {
     async compute () {
       // A node is considered ready when no dependency is either scheduled or being computed
       const ready = entry => {
-        if (this.computing.has(entry.node)) return false
         for (let dependency of entry.dependencies) {
           if (this.computing.has(dependency)) return false
           if (this.computeQueue.find(entry => entry.node === dependency)) return false
@@ -174,15 +194,23 @@ export default {
 
         // Process node
         const [component] = this.$refs[`nodes.${entry.node.instance.id}`]
-        await entry.node.instance.calculate(component)
-        const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
-        outEdges.forEach(edge => edge.transport())
 
-        await this.$nextTick()
-        entry.node.$emit('move', entry.node)
+        const calculationId = uuid()
+        this.computations[entry.node.instance.id] = calculationId
 
-        this.computing.delete(entry.node)
-        if (this.computeQueue.findIndex(newEntry => newEntry.node === entry.node)) { entry.node.isComputing = false }
+        const result = await entry.node.instance.calculate(component)
+
+        if (calculationId === this.computations[entry.node.instance.id]) {
+          entry.node.instance.applyCalculation(result)
+          const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
+          outEdges.forEach(edge => edge.transport())
+
+          await this.$nextTick()
+          entry.node.$emit('move', entry.node)
+
+          this.computing.delete(entry.node)
+          if (this.computeQueue.findIndex(newEntry => newEntry.node === entry.node)) { entry.node.isComputing = false }
+        }
       })
       // Repeat as long as queue is not empty
       if (promises.length) {

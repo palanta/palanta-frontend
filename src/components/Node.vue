@@ -1,5 +1,5 @@
 <template>
-  <q-card id="node" class="shadow-1" :style="style" @touchstart.stop @mousedown.stop>
+  <q-card id="node" class="shadow-1" :style="style" @mousedown="onDelete" @touchstart.stop @mousedown.stop>
     <q-card-section class="header non-selectable row justify-center items-center q-pa-sm" v-touch-pan.mouse="onPan">
       <img id="icon" class="col-1 non-selectable" v-if="instance.spec.icon" :src="instance.spec.icon" />
       <div class="col-9 text-center">{{ instance.title }}</div>
@@ -57,6 +57,10 @@
   width: 16px;
   height: 16px;
 }
+
+.delete-border:hover {
+  box-shadow: red 0 0 10px !important;
+}
 </style>
 
 <script>
@@ -110,6 +114,9 @@ export default {
     },
     onDisconnected (edge) {
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+    },
+    onDelete () {
+      this.$emit('delete', this)
     },
     insertVariadic (type, afterSpec) {
       if (!afterSpec.variadic) return
