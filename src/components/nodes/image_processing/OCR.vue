@@ -7,9 +7,9 @@ import { BackendImage } from '../../../utils/ajax'
 
 export default {
   spec: {
-    id: 'std::greyscale',
-    title: 'Greyscale',
-    icon: require('../../../assets/node_icons/node_greyscale.svg'),
+    id: 'std::ocr',
+    title: 'OCR',
+    icon: require('../../../assets/node_icons/node_ocr.svg'),
     inputs: [
       {
         id: 'image',
@@ -19,15 +19,15 @@ export default {
     ],
     outputs: [
       {
-        id: 'image',
-        name: 'Image',
-        type: 'image'
+        id: 'text',
+        name: 'Text',
+        type: 'text'
       }
     ],
     async calculate (input) {
       if (input.image instanceof BackendImage) {
         return {
-          image: await input.image.greyscaled()
+          text: await input.image.ocr()
         }
       }
     }

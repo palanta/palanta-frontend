@@ -22,6 +22,14 @@ export class BackendImage {
     } else return undefined
   }
 
+  async info () {
+    try {
+      return (await axios.get(`${backendUrl}/info?image=${this.id}`)).data
+    } catch (err) {
+      return undefined
+    }
+  }
+
   async binarized (threshold) {
     try {
       const result = await axios.get(`${backendUrl}/binarize?image=${this.id}&threshold=${threshold}`)
@@ -44,6 +52,23 @@ export class BackendImage {
     try {
       const result = await axios.get(`${backendUrl}/greyscale?image=${this.id}`)
       return new BackendImage(result.data)
+    } catch (err) {
+      return undefined
+    }
+  }
+
+  async inverted () {
+    try {
+      const result = await axios.get(`${backendUrl}/invert?image=${this.id}`)
+      return new BackendImage(result.data)
+    } catch (err) {
+      return undefined
+    }
+  }
+
+  async ocr () {
+    try {
+      return (await axios.get(`${backendUrl}/ocr?image=${this.id}`)).data
     } catch (err) {
       return undefined
     }
