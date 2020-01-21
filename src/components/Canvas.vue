@@ -1,5 +1,6 @@
 <template>
   <div id="canvas">
+    <p-delete-switch :deleting="deleteMode" @toggle="deleteMode = !deleteMode" />
     <p-toolbox id="toolbox" :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
       <div :style="{ position: 'absolute', top: -scroll.y + 'px', left: -scroll.x + 'px' }">
@@ -22,7 +23,9 @@
           v-for="node in nodes"
           :key="node.id"
           :instance="node"
+          :class="nodeClasses"
           ref="nodes"
+          @delete="removeNode"
           @connect="onConnect"
           @move="onNodeMove"
         >
@@ -56,6 +59,7 @@
 
 <script>
 import PBackground from '../components/Background'
+import PDeleteSwitch from '../components/DeleteSwitch'
 import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
@@ -80,6 +84,7 @@ export default {
   components: Object.assign(
     {
       PBackground,
+      PDeleteSwitch,
       PToolbox,
       PNode,
       PEdge
@@ -93,6 +98,7 @@ export default {
       edges: [],
       newEdge: null,
       newEdgeForwards: null,
+      deleteMode: false,
       scroll: {
         x: 0,
         y: 0
@@ -101,6 +107,11 @@ export default {
       computeQueue: [],
       computing: new Set(),
       computations: {}
+    }
+  },
+  computed: {
+    nodeClasses () {
+      return this.deleteMode ? 'delete-border' : ''
     }
   },
   methods: {
@@ -116,6 +127,13 @@ export default {
         if (canvasNode) this.queueComputation(canvasNode)
       }))
     },
+    removeNode (node) {
+      if (this.deleteMode) {
+        let edgesCopy = Array.from(node.edges)
+        edgesCopy.forEach(edge => this.removeEdge(edge, true))
+        if (this.nodes.includes(node.instance)) this.nodes.splice(this.nodes.indexOf(node.instance), 1)
+      }
+    },
     addEdge (edge) {
       if (this.isValidEdge(edge)) {
         this.edges.push(edge)
@@ -129,11 +147,12 @@ export default {
         return false
       }
     },
-    removeEdge (edge) {
+    removeEdge (edge, recalculate) {
       edge.start.removeEdge(edge)
       edge.end.removeEdge(edge)
       edge.clear()
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+      if (recalculate) this.queueComputation(edge.end.node)
     },
     queueNode (node, dependsOn, notDependsOn) {
       const index = this.computeQueue.findIndex(element => element.node === node)
