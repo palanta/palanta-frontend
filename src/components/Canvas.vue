@@ -53,7 +53,6 @@
 
 #toolbox {
   position: absolute;
-  top: 50px;
 }
 </style>
 
