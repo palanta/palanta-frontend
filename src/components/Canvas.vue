@@ -114,11 +114,6 @@ export default {
       computations: {}
     }
   },
-  computed: {
-    nodeClasses () {
-      return this.deleteMode ? 'delete-border' : ''
-    }
-  },
   methods: {
     addNode (component, spec) {
       const newNode = new NodeInstance(component, spec, {
@@ -331,6 +326,9 @@ export default {
     infoboxOffset () {
       return this.infoboxVisible ? 0
         : -document.getElementById('description').getBoundingClientRect().height
+    },
+    nodeClasses () {
+      return this.deleteMode ? 'delete-border' : ''
     }
   }
 }
