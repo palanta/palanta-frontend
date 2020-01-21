@@ -9,6 +9,7 @@ export default {
   spec: {
     id: 'std::ocr',
     title: 'OCR',
+    icon: require('../../../assets/node_icons/node_ocr.svg'),
     inputs: [
       {
         id: 'image',
