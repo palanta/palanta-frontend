@@ -29,19 +29,37 @@
           <i>Now your're all set. Enjoy using Palanta!</i>
         </div>
       </q-card-section>
-      <q-btn color="primary"
-             class="palanta-button"
-             label="Palanta"
-             icon="info"
-             @click="$emit('infobox-toggle')"
-      />
+      <div @click="onButtonClicked">
+        <q-icon name="info"
+                size="sm"
+                class="absolute-bottom-left infobox-icon" />
+        <q-btn color="primary"
+               class="palanta-button"
+               label="Palanta"
+        />
+        <q-icon name="keyboard_arrow_up"
+                :style="`transform: rotate(${iconRotation}deg); transition: 200ms;`"
+                size="sm"
+                class="absolute-bottom-right infobox-icon" />
+      </div>
     </q-card>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Infobox'
+  name: 'Infobox',
+  data () {
+    return {
+      iconRotation: 0
+    }
+  },
+  methods: {
+    onButtonClicked () {
+      this.iconRotation = this.iconRotation + 180 % 360
+      this.$emit('infobox-toggle')
+    }
+  }
 }
 </script>
 
@@ -63,5 +81,11 @@ export default {
   border-bottom-right-radius: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.infobox-icon {
+  margin: 10px;
+  cursor: pointer;
+  z-index: 1;
 }
 </style>
