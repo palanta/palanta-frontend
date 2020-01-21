@@ -1,13 +1,13 @@
 <template>
   <div class="text-center">
     <!-- TODO: display bools as True/False -->
-    <div v-if="type === 'image'">
-      <img :src="value.url" width="100%" />
+    <div v-if="instance.type === 'image'">
+      <img :src="instance.value.url" width="100%" />
     </div>
-    <div v-if="type === 'other'" class="q-mt-md">
-      {{ value }}
+    <div v-if="instance.type === 'other'" class="q-mt-md">
+      {{ instance.value }}
     </div>
-    <div v-if="type === undefined" class="q-mt-md">
+    <div v-if="instance.type === undefined" class="q-mt-md">
       <i>nothing to preview</i>
     </div>
   </div>
@@ -29,16 +29,17 @@ export default {
       }
     ],
     outputs: [],
-    calculate (input, component) {
-      component.value = input.value
-      if (input.value === undefined) component.type = undefined
-      else if (input.value instanceof BackendImage) component.type = 'image'
-      else component.type = 'other'
+    data: () => ({
+      value: null,
+      type: undefined
+    }),
+    calculate (input) {
+      this.value = input.value
+      if (input.value === undefined) this.type = undefined
+      else if (input.value instanceof BackendImage) this.type = 'image'
+      else this.type = 'other'
     }
   },
-  data: () => ({
-    value: null,
-    type: undefined
-  })
+  props: { instance: Object }
 }
 </script>

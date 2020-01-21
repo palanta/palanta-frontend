@@ -1,8 +1,8 @@
 <template>
   <div class="q-px-md q-pt-md">
     <q-toggle
-      :label="toggle ? 'True' : 'False'"
-      v-model="toggle"
+      :label="instance.toggle ? 'True' : 'False'"
+      v-model="instance.toggle"
       checked-icon="check"
       color="green"
       unchecked-icon="clear"
@@ -27,15 +27,16 @@ export default {
         type: 'boolean'
       }
     ],
-    calculate (input, component) {
-      return { value: component.toggle }
+    data () {
+      return {
+        toggle: true
+      }
+    },
+    calculate (input) {
+      return { value: this.toggle }
     }
   },
-  data () {
-    return {
-      toggle: true
-    }
-  },
+  props: { instance: Object },
   methods: {
     onInput () {
       this.$emit('change', this)
