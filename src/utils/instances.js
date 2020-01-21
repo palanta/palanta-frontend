@@ -1,7 +1,7 @@
 import uuid from './uuid'
 
 export class ConnectorInstance {
-  constructor (spec) {
+  constructor (spec, node) {
     this.id = uuid()
     this.value = undefined
     this.specId = spec instanceof ConnectorInstance ? spec.specId : spec.id
@@ -9,6 +9,20 @@ export class ConnectorInstance {
     this.type = spec.type
     this.variadic = spec.variadic
     this.bundle = spec.bundle
+
+    this.node = node
+    this.edges = []
+    this.connected = 0
+  }
+
+  addEdge (edge) {
+    this.edges.push(edge)
+    this.connected++
+  }
+
+  removeEdge (edge) {
+    if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+    this.connected--
   }
 }
 
@@ -17,11 +31,12 @@ export class NodeInstance {
     this.id = uuid()
     this.spec = spec
     this.title = spec.title
-    this.inputs = spec.inputs.map(input => new ConnectorInstance(input))
-    this.outputs = spec.outputs.map(output => new ConnectorInstance(output))
+    this.inputs = spec.inputs.map(input => new ConnectorInstance(input, this))
+    this.outputs = spec.outputs.map(output => new ConnectorInstance(output, this))
     this.component = component
     this.position = position
 
+    this.edges = []
     this.calculate = spec.calculate ? this.mapCalculate(spec.calculate) : () => undefined
 
     if (spec.data) Object.assign(this, spec.data())
@@ -42,7 +57,7 @@ export class NodeInstance {
 
           channel.counts[connector.specId] = connector.variadic.minimum
           for (let j = 0; j < channel.counts[connector.specId] - 1; ++j) {
-            channel.splice(i + j + 1, 0, new ConnectorInstance(connector))
+            channel.splice(i + j + 1, 0, new ConnectorInstance(connector, this))
           }
         }
       }
@@ -106,10 +121,10 @@ export class EdgeInstance {
   }
 
   transport () {
-    this.end.spec.value = this.start.spec.value
+    this.end.value = this.start.value
   }
 
   clear () {
-    this.end.spec.value = undefined
+    this.end.value = undefined
   }
 }

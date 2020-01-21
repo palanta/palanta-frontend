@@ -54,27 +54,23 @@ export default {
     output: Boolean
   },
   data: () => ({
-    connecting: false,
-    connected: 0,
-    edges: []
+    connecting: false
   }),
   computed: {
     color () {
       return types.colors[this.spec.type]
     },
     style () {
-      return `border-color: ${this.color}; background-color: ${this.connected || this.connecting ? this.color : '#38383b'};`
+      return `border-color: ${this.color}; background-color: ${this.spec.connected || this.connecting ? this.color : '#38383b'};`
     }
   },
   methods: {
     addEdge (edge) {
-      this.edges.push(edge)
-      this.connected++
+      this.spec.addEdge(edge)
       this.$emit('connected', edge)
     },
     removeEdge (edge) {
-      if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
-      this.connected--
+      this.spec.removeEdge(edge)
       this.$emit('disconnected', edge)
     },
     handlePan (event) {
