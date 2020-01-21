@@ -2,7 +2,10 @@
   <div class="text-center">
     <!-- TODO: display bools as True/False -->
     <div v-if="type === 'image'">
-      <img :src="value.url" width="100%" />
+      <img :src="value.url" width="100%" class="cursor-pointer" @click="lightbox = true"/>
+      <q-dialog v-model="lightbox" full-width full-height>
+        <img :src="value.url" :style="{ 'max-width': '100%', 'max-height': '100%' }" />
+      </q-dialog>
     </div>
     <div v-if="type === 'other'" class="q-mt-md">
       {{ value }}
@@ -38,7 +41,8 @@ export default {
   },
   data: () => ({
     value: null,
-    type: undefined
+    type: undefined,
+    lightbox: false
   })
 }
 </script>
