@@ -5,7 +5,7 @@
       <img v-if="image" :src="image.url" :style="{ 'max-width': '100%', 'max-height': '100%' }" />
     </q-dialog>
     <div class="q-pt-md image-input-style text-center">
-      <b>Drop image here</b>
+      <b>Drop image or click to select</b>
       <q-input
         class="image-input-core"
         @input="onInput"
