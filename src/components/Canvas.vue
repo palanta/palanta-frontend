@@ -1,5 +1,8 @@
 <template>
   <div id="canvas">
+    <p-infobox id="infobox"
+               @infobox-toggle="toggleInfobox"
+               :style="`transition: 200ms; margin-top: ${infoboxOffset}px`" />
     <p-delete-switch :deleting="deleteMode" @toggle="deleteMode = !deleteMode" />
     <p-toolbox id="toolbox" :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
@@ -53,13 +56,13 @@
 
 #toolbox {
   position: absolute;
-  top: 50px;
 }
 </style>
 
 <script>
 import PBackground from '../components/Background'
 import PDeleteSwitch from '../components/DeleteSwitch'
+import PInfobox from './Infobox'
 import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
@@ -85,6 +88,7 @@ export default {
     {
       PBackground,
       PDeleteSwitch,
+      PInfobox,
       PToolbox,
       PNode,
       PEdge
@@ -99,6 +103,7 @@ export default {
       newEdge: null,
       newEdgeForwards: null,
       deleteMode: false,
+      infoboxVisible: true,
       scroll: {
         x: 0,
         y: 0
@@ -107,11 +112,6 @@ export default {
       computeQueue: [],
       computing: new Set(),
       computations: {}
-    }
-  },
-  computed: {
-    nodeClasses () {
-      return this.deleteMode ? 'delete-border' : ''
     }
   },
   methods: {
@@ -317,6 +317,18 @@ export default {
     handlePan (event) {
       this.scroll.x -= event.delta.x
       this.scroll.y -= event.delta.y
+    },
+    toggleInfobox () {
+      this.infoboxVisible = !this.infoboxVisible
+    }
+  },
+  computed: {
+    infoboxOffset () {
+      return this.infoboxVisible ? 0
+        : -document.getElementById('description').getBoundingClientRect().height
+    },
+    nodeClasses () {
+      return this.deleteMode ? 'delete-border' : ''
     }
   }
 }
