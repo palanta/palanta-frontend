@@ -1,5 +1,8 @@
 <template>
   <div id="canvas">
+    <p-infobox id="infobox"
+               @infobox-toggle="toggleInfobox"
+               :style="`transition: 200ms; margin-top: ${infoboxOffset}px`" />
     <p-toolbox id="toolbox" :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
       <div :style="{ position: 'absolute', top: -scroll.y + 'px', left: -scroll.x + 'px' }">
@@ -50,12 +53,12 @@
 
 #toolbox {
   position: absolute;
-  top: 50px;
 }
 </style>
 
 <script>
 import PBackground from '../components/Background'
+import PInfobox from './Infobox'
 import PToolbox from '../components/Toolbox'
 import PNode from '../components/Node'
 import PEdge from '../components/Edge'
@@ -79,6 +82,7 @@ export default {
   components: Object.assign(
     {
       PBackground,
+      PInfobox,
       PToolbox,
       PNode,
       PEdge
@@ -92,6 +96,7 @@ export default {
       edges: [],
       newEdge: null,
       newEdgeForwards: null,
+      infoboxVisible: true,
       scroll: {
         x: 0,
         y: 0
@@ -289,6 +294,15 @@ export default {
     handlePan (event) {
       this.scroll.x -= event.delta.x
       this.scroll.y -= event.delta.y
+    },
+    toggleInfobox () {
+      this.infoboxVisible = !this.infoboxVisible
+    }
+  },
+  computed: {
+    infoboxOffset () {
+      return this.infoboxVisible ? 0
+        : -document.getElementById('description').getBoundingClientRect().height
     }
   }
 }
