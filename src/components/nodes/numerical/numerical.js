@@ -8,12 +8,16 @@ import PNRoot from './Root'
 import PNLogarithm from './Logarithm'
 
 export default {
-  PNAverage,
-  PNAddition,
-  PNSubtraction,
-  PNMultiplication,
-  PNDivision,
-  PNExponentiation,
-  PNRoot,
-  PNLogarithm
+  basic: {
+    PNAverage,
+    PNAddition,
+    PNSubtraction,
+    PNMultiplication,
+    PNDivision
+  },
+  advanced: {
+    PNExponentiation,
+    PNRoot,
+    PNLogarithm
+  }
 }

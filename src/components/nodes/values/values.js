@@ -4,8 +4,11 @@ import PNBoolean from './Boolean'
 import PNImage from './Image'
 
 export default {
-  PNNumber,
-  PNText,
-  PNBoolean,
-  PNImage
+  basic: {
+    PNNumber,
+    PNText,
+    PNBoolean,
+    PNImage
+  },
+  advanced: {}
 }
