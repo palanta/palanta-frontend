@@ -12,13 +12,14 @@
           To get startet, simply open a category from the node explorer on the
           left and click on one of the available nodes. This node will then
           appear on the canvas, where it can be freely moved around.
+          You can delete nodes using the delete mode enabled in the bottom right.
           <br>
-          Nodes can be connected using the connectors that indicated by small
+          Nodes can be connected using the connectors indicated by small
           circles around the node.
           <br>
           <br>
           Each color represents a certain data type, for example a number or a
-          text. An output can only be connected to an input of the same type.
+          text. An output can only be connected to an input with a compatible type.
           <br>
           <br>
           To input into the flow, use one of the nodes in the "Values" category.
