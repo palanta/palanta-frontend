@@ -24,8 +24,7 @@ export class BackendImage {
 
   async info () {
     try {
-      const result = await axios.get(`${backendUrl}/info?image=${this.id}`)
-      return result.data
+      return (await axios.get(`${backendUrl}/info?image=${this.id}`)).data
     } catch (err) {
       return undefined
     }
@@ -69,8 +68,7 @@ export class BackendImage {
 
   async ocr () {
     try {
-      const result = await axios.get(`${backendUrl}/ocr?image=${this.id}`)
-      return result.data
+      return (await axios.get(`${backendUrl}/ocr?image=${this.id}`)).data
     } catch (err) {
       return undefined
     }
