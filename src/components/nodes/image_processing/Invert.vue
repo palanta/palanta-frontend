@@ -7,19 +7,14 @@ import { BackendImage } from '../../../utils/ajax'
 
 export default {
   spec: {
-    id: 'std::binarize',
-    title: 'Binarize',
-    icon: require('../../../assets/node_icons/node_binarize.svg'),
+    id: 'std::invert',
+    title: 'Invert',
+    icon: require('../../../assets/node_icons/node_invert.svg'),
     inputs: [
       {
         id: 'image',
         name: 'Image',
         type: 'image'
-      },
-      {
-        id: 'threshold',
-        name: 'Threshold',
-        type: 'number'
       }
     ],
     outputs: [
@@ -30,9 +25,9 @@ export default {
       }
     ],
     async calculate (input) {
-      if (input.image instanceof BackendImage && !isNaN(input.threshold)) {
+      if (input.image instanceof BackendImage) {
         return {
-          image: await input.image.binarized(input.threshold)
+          image: await input.image.inverted()
         }
       }
     }

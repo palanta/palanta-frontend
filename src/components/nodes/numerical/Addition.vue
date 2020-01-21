@@ -14,15 +14,26 @@ export default {
         id: 'number',
         name: 'Number',
         type: 'number',
-        variadic: true
+        variadic: {
+          minimum: 2
+        }
       }
     ],
     outputs: [
       {
+        id: 'sum',
         name: 'Sum',
         type: 'number'
       }
-    ]
+    ],
+    calculate (input) {
+      let sum = 0
+      const summands = input.number.filter(summand => !isNaN(summand))
+      summands.forEach(summand => {
+        sum += summand
+      })
+      return { sum }
+    }
   }
 }
 </script>

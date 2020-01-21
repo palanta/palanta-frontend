@@ -1,8 +1,9 @@
 <template>
-  <q-card id="node" class="shadow-1" :style="style" @touchstart.stop @mousedown.stop>
-    <q-card-section class="header non-selectable text-center" v-touch-pan.mouse="onPan">
-      <img id="icon" class="non-selectable" v-if="instance.spec.icon" :src="instance.spec.icon" />
-      {{ instance.title }}
+  <q-card id="node" class="shadow-1" :style="style" @mousedown="onDelete" @touchstart.stop @mousedown.stop>
+    <q-card-section class="header non-selectable row justify-center items-center q-pa-sm" v-touch-pan.mouse="onPan">
+      <img id="icon" class="col-1 non-selectable" v-if="instance.spec.icon" :src="instance.spec.icon" />
+      <div class="col-9 text-center">{{ instance.title }}</div>
+      <div class="col-1"><q-circular-progress indeterminate v-show="isComputing" id="loading" /></div>
     </q-card-section>
     <slot />
     <div class="row">
@@ -49,11 +50,16 @@
   background-color: #282828;
 }
 #icon {
-  position: absolute;
   width: 30px;
   height: 30px;
-  left: 10px;
-  top: 10px;
+}
+#loading {
+  width: 16px;
+  height: 16px;
+}
+
+.delete-border:hover {
+  box-shadow: red 0 0 10px !important;
 }
 </style>
 
@@ -73,6 +79,7 @@ export default {
     return {
       edges: [],
       isMoving: false,
+      isComputing: false,
       panStart: null
     }
   },
@@ -102,44 +109,49 @@ export default {
     },
     onConnected (edge) {
       this.edges.push(edge)
-      this.updateVariadics()
+      if (edge.start.node === this) this.insertVariadic('output', edge.start.spec)
+      if (edge.end.node === this) this.insertVariadic('input', edge.end.spec)
     },
     onDisconnected (edge) {
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
     },
-    insertVariadic (afterSpec) {
-      const channels = [this.instance.inputs, this.instance.outputs]
-      channels.forEach(channel => {
-        const index = channel.indexOf(afterSpec)
-        if (index >= 0) {
-          const newSpec = new ConnectorInstance(afterSpec)
-          newSpec.last = true
-          afterSpec.last = false
-          channel.splice(index + 1, 0, newSpec)
-        }
-      })
+    onDelete () {
+      this.$emit('delete', this)
     },
-    removeVariadic (spec) {
-      if (!spec.last) {
-        const channels = [this.instance.inputs, this.instance.outputs]
-        channels.forEach(channel => {
-          const index = channel.indexOf(spec)
-          if (index >= 0) {
-            if (spec.last) channel[index - 1].last = true
-            channel.splice(index, 1)
+    insertVariadic (type, afterSpec) {
+      if (!afterSpec.variadic) return
+      const channel = type === 'input' ? this.instance.inputs : this.instance.outputs
+      const index = channel.indexOf(afterSpec)
+      if (index >= 0) {
+        const connected = this.$refs.connectors.filter(connector => channel.indexOf(connector.spec) >= 0 && connector.spec.specId === afterSpec.specId)
+        if (connected.length === connected.filter(connector => connector.connected).length) {
+          const newSpec = new ConnectorInstance(afterSpec)
+          let lastIndex = index
+          for (let i = index; i < channel.length; ++i) {
+            if (channel[i].specId === newSpec.specId) lastIndex = i
           }
-        })
+          channel.splice(lastIndex + 1, 0, newSpec)
+          channel.counts[newSpec.specId]++
+        }
       }
       this.$nextTick(function () {
         this.$emit('move', this)
       })
     },
-    updateVariadics () {
-      this.$refs.connectors.forEach(connector => {
-        if (connector.spec.variadic) {
-          if (!connector.connected) this.removeVariadic(connector.spec)
-          if (connector.connected && connector.spec.last) this.insertVariadic(connector.spec)
+    removeVariadic (type, spec) {
+      if (!spec.variadic) return
+      if (!spec.variadic.collapse) return
+      const channel = type === 'input' ? this.instance.inputs : this.instance.outputs
+      const index = channel.indexOf(spec)
+      if (index >= 0) {
+        const connected = this.$refs.connectors.filter(connector => connector.connected && connector.spec.specId === spec.specId).length
+        if (Math.max(connected + 1, spec.variadic.minimum) < channel.counts[spec.specId]) {
+          channel.splice(index, 1)
+          channel.counts[spec.specId]--
         }
+      }
+      this.$nextTick(function () {
+        this.$emit('move', this)
       })
     }
   }

@@ -14,15 +14,29 @@ export default {
         id: 'number',
         name: 'Number',
         type: 'number',
-        variadic: true
+        variadic: {
+          minimum: 2
+        }
       }
     ],
     outputs: [
       {
+        id: 'difference',
         name: 'Difference',
         type: 'number'
       }
-    ]
+    ],
+    calculate (input) {
+      let difference = 0
+      const factors = input.number.filter(factor => !isNaN(factor))
+      if (factors.length > 0) {
+        difference = factors.shift()
+        factors.forEach(minuend => {
+          difference -= minuend
+        })
+      }
+      return { difference }
+    }
   }
 }
 </script>
