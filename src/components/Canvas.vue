@@ -28,7 +28,7 @@
         >
           <component
             :is="node.component"
-            :ref="`nodes.${node.id}`"
+            :instance="node"
             @change="onNodeChange"
           />
         </p-node>
@@ -173,8 +173,7 @@ export default {
         this.computing.add(entry.node)
 
         // Process node
-        const [component] = this.$refs[`nodes.${entry.node.instance.id}`]
-        await entry.node.instance.calculate(component)
+        await entry.node.instance.calculate()
         const outEdges = entry.node.edges.filter(edge => edge.start.node === entry.node)
         outEdges.forEach(edge => edge.transport())
 

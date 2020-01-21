@@ -24,6 +24,8 @@ export class NodeInstance {
 
     this.calculate = spec.calculate ? this.mapCalculate(spec.calculate) : () => undefined
 
+    if (spec.data) Object.assign(this, spec.data())
+
     // initialize variadic counts
     const channels = [this.inputs, this.outputs]
     channels.forEach(channel => {
@@ -66,7 +68,7 @@ export class NodeInstance {
   }
 
   mapCalculate (calculate) {
-    return async component => {
+    return async () => {
       // Create input map
       const input = {}
       const inputIds = new Set(this.inputs.map(connector => connector.specId))
@@ -76,7 +78,7 @@ export class NodeInstance {
         else input[id] = input[id].value
       }
       // Execute node computation
-      const result = await calculate.bind(this)(input, component)
+      const result = await calculate.bind(this)(input)
       // Retreive output map
       if (result) {
         const outputIds = new Set(this.outputs.map(connector => connector.specId))
