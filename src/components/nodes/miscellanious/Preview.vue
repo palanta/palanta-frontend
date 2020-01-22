@@ -2,7 +2,7 @@
   <div class="text-center">
     <!-- TODO: display bools as True/False -->
     <div v-if="type === 'image'">
-      <img :src="value.url" width="100%" class="cursor-pointer" @click="lightbox = true"/>
+      <img :src="value.url" width="100%" class="cursor-pointer" @click="lightbox = true" @load="$parent.$parent.$emit('move', $parent.$parent)"/>
       <q-dialog v-model="lightbox" full-width full-height>
         <img :src="value.url" :style="{ 'max-width': '100%', 'max-height': '100%' }" />
       </q-dialog>
