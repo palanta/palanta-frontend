@@ -139,9 +139,11 @@ export default {
       this.$nextTick(() => this.$nextTick(() => {
         const canvasNode = this.$refs.nodes.find(node => node.instance.id === newNode.id)
         // Register connectors
-        canvasNode.$refs.connectors.forEach(connector => {
-          this.connectors[connector.spec.id] = connector
-        })
+        if (canvasNode.$refs.connectors) {
+          canvasNode.$refs.connectors.forEach(connector => {
+            this.connectors[connector.spec.id] = connector
+          })
+        }
         // Initial calculation
         if (canvasNode) this.queueComputation(newNode)
       }))
