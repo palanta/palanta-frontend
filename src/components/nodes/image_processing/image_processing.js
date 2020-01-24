@@ -7,11 +7,15 @@ import PNInvert from './Invert'
 import PNOCR from './OCR'
 
 export default {
-  PNDimensions,
-  PNInfo,
-  PNBinarize,
-  PNOtsu,
-  PNGreyscale,
-  PNInvert,
-  PNOCR
+  basic: {
+    PNDimensions,
+    PNInfo,
+    PNBinarize,
+    PNGreyscale,
+    PNInvert
+  },
+  advanced: {
+    PNOtsu,
+    PNOCR
+  }
 }
