@@ -7,21 +7,23 @@
     <p-toolbox id="toolbox" :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
       <div :style="{ position: 'absolute', top: -scroll.y + 'px', left: -scroll.x + 'px' }">
-        <p-edge
-          v-if="newEdge"
-          ref="newEdge"
-          :start="newEdge.start.id ? connectors[newEdge.start.id].$refs.connector : newEdge.start"
-          :end="newEdge.end.id ? connectors[newEdge.end.id].$refs.connector : newEdge.end"
-          :bundle="newEdge.bundle"
-        />
-        <p-edge
-          v-for="edge in edges"
-          :ref="edge.id"
-          :key="edge.id"
-          :start="connectors[edge.start.id].$refs.connector"
-          :end="connectors[edge.end.id].$refs.connector"
-          :bundle="edge.bundle"
-        />
+        <div v-if="isMounted">
+          <p-edge
+            v-if="newEdge"
+            ref="newEdge"
+            :start="newEdge.start.id ? getConnector(newEdge.start.id).$refs.connector : newEdge.start"
+            :end="newEdge.end.id ? getConnector(newEdge.end.id).$refs.connector : newEdge.end"
+            :bundle="newEdge.bundle"
+          />
+          <p-edge
+            v-for="edge in edges"
+            :ref="edge.id"
+            :key="edge.id"
+            :start="getConnector(edge.start.id).$refs.connector"
+            :end="getConnector(edge.end.id).$refs.connector"
+            :bundle="edge.bundle"
+          />
+        </div>
         <p-node
           v-for="node in nodes"
           :key="node.id"
@@ -109,11 +111,14 @@ export default {
     },
     Object.assign.apply(null, [{}, ...Object.values(nodeTypesFlat)])
   ),
+  props: {
+    nodes: { type: Array, default: () => [] },
+    edges: { type: Array, default: () => [] }
+  },
   data () {
     return {
+      isMounted: false,
       nodeTypes,
-      nodes: [],
-      edges: [],
       connectors: {},
       newEdge: null,
       newEdgeForwards: null,
@@ -129,7 +134,15 @@ export default {
       computations: {}
     }
   },
+  mounted () {
+    this.isMounted = true
+  },
   methods: {
+    refreshEdges () {
+      this.edges.forEach(edge => {
+        this.$refs[edge.id].forEach(component => component.refresh())
+      })
+    },
     addNode (component, spec) {
       const newNode = new NodeInstance(component, spec, {
         x: window.scrollX + this.scroll.x + 300,
@@ -148,6 +161,20 @@ export default {
         if (canvasNode) this.queueComputation(newNode)
       }))
     },
+    getConnector (id) {
+      // Find in cache
+      const cached = this.connectors[id]
+      if (cached) return cached
+      // Register all connectors
+      this.$refs.nodes.forEach(node => {
+        if (node.$refs.connectors) {
+          node.$refs.connectors.forEach(connector => {
+            this.connectors[connector.spec.id] = connector
+          })
+        }
+      })
+      return this.connectors[id]
+    },
     removeNode (node) {
       if (this.deleteMode) {
         let edgesCopy = Array.from(node.edges)
@@ -161,8 +188,8 @@ export default {
     addEdge (edge) {
       if (this.isValidEdge(edge)) {
         this.edges.push(edge)
-        this.connectors[edge.start.id].addEdge(edge)
-        this.connectors[edge.end.id].addEdge(edge)
+        this.getConnector(edge.start.id).addEdge(edge)
+        this.getConnector(edge.end.id).addEdge(edge)
         edge.transport()
         this.queueComputation(edge.end.node, edge.start.node)
         return true
@@ -172,8 +199,8 @@ export default {
       }
     },
     removeEdge (edge, recalculate) {
-      this.connectors[edge.start.id].removeEdge(edge)
-      this.connectors[edge.end.id].removeEdge(edge)
+      this.getConnector(edge.start.id).removeEdge(edge)
+      this.getConnector(edge.end.id).removeEdge(edge)
       edge.clear()
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
       if (recalculate) this.queueComputation(edge.end.node)
@@ -241,8 +268,8 @@ export default {
       }
     },
     isValidEdge (edge) {
-      const start = this.connectors[edge.start.id]
-      const end = this.connectors[edge.end.id]
+      const start = this.getConnector(edge.start.id)
+      const end = this.getConnector(edge.end.id)
 
       // Edges are between connectors
       if (!start || !end) return false
@@ -292,8 +319,8 @@ export default {
       }
       if (event.isFinal) {
         if (this.newEdge) {
-          if (this.newEdge.start.id) this.connectors[this.newEdge.start.id].connecting = false
-          if (this.newEdge.end.id) this.connectors[this.newEdge.end.id].connecting = false
+          if (this.newEdge.start.id) this.getConnector(this.newEdge.start.id).connecting = false
+          if (this.newEdge.end.id) this.getConnector(this.newEdge.end.id).connecting = false
 
           // Recalculate node where edge has been detached from
           if (
@@ -319,7 +346,7 @@ export default {
             const edge = event.component.spec.edges[0] // TODO: check (/enforce) if exists and only one
             this.removeEdge(edge)
             this.newEdge = edge
-            this.connectors[this.newEdge.start.id].connecting = true
+            this.getConnector(this.newEdge.start.id).connecting = true
             this.newEdgeForwards = true
           } else {
             const from = event.component.spec
