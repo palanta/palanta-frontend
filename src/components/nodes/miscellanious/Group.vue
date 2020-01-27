@@ -72,7 +72,6 @@ export default {
       this.instance.inputs.forEach((connector, index) => {
         if (inputs.findIndex(input => connector.id === input.id) === -1) {
           this.instance.inputs.splice(index, 1)
-          console.log('remove in', connector.id)
         }
       })
       // add new connectors
@@ -83,7 +82,6 @@ export default {
             newInput.id = input.id
             newInput.variadic = false
             this.instance.inputs.push(newInput)
-            console.log('add in', newInput.id)
           }
         }
       })
@@ -93,7 +91,6 @@ export default {
       this.instance.outputs.forEach((connector, index) => {
         if (outputs.findIndex(output => connector.id === output.id) === -1) {
           this.instance.outputs.splice(index, 1)
-          console.log('remove out', connector.id)
         }
       })
       // add new connectors
@@ -104,7 +101,6 @@ export default {
             newOutput.id = output.id
             newOutput.variadic = false
             this.instance.outputs.push(newOutput)
-            console.log('add out', newOutput.id)
           }
         }
       })
