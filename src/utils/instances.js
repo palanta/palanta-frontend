@@ -3,9 +3,9 @@ import uuid from './uuid'
 export class ConnectorInstance {
   constructor (spec) {
     this.id = uuid()
-    this.value = undefined
     this.specId = spec instanceof ConnectorInstance ? spec.specId : spec.id
-    this.name = spec.name
+    this.name = spec instanceof ConnectorInstance ? spec.specName : spec.name
+    this.specName = this.name
     this.type = spec.type
     this.variadic = spec.variadic
     this.bundle = spec.bundle
