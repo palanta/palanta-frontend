@@ -3,7 +3,7 @@ export default {
     any: '#a0a0a0',
     image: '#92d050',
     number: '#00b0f0',
-    boolean: '#ff3fcc',
+    boolean: '#c380ff',
     text: '#d47b00'
   },
   casts: {

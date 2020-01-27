@@ -7,6 +7,9 @@
         <img :src="value.url" :style="{ 'max-width': '100%', 'max-height': '100%' }" />
       </q-dialog>
     </div>
+    <div v-if="type === 'boolean'" class="q-mt-md">
+      {{ value ? 'True' : 'False' }}
+    </div>
     <div v-if="type === 'other'" class="q-mt-md">
       {{ value }}
     </div>
@@ -36,6 +39,7 @@ export default {
       component.value = input.value
       if (input.value === undefined) component.type = undefined
       else if (input.value instanceof BackendImage) component.type = 'image'
+      else if (typeof input.value === 'boolean') component.type = 'boolean'
       else component.type = 'other'
     }
   },

@@ -69,6 +69,7 @@ import PEdge from '../components/Edge'
 
 import Values from '../components/nodes/values/values'
 import Numerical from '../components/nodes/numerical/numerical'
+import Logical from '../components/nodes/logical/logical'
 import ImageProcessing from '../components/nodes/image_processing/image_processing'
 import Miscellanious from '../components/nodes/miscellanious/miscellanious'
 
@@ -77,8 +78,10 @@ import { NodeInstance, EdgeInstance } from '../utils/instances'
 import types from '../utils/types'
 
 const nodeTypes = {
+
   'Values': Values,
   'Numerical': Numerical,
+  'Logical': Logical,
   'Image Processing': ImageProcessing,
   'Miscellanious': Miscellanious
 }
