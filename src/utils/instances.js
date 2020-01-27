@@ -13,11 +13,13 @@ export class ConnectorInstance {
     this.node = node
     this.edges = []
     this.connected = 0
+    this.new = true
   }
 
   addEdge (edge) {
     this.edges.push(edge)
     this.connected++
+    this.new = false
   }
 
   removeEdge (edge) {

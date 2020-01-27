@@ -6,7 +6,7 @@
   >
     <defs>
       <linearGradient
-        :id="`gradient-${id}`"
+        :id="`gradient-${instance.id}`"
         gradientUnits="userSpaceOnUse"
         :x1="relativeStart.x"
         :y1="relativeStart.y"
@@ -19,10 +19,10 @@
     </defs>
     <path
       fill="none"
-      :stroke="`url(#gradient-${id})`"
+      :stroke="`url(#gradient-${instance.id})`"
       stroke-width="4"
       stroke-linecap="round"
-      :stroke-dasharray="bundle && '16 8'"
+      :stroke-dasharray="instance.bundle && '16 8'"
       stroke-dashoffset="-8"
       :d="`
         M ${relativeStart.x} ${relativeStart.y}
@@ -35,17 +35,16 @@
 </template>
 
 <script lang="ts">
-import uuid from '../utils/uuid'
+import types from '../utils/types'
 
 export default {
   props: {
+    instance: Object,
     start: [Object, HTMLElement],
-    end: [Object, HTMLElement],
-    bundle: Boolean
+    end: [Object, HTMLElement]
   },
   data () {
     return {
-      id: uuid(),
       isMounted: false,
       centerStart: { x: 0, y: 0 },
       centerEnd: { x: 0, y: 0 }
@@ -85,10 +84,10 @@ export default {
       return this.bezierOffset
     },
     startColor () {
-      return this.start.style ? this.start.style.borderColor : this.endColor
+      return this.instance.start.type ? types.colors[this.instance.start.type] : this.endColor
     },
     endColor () {
-      return this.end.style ? this.end.style.borderColor : this.startColor
+      return this.instance.end.type ? types.colors[this.instance.end.type] : this.startColor
     }
   },
   methods: {

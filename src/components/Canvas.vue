@@ -11,17 +11,17 @@
           <p-edge
             v-if="newEdge"
             ref="newEdge"
+            :instance="newEdge"
             :start="newEdge.start.id ? getConnector(newEdge.start.id).$refs.connector : newEdge.start"
             :end="newEdge.end.id ? getConnector(newEdge.end.id).$refs.connector : newEdge.end"
-            :bundle="newEdge.bundle"
           />
           <p-edge
             v-for="edge in edges"
             :ref="edge.id"
             :key="edge.id"
+            :instance="edge"
             :start="getConnector(edge.start.id).$refs.connector"
             :end="getConnector(edge.end.id).$refs.connector"
-            :bundle="edge.bundle"
           />
         </div>
         <p-node
@@ -191,6 +191,7 @@ export default {
         this.getConnector(edge.start.id).addEdge(edge)
         this.getConnector(edge.end.id).addEdge(edge)
         edge.transport()
+        if (edge.start.variadic) this.engine.queueComputation(edge.start.node, undefined, undefined, true)
         this.engine.queueComputation(edge.end.node, edge.start.node)
         return true
       } else {
