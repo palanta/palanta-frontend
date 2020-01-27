@@ -2,7 +2,7 @@
   <div class="q-ma-md text-center">
     <q-btn color="primary" style="width: 100%" @click="open = true">edit</q-btn>
     <q-dialog full-width full-height v-model="open" ref="dialog" @show="$nextTick(() => $refs.canvas.refreshEdges())" @hide="refreshConnectors" transition-show="fade" transition-hide="fade">
-      <p-canvas :nodes="instance.groupNodes" :edges="instance.groupEdges" ref="canvas" />
+      <p-canvas :embedded="instance.title" :nodes="instance.groupNodes" :edges="instance.groupEdges" ref="canvas" />
     </q-dialog>
   </div>
 </template>

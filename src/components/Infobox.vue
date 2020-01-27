@@ -36,7 +36,7 @@
                 class="absolute-bottom-left infobox-icon" />
         <q-btn color="primary"
                class="palanta-button"
-               label="Palanta"
+               :label="`Palanta${title && `: ${title}`}`"
         />
         <q-icon name="keyboard_arrow_up"
                 :style="`transform: rotate(${iconRotation}deg); transition: 200ms;`"
@@ -50,6 +50,9 @@
 <script>
 export default {
   name: 'Infobox',
+  props: {
+    title: String
+  },
   data () {
     return {
       iconRotation: 0

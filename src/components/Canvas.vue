@@ -1,8 +1,10 @@
 <template>
   <div id="canvas">
-    <p-infobox id="infobox"
-               @infobox-toggle="toggleInfobox"
-               :style="`transition: 200ms; margin-top: ${infoboxOffset}px`" />
+    <p-infobox
+      id="infobox"
+      :title="embedded"
+      @infobox-toggle="toggleInfobox"
+      :style="`transition: 200ms; margin-top: ${infoboxOffset}px`" />
     <p-delete-switch :deleting="deleteMode" @toggle="deleteMode = !deleteMode" />
     <p-toolbox id="toolbox" :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
@@ -112,6 +114,7 @@ export default {
     Object.assign.apply(null, [{}, ...Object.values(nodeTypesFlat)])
   ),
   props: {
+    embedded: { type: String, default: () => '' },
     nodes: { type: Array, default: () => [] },
     edges: { type: Array, default: () => [] }
   },
@@ -123,7 +126,7 @@ export default {
       newEdge: null,
       newEdgeForwards: null,
       deleteMode: false,
-      infoboxVisible: true,
+      infoboxVisible: !this.embedded,
       scroll: {
         x: 0,
         y: 0
