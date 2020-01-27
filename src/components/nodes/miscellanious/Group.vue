@@ -62,7 +62,7 @@ export default {
   },
   props: { instance: Object },
   data: () => ({
-    open: true
+    open: false
   }),
   methods: {
     refreshConnectors () {
