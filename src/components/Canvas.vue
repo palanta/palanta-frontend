@@ -138,11 +138,6 @@ export default {
     this.isMounted = true
   },
   methods: {
-    refreshEdges () {
-      this.edges.forEach(edge => {
-        this.$refs[edge.id].forEach(component => component.refresh())
-      })
-    },
     addNode (component, spec) {
       const newNode = new NodeInstance(component, spec, {
         x: window.scrollX + this.scroll.x + 300,
@@ -204,6 +199,11 @@ export default {
       edge.clear()
       if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
       if (recalculate) this.queueComputation(edge.end.node)
+    },
+    refreshEdges () {
+      this.edges.forEach(edge => {
+        this.$refs[edge.id].forEach(component => component.refresh())
+      })
     },
     queueNode (node, dependsOn, notDependsOn) {
       const index = this.computeQueue.findIndex(element => element.node === node)
