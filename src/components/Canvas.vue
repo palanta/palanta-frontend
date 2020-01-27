@@ -131,13 +131,15 @@ export default {
       engine: new Engine(
         node => {
           const [component] = this.$refs[`nodes.${node.id}`]
-          component.$parent.$parent.isComputing = true
+          if (component) component.$parent.$parent.isComputing = true
         },
         async node => {
           const [component] = this.$refs[`nodes.${node.id}`]
-          component.$parent.$parent.isComputing = false
-          await this.$nextTick()
-          component.$emit('move', node)
+          if (component) {
+            component.$parent.$parent.isComputing = false
+            await this.$nextTick()
+            component.$emit('move', node)
+          }
         }
       )
     }
