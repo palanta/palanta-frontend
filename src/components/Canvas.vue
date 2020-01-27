@@ -180,7 +180,7 @@ export default {
     },
     removeNode (node) {
       if (this.deleteMode) {
-        let edgesCopy = Array.from(node.edges)
+        let edgesCopy = Array.from(node.instance.edges)
         edgesCopy.forEach(edge => this.removeEdge(edge, true))
         if (this.nodes.includes(node.instance)) this.nodes.splice(this.nodes.indexOf(node.instance), 1)
         node.$refs.connectors.forEach(connector => {
