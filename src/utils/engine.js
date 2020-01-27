@@ -1,12 +1,11 @@
 import uuid from './uuid'
 
 export default class Engine {
-  constructor (queueCallback, doneCallback) {
+  constructor (callback) {
     this.computeQueue = []
     this.computing = new Set()
     this.computations = {}
-    this.queueCallback = queueCallback
-    this.doneCallback = doneCallback
+    this.callback = callback
   }
 
   queueNode (node, dependsOn, notDependsOn) {
@@ -18,7 +17,7 @@ export default class Engine {
     }
     const deprecatedIndex = dependencies.indexOf(notDependsOn)
     if (deprecatedIndex >= 0) dependencies.splice(deprecatedIndex, 1)
-    this.queueCallback(node)
+    node.computing = true
     return this.computeQueue.push({ dependencies, node }) - 1
   }
 
@@ -62,7 +61,8 @@ export default class Engine {
 
         this.computing.delete(entry.node)
         if (this.computeQueue.findIndex(newEntry => newEntry.node === entry.node) === -1) {
-          await this.doneCallback(entry.node)
+          entry.node.computing = false
+          await this.callback(entry.node)
         }
       }
     })

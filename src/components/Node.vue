@@ -3,7 +3,7 @@
     <q-card-section class="header non-selectable row justify-center items-center q-pa-sm" v-touch-pan.mouse="onPan">
       <img id="icon" class="col-1 non-selectable" v-if="instance.spec.icon" :src="instance.spec.icon" />
       <div class="col-9 text-center">{{ instance.title }}</div>
-      <div class="col-1"><q-circular-progress indeterminate v-show="isComputing" id="loading" /></div>
+      <div class="col-1"><q-circular-progress indeterminate v-show="instance.computing" id="loading" /></div>
     </q-card-section>
     <slot />
     <div class="row">
@@ -78,7 +78,6 @@ export default {
   data () {
     return {
       isMoving: false,
-      isComputing: false,
       panStart: null
     }
   },

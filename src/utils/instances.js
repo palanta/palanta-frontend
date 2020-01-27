@@ -38,6 +38,7 @@ export class NodeInstance {
 
     this.edges = []
     this.calculate = spec.calculate ? this.mapCalculate(spec.calculate) : () => undefined
+    this.computing = false
 
     if (spec.data) Object.assign(this, spec.data())
 
