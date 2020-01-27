@@ -17,11 +17,17 @@ export default {
     ],
     outputs: [
       {
-        id: 'boolean',
-        name: 'Boolean',
+        id: 'result',
+        name: 'Result',
         type: 'boolean'
       }
-    ]
+    ],
+    calculate (input) {
+      if (!isNaN(input.boolean)) {
+        if (!input.boolean) return { result: true }
+      }
+      return { result: false }
+    }
   }
 }
 </script>
