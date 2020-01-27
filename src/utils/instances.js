@@ -104,7 +104,7 @@ export class NodeInstance {
     outputIds.forEach(id => {
       const output = this.output(id)
       if (output instanceof Array) {
-        if (result[id]) {
+        if (result && result[id]) {
           if (!(result[id] instanceof Array)) throw new Error(`Output ${id} of ${this.title} node is expected to be variadic, but is not`)
           output.forEach((connector, index) => { connector.value = result[id][index] })
         } else output.forEach((connector, index) => { connector.value = undefined })
