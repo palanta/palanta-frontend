@@ -137,7 +137,7 @@ export default {
           const [component] = this.$refs[`nodes.${node.id}`]
           if (component) {
             await this.$nextTick()
-            component.$emit('move', node)
+            component.$parent.$parent.$emit('move', component.$parent.$parent)
           }
         }
       )
