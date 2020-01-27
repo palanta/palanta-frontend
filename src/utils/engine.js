@@ -8,7 +8,7 @@ export default class Engine {
     this.callback = callback
   }
 
-  queueNode (node, dependsOn, notDependsOn) {
+  _queueNode (node, dependsOn, notDependsOn) {
     const index = this.computeQueue.findIndex(element => element.node === node)
     let dependencies = dependsOn ? [dependsOn] : []
     if (index >= 0) {
@@ -21,16 +21,16 @@ export default class Engine {
     return this.computeQueue.push({ dependencies, node }) - 1
   }
 
-  queueComputation (start, dependsOn, notDependsOn) {
+  queueComputation (start, dependsOn, notDependsOn, lazy = false) {
     // Traverse canvas breadth-first to determine update order
-    let index = this.queueNode(start, dependsOn, notDependsOn)
+    let index = this._queueNode(start, dependsOn, notDependsOn)
     while (index < this.computeQueue.length) {
       const node = this.computeQueue[index].node
       const nextNodes = new Set(node.edges.filter(edge => edge.start.node === node).map(edge => edge.end.node))
-      nextNodes.forEach(next => this.queueNode(next, node))
+      nextNodes.forEach(next => this._queueNode(next, node))
       index++
     }
-    this.compute()
+    if (!lazy) return this.compute()
   }
 
   async compute () {
@@ -62,7 +62,7 @@ export default class Engine {
         this.computing.delete(entry.node)
         if (this.computeQueue.findIndex(newEntry => newEntry.node === entry.node) === -1) {
           entry.node.computing = false
-          await this.callback(entry.node)
+          if (this.callback) await this.callback(entry.node)
         }
       }
     })
