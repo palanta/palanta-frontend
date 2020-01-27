@@ -6,6 +6,7 @@
       @infobox-toggle="toggleInfobox"
       :style="`transition: 200ms; margin-top: ${infoboxOffset}px`" />
     <p-delete-switch :deleting="deleteMode" @toggle="deleteMode = !deleteMode" />
+    <q-btn v-if="embedded" flat round icon="close" style="position: absolute; right: 1em; top: 1em" @click="$emit('close')"/>
     <p-toolbox id="toolbox" :types="nodeTypes" @add="addNode" />
     <p-background v-touch-pan.mouse.prevent="handlePan" :scroll="scroll">
       <div :style="{ position: 'absolute', top: -scroll.y + 'px', left: -scroll.x + 'px' }">
