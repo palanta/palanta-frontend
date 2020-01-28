@@ -18,6 +18,9 @@ export default {
       }
     ],
     outputs: [],
+    data: () => ({
+      version: ''
+    }),
     calculate () {
       this.input('output').forEach(connector => {
         if (connector.edges.length) {
@@ -28,6 +31,7 @@ export default {
           }
         }
       })
+      this.version = uuid()
     }
   }
 }

@@ -33,7 +33,11 @@ export default {
           outputs = outputs.concat(node.inputs)
         })
         return outputs
-      }
+      },
+      getVersions () {
+        return this.groupNodes.filter(node => node.spec.id === 'std::groupoutput').map(node => node.version).join('')
+      },
+      currentVersions: ''
     }),
     async calculate (input) {
       const engine = new Engine()
@@ -47,6 +51,7 @@ export default {
       })
       // settle engine
       await engine.compute()
+      this.currentVersions = this.getVersions()
       // gather outputs
       const result = {}
       this.groupNodes.filter(node => node.spec.id === 'std::groupoutput').forEach(node => {
@@ -104,8 +109,8 @@ export default {
           }
         }
       })
-      // recompute
-      this.$emit('change', this)
+      // recompute on new version
+      if (this.instance.getVersions() !== this.instance.currentVersions) { this.$emit('change', this) }
     }
   }
 }
