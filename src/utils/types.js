@@ -7,9 +7,11 @@ export default {
     text: '#d47b00'
   },
   casts: {
-    'any': ['image', 'number', 'boolean', 'text'],
-    'boolean': ['number', 'text'],
-    'text': ['number']
+    'any': ['any', 'image', 'number', 'boolean', 'text'],
+    'image': ['any'],
+    'number': ['any'],
+    'boolean': ['any', 'number', 'text'],
+    'text': ['any', 'number']
   },
   isCastable (from, to) {
     if (from === to) return true

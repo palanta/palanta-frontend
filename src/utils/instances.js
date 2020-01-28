@@ -1,7 +1,7 @@
 import uuid from './uuid'
 
 export class ConnectorInstance {
-  constructor (spec) {
+  constructor (spec, node) {
     this.id = uuid()
     this.value = undefined
     this.specId = spec instanceof ConnectorInstance ? spec.specId : spec.id
@@ -9,6 +9,22 @@ export class ConnectorInstance {
     this.type = spec.type
     this.variadic = spec.variadic
     this.bundle = spec.bundle
+
+    this.node = node
+    this.edges = []
+    this.connected = 0
+    this.new = true
+  }
+
+  addEdge (edge) {
+    this.edges.push(edge)
+    this.connected++
+    this.new = false
+  }
+
+  removeEdge (edge) {
+    if (this.edges.includes(edge)) this.edges.splice(this.edges.indexOf(edge), 1)
+    this.connected--
   }
 }
 
@@ -17,12 +33,16 @@ export class NodeInstance {
     this.id = uuid()
     this.spec = spec
     this.title = spec.title
-    this.inputs = spec.inputs.map(input => new ConnectorInstance(input))
-    this.outputs = spec.outputs.map(output => new ConnectorInstance(output))
+    this.inputs = spec.inputs.map(input => new ConnectorInstance(input, this))
+    this.outputs = spec.outputs.map(output => new ConnectorInstance(output, this))
     this.component = component
     this.position = position
 
+    this.edges = []
     this.calculate = spec.calculate ? this.mapCalculate(spec.calculate) : () => undefined
+    this.computing = false
+
+    if (spec.data) Object.assign(this, spec.data())
 
     // initialize variadic counts
     const channels = [this.inputs, this.outputs]
@@ -40,7 +60,7 @@ export class NodeInstance {
 
           channel.counts[connector.specId] = connector.variadic.minimum
           for (let j = 0; j < channel.counts[connector.specId] - 1; ++j) {
-            channel.splice(i + j + 1, 0, new ConnectorInstance(connector))
+            channel.splice(i + j + 1, 0, new ConnectorInstance(connector, this))
           }
         }
       }
@@ -66,7 +86,7 @@ export class NodeInstance {
   }
 
   mapCalculate (calculate) {
-    return async component => {
+    return async () => {
       // Create input map
       const input = {}
       const inputIds = new Set(this.inputs.map(connector => connector.specId))
@@ -76,7 +96,7 @@ export class NodeInstance {
         else input[id] = input[id].value
       }
       // Execute node computation
-      return calculate.bind(this)(input, component)
+      return calculate.bind(this)(input)
     }
   }
 
@@ -86,7 +106,7 @@ export class NodeInstance {
     outputIds.forEach(id => {
       const output = this.output(id)
       if (output instanceof Array) {
-        if (result[id]) {
+        if (result && result[id]) {
           if (!(result[id] instanceof Array)) throw new Error(`Output ${id} of ${this.title} node is expected to be variadic, but is not`)
           output.forEach((connector, index) => { connector.value = result[id][index] })
         } else output.forEach((connector, index) => { connector.value = undefined })
@@ -104,10 +124,10 @@ export class EdgeInstance {
   }
 
   transport () {
-    this.end.spec.value = this.start.spec.value
+    this.end.value = this.start.value
   }
 
   clear () {
-    this.end.spec.value = undefined
+    this.end.value = undefined
   }
 }

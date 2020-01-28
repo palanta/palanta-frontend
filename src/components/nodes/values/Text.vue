@@ -3,7 +3,7 @@
     <q-input
       filled
       autogrow
-      v-model="text"
+      v-model="instance.text"
       type="textarea"
       placeholder="Enter text here"
       @input="onInput"
@@ -25,13 +25,14 @@ export default {
         type: 'text'
       }
     ],
-    calculate (input, component) {
-      return { value: component.text }
+    data: () => ({
+      text: ''
+    }),
+    calculate (input) {
+      return { value: this.text }
     }
   },
-  data: () => ({
-    text: ''
-  }),
+  props: { instance: Object },
   methods: {
     onInput () {
       this.$emit('change', this)
