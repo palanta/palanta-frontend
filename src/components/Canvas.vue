@@ -229,7 +229,7 @@ export default {
       // Each input may be connected once only
       if (edge.end.connected) return false
 
-      // TODO: Prevent connecting a node to itself
+      // Prevent connecting a node to itself
       if (edge.start.node === edge.end.node) return false
 
       return true
