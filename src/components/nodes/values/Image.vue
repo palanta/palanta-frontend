@@ -1,6 +1,6 @@
 <template>
   <div >
-    <img v-if="image" :src="image.url" width="100%" class="cursor-pointer" @click="lightbox = true" />
+    <img v-if="image" :src="image.url" width="100%" class="cursor-pointer" @click="lightbox = true" @load="$parent.$parent.$emit('move', $parent.$parent)" />
     <q-dialog v-if="image" v-model="lightbox" full-width full-height>
       <img v-if="image" :src="image.url" :style="{ 'max-width': '100%', 'max-height': '100%' }" />
     </q-dialog>
