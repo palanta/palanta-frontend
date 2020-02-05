@@ -70,7 +70,7 @@ import PEdge from '../components/Edge'
 import Values from '../components/nodes/values/values'
 import Numerical from '../components/nodes/numerical/numerical'
 import ImageProcessing from '../components/nodes/image_processing/image_processing'
-import Miscellanious from '../components/nodes/miscellanious/miscellanious'
+import Miscellaneous from '../components/nodes/miscellaneous/miscellaneous'
 
 import uuid from '../utils/uuid'
 import { NodeInstance, EdgeInstance } from '../utils/instances'
@@ -80,7 +80,7 @@ const nodeTypes = {
   'Values': Values,
   'Numerical': Numerical,
   'Image Processing': ImageProcessing,
-  'Miscellanious': Miscellanious
+  'Miscellaneous': Miscellaneous
 }
 
 const nodeTypesFlat = {
@@ -90,8 +90,8 @@ const nodeTypesFlat = {
   'NA': nodeTypes.Numerical.advanced,
   'IB': nodeTypes['Image Processing'].basic,
   'IA': nodeTypes['Image Processing'].advanced,
-  'MB': nodeTypes.Miscellanious.basic,
-  'MA': nodeTypes.Miscellanious.advanced
+  'MB': nodeTypes.Miscellaneous.basic,
+  'MA': nodeTypes.Miscellaneous.advanced
 }
 
 export default {

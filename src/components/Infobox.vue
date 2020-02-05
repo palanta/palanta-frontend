@@ -73,20 +73,18 @@ export default {
 .infobox {
   width: 500px;
   margin: 0 auto;
+  z-index: 10;
 }
 
 .palanta-button {
   width: 100%;
   font-size: 16px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  border-radius: 0 0 4px 4px;
 }
 
 .infobox-icon {
   margin: 10px;
   cursor: pointer;
-  z-index: 1;
+  z-index: 11;
 }
 </style>
